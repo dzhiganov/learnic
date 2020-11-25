@@ -18,8 +18,7 @@ const SignUp: React.FunctionComponent = () => {
       database
         .auth()
         .createUserWithEmailAndPassword(login, password)
-        .then(() => history.push(HOME))
-        .catch((error: any) => console.error(error));
+        .then(() => history.push(HOME));
     },
     [history]
   );

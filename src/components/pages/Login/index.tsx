@@ -1,34 +1,36 @@
-import React, { useEffect, useState, memo, useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Base from '../../templates/Base';
 import Form from '../../organisms/Form';
 import database from '../../../database';
 import styles from './styles.module.css';
+import { HOME } from '../../../core/router/paths';
 
 type Credentials = {
   login: string;
   password: string;
 };
 
-const Login: React.FunctionComponent = () => {
-  const user = useSelector((state: { user: any }) => state.user);
-  const [currentUser, setCurrentUser] = useState(null);
+const Login = (): React.ReactElement => {
+  const history = useHistory();
+  const user = useSelector(
+    (state: { user: Record<string, string> }) => state.user
+  );
 
-  const handleLogin = useCallback(({ login, password }: Credentials): void => {
-    database
-      .auth()
-      .signInWithEmailAndPassword(login, password)
-      .catch((error: any) => {});
-  }, []);
+  const handleLogin = useCallback(
+    ({ login, password }: Credentials): void => {
+      database
+        .auth()
+        .signInWithEmailAndPassword(login, password)
+        .then(() => history.push(HOME));
+    },
+    [history]
+  );
 
-  useEffect(() => {
-    database.auth().onAuthStateChanged(setCurrentUser);
-  }, []);
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+  if (user) {
+    history.push(HOME);
+  }
 
   return (
     <Base>

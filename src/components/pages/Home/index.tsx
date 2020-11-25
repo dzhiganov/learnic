@@ -11,29 +11,28 @@ const Home: React.FunctionComponent = () => {
   const dispatch = useDispatch();
 
   const checkCurrentUser = useCallback(async () => {
-    database
-      .auth()
-      .onAuthStateChanged(
-        (user: { uid: number; displayName?: string; email: string }) => {
-          if (!user) {
-            history.push('/login');
-          } else {
-            const {
-              currentUser: { uid, displayName, email },
-            } = database.auth();
+    database.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        history.push('/login');
+      } else {
+        const auth = database.auth();
+        const { currentUser } = auth;
+        const { uid, displayName, email } = (currentUser as unknown) as Record<
+          string,
+          string
+        >;
 
-            dispatch(
-              setUser({
-                user: {
-                  uid,
-                  displayName,
-                  email,
-                },
-              })
-            );
-          }
-        }
-      );
+        dispatch(
+          setUser({
+            user: {
+              uid,
+              displayName,
+              email,
+            },
+          })
+        );
+      }
+    });
   }, [history, dispatch]);
 
   useEffect(() => {
