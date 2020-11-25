@@ -15,7 +15,11 @@ type Credentials = {
 const Login = (): React.ReactElement => {
   const history = useHistory();
   const user = useSelector(
-    (state: { user: Record<string, string> }) => state.user
+    (state: {
+      user: {
+        user: Record<string, string>;
+      };
+    }) => state.user
   );
 
   const handleLogin = useCallback(
@@ -28,7 +32,7 @@ const Login = (): React.ReactElement => {
     [history]
   );
 
-  if (user) {
+  if (user.user.uid) {
     history.push(HOME);
   }
 
