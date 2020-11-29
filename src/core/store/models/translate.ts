@@ -4,21 +4,26 @@ import { AppThunk } from '..';
 
 import api from '../api/translate';
 
+type UserState = {
+  token: string;
+  error: string;
+};
+
 const initialState = {
-  token: null,
-  error: null,
+  token: '',
+  error: '',
 };
 
 const repoDetails = createSlice({
   name: 'repoDetails',
   initialState,
   reducers: {
-    getRepoDetailsSuccess(state, action: PayloadAction<any>) {
+    getRepoDetailsSuccess(state, action: PayloadAction<UserState>) {
       state.token = action.payload.token;
-      state.error = null;
+      state.error = '';
     },
-    getRepoDetailsFailed(state, action: PayloadAction<any>) {
-      state.token = null;
+    getRepoDetailsFailed(state, action: PayloadAction<string>) {
+      state.token = '';
       state.error = action.payload;
     },
   },

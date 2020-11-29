@@ -1,21 +1,19 @@
+import axios from 'axios';
+
+type UserState = {
+  token: string;
+  error: string;
+};
+
 const baseURL = 'https://developers.lingvolive.com/api';
 const AUTHORIZATION = 'Authorization';
 
-const auth = async (apiKey: string): Promise<any> => {
+const auth = async (apiKey: string): Promise<UserState> => {
   const url = `${baseURL}/v1.1/authenticate`;
-  //   const { data } = await axios.post(url, null, {
-  //     withCredentials: true,
-  //     headers: {
-  //       [AUTHORIZATION]: `Basic ${apiKey}`,
-  //       'Access-Control-Allow-Origin': '*',
-  //       'Content-Type': 'application/json',
-  //     },
-  //   });
-  const data = fetch(url, {
+  const { data } = await axios.post(url, null, {
     headers: {
       [AUTHORIZATION]: `Basic ${apiKey}`,
     },
-    method: 'POST',
   });
 
   return data;
