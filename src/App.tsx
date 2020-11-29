@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import './App.css';
 
 import store from './core/store';
+import { fetchAuth } from './core/store/models/translate';
 
 const Home = lazy(() => import('./components/pages/Home'));
 const Login = lazy(() => import('./components/pages/Login'));
@@ -12,6 +13,8 @@ const SignUp = lazy(() => import('./components/pages/SignUp'));
 const HOME = '/';
 const LOGIN = '/login';
 const SIGNUP = '/signup';
+
+store.dispatch(fetchAuth());
 
 const App: React.FunctionComponent = () => (
   <Provider store={store}>
