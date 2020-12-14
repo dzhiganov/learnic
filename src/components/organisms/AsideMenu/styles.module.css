@@ -1,0 +1,21 @@
+.container {
+   border-right: 1px solid #f0f0f0;
+   font-size: 18px;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.item {
+    cursor: pointer;
+    padding: 22px 40px;
+    font-weight: 500;
+}
+
+.item:hover , 
+.item:focus {
+    background-color: rgba(0, 0 ,0 , 0.1);
+}

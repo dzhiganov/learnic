@@ -5,8 +5,13 @@ import { firestore } from '../../../database';
 import type { RootState } from '../../../core/store/rootReducer';
 import styles from './styles.module.css';
 import NewWord from './NewWord';
+import WordsCard from '../../molecules/WordsCard';
 
 const Cards: React.FunctionComponent = () => {
+  const [openedCard, setOpenedCard] = useState({
+    word: '',
+    translate: '',
+  });
   const [showNewWord, setShowNewWord] = useState(false);
   const [words, setWords] = useState<firebase.firestore.DocumentData[]>([]);
   const user = useSelector((state: RootState) => state.user);
@@ -69,14 +74,27 @@ const Cards: React.FunctionComponent = () => {
     [user, getWords]
   );
 
+  const handleClickCard = useCallback(({ word, translate }) => {
+    setOpenedCard({ word, translate });
+  }, []);
+
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>My Words</h2>
       <div className={styles.cardsContainer}>
         <ul className={styles.cardsList}>
-          {words.map(({ word, translate }) => (
-            <li key={word}>{`${word} - ${translate}`}</li>
-          ))}
+          {words.map(({ word, translate }) => {
+            const onClick = () => handleClickCard({ word, translate });
+            return (
+              <li key={word}>
+                <button
+                  className={styles.cardButton}
+                  type="button"
+                  onClick={onClick}
+                >{`${word} - ${translate}`}</button>
+              </li>
+            );
+          })}
           {showNewWord ? (
             <li>
               <NewWord onSave={handleOnSave} />
@@ -93,6 +111,7 @@ const Cards: React.FunctionComponent = () => {
           New Word
         </button>
       </div>
+      <WordsCard word={openedCard.word} translate={openedCard.translate} />
     </div>
   );
 };

@@ -1,8 +1,6 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  max-width: 1180px;
+  display: grid;
+  grid-template-columns: 200px auto;
   min-height: 100vh;
-  margin: 0 auto;
   background-color: #fff;
 }

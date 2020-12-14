@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { AppThunk } from '..';
+import type { AppThunk } from '..';
 
 import api from '../api/translate';
 
@@ -9,7 +9,7 @@ type UserState = {
   error: string;
 };
 
-const initialState = {
+const initialState: UserState = {
   token: '',
   error: '',
 };
@@ -18,8 +18,8 @@ const repoDetails = createSlice({
   name: 'repoDetails',
   initialState,
   reducers: {
-    getRepoDetailsSuccess(state, action: PayloadAction<UserState>) {
-      state.token = action.payload.token;
+    getRepoDetailsSuccess(state, action: PayloadAction<string>) {
+      state.token = action.payload;
       state.error = '';
     },
     getRepoDetailsFailed(state, action: PayloadAction<string>) {

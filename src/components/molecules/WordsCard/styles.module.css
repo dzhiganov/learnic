@@ -1,0 +1,50 @@
+.container {
+    position: absolute;
+    right: 0;
+    width: 600px;
+    border-left: 1px solid #f0f0f0;
+    height: 100%;
+    top: 0;
+    padding: 12px 24px;
+}
+
+.wordSection {
+    display: flex;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.audioButtonContainer {
+    margin: 0 10px;
+    display: flex;
+}
+
+.audioButton {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+}
+
+.contextSection {
+    display: inline-block;
+}
+
+.videoSection {
+    display: inline-block;
+}
+
+.example {
+    display: block;
+}
+
+.examplesList {
+    list-style: none;
+    padding: 0;
+    font-size: 18px;
+}
+
+.examplesItem {
+   padding: 6px 0;
+}
