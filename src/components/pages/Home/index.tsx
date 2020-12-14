@@ -7,7 +7,6 @@ import { setUser } from '../../../core/store/models/user';
 import Cards from '../../organisms/Cards';
 import AsideMenu from '../../organisms/AsideMenu';
 import { HOME_WORDS } from '../../../core/router/paths';
-import WordsCard from '../../molecules/WordsCard';
 
 const Home: React.FunctionComponent = () => {
   const history = useHistory();

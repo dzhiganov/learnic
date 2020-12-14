@@ -10,17 +10,34 @@ type Props = {
   translate: string;
 };
 
-const getExamples = (data: any) => {
+const getExamples = (
+  data: Array<{
+    meanings: Array<
+      Record<string, unknown> & {
+        definitions: Array<{ example: string }>;
+      }
+    >;
+    phonetics: Array<Record<string, unknown>>;
+  }>
+) => {
   const [wordData] = data;
   const { meanings, phonetics: phoneticsList } = wordData;
   const [phonetics] = phoneticsList;
   const { audio } = phonetics;
 
-  const result = meanings.reduce((acc: any, item: any) => {
-    const { definitions } = item;
-    definitions.forEach(({ example }: any) => acc.push(example));
-    return acc;
-  }, []);
+  const result = meanings.reduce(
+    (
+      acc: string[],
+      item: Record<string, unknown> & {
+        definitions: Array<{ example: string }>;
+      }
+    ) => {
+      const { definitions } = item;
+      definitions.forEach(({ example }) => acc.push(example));
+      return acc;
+    },
+    []
+  );
 
   return {
     examples: result,
@@ -40,7 +57,7 @@ const WordsCard: React.FunctionComponent<Props> = ({
     if (data && Array.isArray(data)) {
       const { examples: resExamples, audio: resAudio } = getExamples(data);
       setExamples(resExamples);
-      setAudioSrc(resAudio);
+      setAudioSrc(resAudio as string);
     }
   }, [word]);
 
