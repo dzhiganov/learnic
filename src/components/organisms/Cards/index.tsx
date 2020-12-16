@@ -1,11 +1,32 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import firebase from 'firebase';
+import { Transition } from 'react-transition-group';
+import useAsyncFn from 'react-use/lib/useAsyncFn';
 import { firestore } from '../../../database';
 import type { RootState } from '../../../core/store/rootReducer';
 import styles from './styles.module.css';
 import NewWord from './NewWord';
 import WordsCard from '../../molecules/WordsCard';
+import Skeleton from '../../atoms/Skeleton';
+
+const duration = 700;
+
+const defaultStyle = {
+  transition: `all ${duration}ms ease-in-out`,
+  top: 0,
+  right: '-848px',
+  position: 'absolute',
+  width: '800px',
+  height: '100%',
+};
+
+const transitionStyles = {
+  entering: { right: 0 },
+  entered: { right: 0 },
+  exiting: { right: '-848px' },
+  exited: { right: '-848px' },
+};
 
 const Cards: React.FunctionComponent = () => {
   const [openedCard, setOpenedCard] = useState({
@@ -13,35 +34,41 @@ const Cards: React.FunctionComponent = () => {
     translate: '',
   });
   const [showNewWord, setShowNewWord] = useState(false);
-  const [words, setWords] = useState<firebase.firestore.DocumentData[]>([]);
   const user = useSelector((state: RootState) => state.user);
+  const [{ value: words = [], loading }, fetch] = useAsyncFn(
+    async (currentUser: {
+      user: { uid: string };
+    }): Promise<firebase.firestore.DocumentData[]> => {
+      const uid = currentUser?.user?.uid;
+      if (!uid) {
+        throw new Error('UID must not be null');
+      }
+      const result: firebase.firestore.DocumentData[] = [];
+      const request = firestore
+        .collection('users')
+        .doc(uid)
+        .collection('words');
+      const snapshot = await request.get();
 
-  const getWords = useCallback(async (): Promise<void> => {
-    const uid = user?.user?.uid;
-    if (!uid) {
-      return;
-    }
-    const result: firebase.firestore.DocumentData[] = [];
-    const request = firestore.collection('users').doc(uid).collection('words');
-    const snapshot = await request.get();
+      if (snapshot.empty) {
+        throw new Error('Snapshot is empty');
+      }
 
-    if (snapshot.empty) {
-      // TODO Handle empty
-      return;
-    }
+      snapshot.forEach((doc) => {
+        result.push(doc.data());
+      });
 
-    snapshot.forEach((doc) => {
-      result.push(doc.data());
-    });
-
-    setWords(result);
-  }, [user]);
+      return result;
+    },
+    [],
+    { loading: true }
+  );
 
   useEffect(() => {
     if (user) {
-      getWords();
+      fetch(user);
     }
-  }, [user, getWords]);
+  }, [user, fetch]);
 
   const handleShowNewWord = useCallback(() => {
     setShowNewWord(true);
@@ -67,11 +94,11 @@ const Cards: React.FunctionComponent = () => {
         date: new Date(),
       });
 
-      await getWords();
+      await fetch(user);
 
       setShowNewWord(false);
     },
-    [user, getWords]
+    [user, fetch]
   );
 
   const handleClickCard = useCallback(({ word, translate }) => {
@@ -82,25 +109,31 @@ const Cards: React.FunctionComponent = () => {
     <div className={styles.container}>
       <h2 className={styles.title}>My Words</h2>
       <div className={styles.cardsContainer}>
-        <ul className={styles.cardsList}>
-          {words.map(({ word, translate }) => {
-            const onClick = () => handleClickCard({ word, translate });
-            return (
-              <li key={word}>
-                <button
-                  className={styles.cardButton}
-                  type="button"
-                  onClick={onClick}
-                >{`${word} - ${translate}`}</button>
+        {loading ? (
+          <ul className={styles.cardsList}>
+            <Skeleton variant="text" width={512} height={40} repeat={6} />
+          </ul>
+        ) : (
+          <ul className={styles.cardsList}>
+            {words.map(({ word, translate }) => {
+              const onClick = () => handleClickCard({ word, translate });
+              return (
+                <li key={word}>
+                  <button
+                    className={styles.cardButton}
+                    type="button"
+                    onClick={onClick}
+                  >{`${word} - ${translate}`}</button>
+                </li>
+              );
+            })}
+            {showNewWord ? (
+              <li>
+                <NewWord onSave={handleOnSave} />
               </li>
-            );
-          })}
-          {showNewWord ? (
-            <li>
-              <NewWord onSave={handleOnSave} />
-            </li>
-          ) : null}
-        </ul>
+            ) : null}
+          </ul>
+        )}
       </div>
       <div className={styles.buttonsContainer}>
         <button
@@ -111,7 +144,21 @@ const Cards: React.FunctionComponent = () => {
           New Word
         </button>
       </div>
-      <WordsCard word={openedCard.word} translate={openedCard.translate} />
+      <Transition in={!!openedCard.word} timeout={duration}>
+        {<T extends keyof typeof transitionStyles>(state: T) => (
+          <div
+            style={{
+              ...defaultStyle,
+              ...transitionStyles[state],
+            }}
+          >
+            <WordsCard
+              word={openedCard.word}
+              translate={openedCard.translate}
+            />
+          </div>
+        )}
+      </Transition>
     </div>
   );
 };

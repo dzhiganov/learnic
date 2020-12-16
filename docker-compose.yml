@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  web:
+    container_name: memorize_words
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: "npm run start"
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+    ports:
+      - "3000:3000"
+      
