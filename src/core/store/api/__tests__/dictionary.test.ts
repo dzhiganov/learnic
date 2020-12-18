@@ -8,9 +8,9 @@ it('fetches data from dictionary with default language', async () => {
     })
   );
 
-  const images = await getDefinition('test');
+  const response = await getDefinition('test');
 
-  expect(images).toEqual([{ word: 'test' }]);
+  expect(response).toEqual([{ word: 'test' }]);
   expect(mockAxios.get).toHaveBeenCalledTimes(1);
   expect(mockAxios.get).toHaveBeenCalledWith(`${proxy}/${baseURL}/en/test`);
 });
@@ -22,9 +22,9 @@ it('fetches data from dictionary with russian language', async () => {
     })
   );
 
-  const images = await getDefinition('тест', 'ru');
+  const response = await getDefinition('тест', 'ru');
 
-  expect(images).toEqual([{ word: 'тест' }]);
+  expect(response).toEqual([{ word: 'тест' }]);
   expect(mockAxios.get).toHaveBeenCalledTimes(1);
   expect(mockAxios.get).toHaveBeenCalledWith(`${proxy}/${baseURL}/ru/тест`);
 });

@@ -1,8 +1,7 @@
-/* eslint-disable import/prefer-default-export */
 import axios from 'axios';
 
-const baseURL = 'https://www.googleapis.com/youtube/v3/search';
-const proxy = 'https://cors-anywhere.herokuapp.com';
+export const baseURL = 'https://www.googleapis.com/youtube/v3/search';
+export const proxy = 'https://cors-anywhere.herokuapp.com';
 
 export const getList = async (
   keyword: string

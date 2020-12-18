@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const baseURL = 'https://developers.lingvolive.com/api';
-const proxy = 'https://cors-anywhere.herokuapp.com';
-const AUTHORIZATION = 'Authorization';
+export const baseURL = 'https://developers.lingvolive.com/api';
+export const proxy = 'https://cors-anywhere.herokuapp.com';
+export const AUTHORIZATION = 'Authorization';
 
-const auth = async (apiKey: string): Promise<string> => {
+export const auth = async (apiKey: string): Promise<string> => {
   const url = `${proxy}/${baseURL}/v1.1/authenticate`;
   const { data } = await axios.post(url, null, {
     headers: {
@@ -15,7 +15,7 @@ const auth = async (apiKey: string): Promise<string> => {
   return data;
 };
 
-const getTranslate = async (
+export const getTranslate = async (
   apiKey: string,
   word: string,
   sourceLang: string,
