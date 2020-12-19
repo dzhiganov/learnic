@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import React, { memo, useEffect, useCallback, useMemo } from 'react';
-import dictionaryApi from 'core/store/api/dictionary';
+import { getDefinition } from 'core/store/api/dictionary';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import styles from './styles.module.css';
@@ -22,9 +22,9 @@ const WordsCard: React.FunctionComponent<Props> = ({
   word,
   translate,
 }: Props) => {
-  const [{ value = defaultDefinition, loading }, getDefinition] = useAsyncFn(
+  const [{ value = defaultDefinition, loading }, fetch] = useAsyncFn(
     async (keyword: string): Promise<{ examples: string[]; audio: string }> => {
-      const data = await dictionaryApi.getDefinition(keyword);
+      const data = await getDefinition(keyword);
 
       if (data && Array.isArray(data)) {
         const { examples: resExamples, audio: resAudio } = getExamples(data);
@@ -43,9 +43,9 @@ const WordsCard: React.FunctionComponent<Props> = ({
 
   useEffect(() => {
     if (word) {
-      getDefinition(word);
+      fetch(word);
     }
-  }, [word, getDefinition]);
+  }, [word, fetch]);
 
   const audio = useMemo((): HTMLAudioElement | null => {
     if (value?.audio) {

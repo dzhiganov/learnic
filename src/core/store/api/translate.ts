@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const baseURL = 'https://developers.lingvolive.com/api';
-export const proxy = 'https://cors-anywhere.herokuapp.com';
+const proxy = process.env.REACT_APP_PROXY;
 export const AUTHORIZATION = 'Authorization';
 
 export const auth = async (apiKey: string): Promise<string> => {
@@ -29,9 +29,4 @@ export const getTranslate = async (
   });
 
   return data;
-};
-
-export default {
-  auth,
-  getTranslate,
 };

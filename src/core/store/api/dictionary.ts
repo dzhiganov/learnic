@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const baseURL = 'https://api.dictionaryapi.dev/api/v2/entries';
-export const proxy = 'https://cors-anywhere.herokuapp.com';
+const proxy = process.env.REACT_APP_PROXY;
 
 export const getDefinition = async (
   word: string,
@@ -11,8 +11,4 @@ export const getDefinition = async (
   const { data } = await axios.get(url);
 
   return data;
-};
-
-export default {
-  getDefinition,
 };

@@ -1,5 +1,7 @@
 import mockAxios from 'axios';
-import { getList, baseURL, proxy } from '../videos';
+import { getList, baseURL } from '../videos';
+
+const proxy = process.env.REACT_APP_PROXY;
 
 const mockData = [
   {

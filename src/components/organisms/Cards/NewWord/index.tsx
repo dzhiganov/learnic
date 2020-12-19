@@ -1,7 +1,7 @@
 import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
 import CheckIcon from '@material-ui/icons/Check';
 import { useSelector } from 'react-redux';
-import translateApi from 'core/store/api/translate';
+import { getTranslate } from 'core/store/api/translate';
 import useDebounce from 'react-use/lib/useDebounce';
 import styles from './styles.module.css';
 
@@ -26,12 +26,7 @@ const NewWord: React.FunctionComponent<Props> = ({ onSave }: Props) => {
 
   const [, cancel] = useDebounce(
     async () => {
-      const res = (await translateApi.getTranslate(
-        token,
-        word,
-        '1033',
-        '1049'
-      )) as {
+      const res = (await getTranslate(token, word, '1033', '1049')) as {
         Translation: {
           Translation: string;
         };

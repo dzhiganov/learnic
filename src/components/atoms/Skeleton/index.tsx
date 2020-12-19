@@ -1,6 +1,7 @@
 import React from 'react';
 import MaterialSkeleton from '@material-ui/lab/Skeleton';
 import times from 'lodash.times';
+import uniqueid from 'lodash.uniqueid';
 
 type Props = {
   variant: 'text' | 'rect' | 'circle';
@@ -16,7 +17,12 @@ const Skeleton: React.FunctionComponent<Props> = ({
   repeat = 1,
 }: Props) => {
   return times(repeat, () => (
-    <MaterialSkeleton variant={variant} width={width} height={height} />
+    <MaterialSkeleton
+      key={uniqueid('id_')}
+      variant={variant}
+      width={width}
+      height={height}
+    />
   )).map((elem: JSX.Element) => elem);
 };
 

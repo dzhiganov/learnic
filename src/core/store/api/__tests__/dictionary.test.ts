@@ -1,5 +1,7 @@
 import mockAxios from 'axios';
-import { getDefinition, baseURL, proxy } from '../dictionary';
+import { getDefinition, baseURL } from '../dictionary';
+
+const proxy = process.env.REACT_APP_PROXY;
 
 it('fetches data from dictionary with default language', async () => {
   (mockAxios.get as jest.Mock).mockImplementationOnce(() =>

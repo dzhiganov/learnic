@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const baseURL = 'https://www.googleapis.com/youtube/v3/search';
-export const proxy = 'https://cors-anywhere.herokuapp.com';
+const proxy = process.env.REACT_APP_PROXY;
 
 export const getList = async (
   keyword: string

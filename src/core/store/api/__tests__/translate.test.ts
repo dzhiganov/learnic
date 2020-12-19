@@ -1,7 +1,8 @@
 import mockAxios from 'axios';
-import { proxy, baseURL, auth, getTranslate } from '../translate';
+import { baseURL, auth, getTranslate } from '../translate';
 
 const apiKey = 'secret';
+const proxy = process.env.REACT_APP_PROXY;
 
 it('get token', async () => {
   (mockAxios.post as jest.Mock).mockImplementationOnce(() =>
