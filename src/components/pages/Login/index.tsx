@@ -1,5 +1,4 @@
 import React, { memo, useCallback } from 'react';
-import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import Base from '../../templates/Base';
 import Form from '../../organisms/Form';
@@ -14,13 +13,6 @@ type Credentials = {
 
 const Login = (): React.ReactElement => {
   const history = useHistory();
-  const user = useSelector(
-    (state: {
-      user: {
-        user: Record<string, string>;
-      };
-    }) => state.user
-  );
 
   const handleLogin = useCallback(
     ({ login, password }: Credentials): void => {
@@ -31,10 +23,6 @@ const Login = (): React.ReactElement => {
     },
     [history]
   );
-
-  if (user.user.uid) {
-    history.push(HOME);
-  }
 
   return (
     <Base>

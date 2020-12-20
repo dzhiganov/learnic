@@ -5,6 +5,7 @@ import { Transition } from 'react-transition-group';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import { firestore } from '../../../database';
 import type { RootState } from '../../../core/store/rootReducer';
+import type { User } from '../../../core/store/models/user';
 import styles from './styles.module.css';
 import NewWord from './NewWord';
 import WordsCard from '../../molecules/WordsCard';
@@ -34,12 +35,10 @@ const Cards: React.FunctionComponent = () => {
     translate: '',
   });
   const [showNewWord, setShowNewWord] = useState(false);
-  const user = useSelector((state: RootState) => state.user);
+  const user = useSelector(({ user: userData }: RootState) => userData);
   const [{ value: words = [], loading }, fetch] = useAsyncFn(
-    async (currentUser: {
-      user: { uid: string };
-    }): Promise<firebase.firestore.DocumentData[]> => {
-      const uid = currentUser?.user?.uid;
+    async (currentUser: User): Promise<firebase.firestore.DocumentData[]> => {
+      const uid = currentUser?.uid;
       if (!uid) {
         throw new Error('UID must not be null');
       }
@@ -84,7 +83,7 @@ const Cards: React.FunctionComponent = () => {
     }): Promise<void> => {
       const request = firestore
         .collection('users')
-        .doc(user?.user?.uid)
+        .doc(user.uid)
         .collection('words');
 
       await request.add({
