@@ -7,9 +7,8 @@ import { firestore } from '../../../database';
 import type { RootState } from '../../../core/store/rootReducer';
 import type { User } from '../../../core/store/models/user';
 import styles from './styles.module.css';
-import NewWord from './NewWord';
 import WordsCard from '../../molecules/WordsCard';
-import Skeleton from '../../atoms/Skeleton';
+import WordsList from '../../molecules/WordsList';
 
 const duration = 700;
 
@@ -20,6 +19,7 @@ const defaultStyle = {
   position: 'absolute',
   width: '800px',
   height: '100%',
+  overflowY: 'auto',
 };
 
 const transitionStyles = {
@@ -37,12 +37,20 @@ const Cards: React.FunctionComponent = () => {
   const [showNewWord, setShowNewWord] = useState(false);
   const user = useSelector(({ user: userData }: RootState) => userData);
   const [{ value: words = [], loading }, fetch] = useAsyncFn(
-    async (currentUser: User): Promise<firebase.firestore.DocumentData[]> => {
+    async (
+      currentUser: User
+    ): Promise<
+      firebase.firestore.DocumentData & { word: string; translate: string }[]
+    > => {
       const uid = currentUser?.uid;
       if (!uid) {
         throw new Error('UID must not be null');
       }
-      const result: firebase.firestore.DocumentData[] = [];
+      const result: firebase.firestore.DocumentData &
+        {
+          word: string;
+          translate: string;
+        }[] = [];
       const request = firestore
         .collection('users')
         .doc(uid)
@@ -54,7 +62,12 @@ const Cards: React.FunctionComponent = () => {
       }
 
       snapshot.forEach((doc) => {
-        result.push(doc.data());
+        result.push(
+          doc.data() as firebase.firestore.DocumentData & {
+            word: string;
+            translate: string;
+          }
+        );
       });
 
       return result;
@@ -107,42 +120,14 @@ const Cards: React.FunctionComponent = () => {
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>My Words</h2>
-      <div className={styles.cardsContainer}>
-        {loading ? (
-          <ul className={styles.cardsList}>
-            <Skeleton variant="text" width={512} height={40} repeat={6} />
-          </ul>
-        ) : (
-          <ul className={styles.cardsList}>
-            {words.map(({ word, translate }) => {
-              const onClick = () => handleClickCard({ word, translate });
-              return (
-                <li key={word}>
-                  <button
-                    className={styles.cardButton}
-                    type="button"
-                    onClick={onClick}
-                  >{`${word} - ${translate}`}</button>
-                </li>
-              );
-            })}
-            {showNewWord ? (
-              <li>
-                <NewWord onSave={handleOnSave} />
-              </li>
-            ) : null}
-          </ul>
-        )}
-      </div>
-      <div className={styles.buttonsContainer}>
-        <button
-          type="button"
-          className={styles.addNewWordButton}
-          onClick={handleShowNewWord}
-        >
-          New Word
-        </button>
-      </div>
+      <WordsList
+        words={words}
+        onShowNewWord={handleShowNewWord}
+        onSave={handleOnSave}
+        onClickCard={handleClickCard}
+        showNewWord={showNewWord}
+        loading={loading}
+      />
       <Transition in={!!openedCard.word} timeout={duration}>
         {<T extends keyof typeof transitionStyles>(state: T) => (
           <div

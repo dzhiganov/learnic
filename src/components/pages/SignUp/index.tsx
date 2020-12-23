@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import Base from '../../templates/Base';
 import Form from '../../organisms/Form';
 import database from '../../../database';
 import styles from './styles.module.css';
@@ -24,11 +23,16 @@ const SignUp: React.FunctionComponent = () => {
   );
 
   return (
-    <Base>
-      <div className={styles.container}>
-        <Form onSubmit={handleSignUp} title="Sign up." submitText="Sign Up" />
-      </div>
-    </Base>
+    <div className={styles.container}>
+      <Form
+        onSubmit={handleSignUp}
+        title={
+          <span>
+            Sign up <span className={styles.learnic}>Learnic</span>
+          </span>
+        }
+      />
+    </div>
   );
 };
 

@@ -1,8 +1,8 @@
 import React, { useEffect, memo } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import type { RootState } from '../../../core/store/rootReducer';
-import { LOGIN, HOME } from '../../../core/router/paths';
+import { LOGIN, SIGNUP, HOME, INDEX } from '../../../core/router/paths';
 import { Statuses } from '../../../core/store/models/user';
 
 type Props = {
@@ -10,6 +10,8 @@ type Props = {
 };
 
 const CheckAuth = ({ children }: Props): JSX.Element => {
+  const { pathname } = useLocation();
+
   const history = useHistory();
   const userId = useSelector(({ user: { uid } }: RootState) => uid);
   const fetchUserStatus = useSelector(
@@ -19,10 +21,14 @@ const CheckAuth = ({ children }: Props): JSX.Element => {
     fetchUserStatus === Statuses.Success || fetchUserStatus === Statuses.Failed;
 
   useEffect(() => {
-    if (isReady) {
-      history.push(userId ? HOME : LOGIN);
+    if (pathname === SIGNUP) return;
+
+    if (isReady && !userId) {
+      history.push(LOGIN);
+    } else if (isReady && userId && pathname === INDEX) {
+      history.push(HOME);
     }
-  }, [history, userId, fetchUserStatus, isReady]);
+  }, [history, userId, fetchUserStatus, isReady, pathname]);
 
   if (!isReady) {
     return <span>Loading...</span>;

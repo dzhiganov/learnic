@@ -1,13 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './styles.module.css';
-import { HOME_WORDS } from '../../../core/router/paths';
+import { HOME_WORDS, HOME_WORDS_FOR_TODAY } from '../../../core/router/paths';
 
 const items = [
   {
-    key: 'my-words',
-    title: 'My words',
+    key: 'all-words',
+    title: 'All words',
     to: HOME_WORDS,
+  },
+  {
+    key: 'words-for-today',
+    title: 'Words for Today',
+    to: HOME_WORDS_FOR_TODAY,
   },
 ];
 

@@ -1,10 +1,10 @@
 import React, { memo, useCallback } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import Base from '../../templates/Base';
 import Form from '../../organisms/Form';
 import database from '../../../database';
 import styles from './styles.module.css';
 import { HOME } from '../../../core/router/paths';
+import { fetchFirebaseUser } from '../../../core/store/models/user';
 
 type Credentials = {
   login: string;
@@ -19,22 +19,28 @@ const Login = (): React.ReactElement => {
       database
         .auth()
         .signInWithEmailAndPassword(login, password)
+        .then(fetchFirebaseUser)
         .then(() => history.push(HOME));
     },
     [history]
   );
 
   return (
-    <Base>
-      <div className={styles.container}>
-        <Form onSubmit={handleLogin} title="Sign in." submitText="Sign In" />
-        <div className={styles.linkToSignUpBlock}>
-          <Link to="/signup" className={styles.link}>
-            if you don&apos;t have an account, you can create it
-          </Link>
-        </div>
+    <div className={styles.container}>
+      <Form
+        onSubmit={handleLogin}
+        title={
+          <span>
+            Sign in <span className={styles.learnic}>Learnic</span>
+          </span>
+        }
+      />
+      <div className={styles.linkToSignUpBlock}>
+        <Link to="/signup" className={styles.link}>
+          if you don&apos;t have an account, you can create it
+        </Link>
       </div>
-    </Base>
+    </div>
   );
 };
 

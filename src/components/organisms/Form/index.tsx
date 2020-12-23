@@ -3,15 +3,10 @@ import styles from './styles.module.css';
 
 type Props = {
   onSubmit: (credentials: { login: string; password: string }) => void;
-  title: string;
-  submitText: string;
+  title: JSX.Element;
 };
 
-const Form: React.FunctionComponent<Props> = ({
-  onSubmit,
-  title,
-  submitText,
-}: Props) => {
+const Form: React.FunctionComponent<Props> = ({ onSubmit, title }: Props) => {
   const [password, setPassword] = useState('');
   const [login, setLogin] = useState('');
 
@@ -38,25 +33,31 @@ const Form: React.FunctionComponent<Props> = ({
 
   return (
     <form className={styles.form}>
-      <h2>{title}</h2>
+      <h2 className={styles.formTitle}>{title}</h2>
       <div>
         <div>
-          <input
-            id="login"
-            type="text"
-            className={styles.input}
-            value={login}
-            onChange={handleChangeLogin}
-          />
+          <label htmlFor="login">
+            <span className={styles.inputTitle}>Email</span>
+            <input
+              id="login"
+              type="text"
+              className={styles.input}
+              value={login}
+              onChange={handleChangeLogin}
+            />
+          </label>
         </div>
         <div>
-          <input
-            id="pass"
-            type="password"
-            className={styles.input}
-            value={password}
-            onChange={handleChangePassword}
-          />
+          <label htmlFor="password">
+            <span className={styles.inputTitle}>Password</span>
+            <input
+              id="pass"
+              type="password"
+              className={styles.input}
+              value={password}
+              onChange={handleChangePassword}
+            />
+          </label>
         </div>
         <div className={styles.buttonContainer}>
           <button
@@ -64,7 +65,7 @@ const Form: React.FunctionComponent<Props> = ({
             className={styles.submitButton}
             onClick={wrappedOnSubmit}
           >
-            {submitText}
+            Continue
           </button>
         </div>
       </div>

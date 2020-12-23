@@ -1,0 +1,43 @@
+.container {
+    display: flex;
+}
+
+.inputContainer {
+    max-width: 600px;
+    display: flex;
+}
+
+.input {
+    font: inherit;
+    width: 100%;
+    border: 0;
+    height: 1.1876em;
+    margin: 0;
+    display: block;
+    padding: 6px 0 7px;
+    min-width: 0;
+    background: none;
+    box-sizing: content-box;
+    border-bottom: 2px solid #ccc;
+    outline: none;
+    margin-right: 1em;
+}
+
+.input:focus {
+    border-bottom: 2px solid  #892cdc;
+}
+
+.save {
+    display: flex;
+}
+
+.saveIcon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}
+
+.saveTitle {
+    font-size: 16px;
+    font-style: italic;
+}

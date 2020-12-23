@@ -53,8 +53,12 @@ export default issuesDisplaySlice.reducer;
 export const fetchFirebaseUser = (): AppThunk => async (dispatch) => {
   try {
     database.auth().onAuthStateChanged((user) => {
-      const { uid, displayName, email } = user as FirebaseUser;
-      dispatch(getUserSuccess({ uid, displayName, email }));
+      if (user) {
+        const { uid, displayName, email } = user as FirebaseUser;
+        dispatch(getUserSuccess({ uid, displayName, email }));
+      } else {
+        dispatch(getUserFailed());
+      }
     });
   } catch (err) {
     dispatch(getUserFailed());
