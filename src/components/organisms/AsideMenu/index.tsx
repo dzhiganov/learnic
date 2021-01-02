@@ -6,12 +6,12 @@ import { HOME_WORDS, HOME_WORDS_FOR_TODAY } from '../../../core/router/paths';
 const items = [
   {
     key: 'all-words',
-    title: 'All words',
+    title: '📚 My words',
     to: HOME_WORDS,
   },
   {
     key: 'words-for-today',
-    title: 'Words for Today',
+    title: '📖  Words for Today',
     to: HOME_WORDS_FOR_TODAY,
   },
 ];
@@ -21,11 +21,11 @@ const AsideMenu: React.FunctionComponent = () => {
     <div className={styles.container}>
       <ul className={styles.list}>
         {items.map(({ key, title, to }) => (
-          <li key={key} className={styles.item}>
-            <Link className={styles.link} to={to}>
-              {title}
-            </Link>
-          </li>
+          <Link className={styles.link} to={to}>
+            <li key={key} className={styles.item}>
+              <span>{title}</span>
+            </li>
+          </Link>
         ))}
       </ul>
     </div>

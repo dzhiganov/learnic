@@ -1,0 +1,25 @@
+.container {
+    width: 600px;
+    background-color: rgba(0, 0, 0, 0.025);
+    border-radius: 6px;
+    padding: 15px;
+}
+
+.definition {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 22px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.translate {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1);
+}
+
+.icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}

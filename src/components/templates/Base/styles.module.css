@@ -2,5 +2,5 @@
   display: grid;
   grid-template-columns: 200px auto;
   min-height: 100vh;
-  background-color: #fff;
+  background-color: rgb(238, 232, 237);;
 }

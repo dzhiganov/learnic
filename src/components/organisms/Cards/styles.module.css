@@ -1,6 +1,10 @@
 .container {
+    margin: 1em 2em;
     padding: 1.5em 3em;
     position: relative;
+    background-color: #fff;
+    box-shadow: 0 15px 35px 0 rgba(60,66,87,.08), 0 5px 15px 0 rgba(0,0,0,.12);
+    border-radius: 4px;
 }
 
 .title {
@@ -18,7 +22,7 @@
 .cardsList {
     list-style: none;
     font-size: 1.2rem;
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Merriweather', sans-serif;
     margin: 0;
     padding: 0;
 }

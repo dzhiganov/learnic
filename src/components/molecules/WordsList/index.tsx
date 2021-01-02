@@ -1,8 +1,12 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 import firebase from 'firebase';
+import Fuse from 'fuse.js';
 import styles from './styles.module.css';
 import Skeleton from '../../atoms/Skeleton';
 import NewWord from './NewWord';
+import Search from './Search';
+import NoWord from './NoWord';
+import If from '../../atoms/If';
 
 type Props = {
   words: firebase.firestore.DocumentData &
@@ -37,6 +41,10 @@ const WordsList: React.FunctionComponent<Props> = ({
   onClickCard,
   loading,
 }: Props) => {
+  const [filter, setFilter] = useState<string>('');
+  const [filtered, setFiltered] = useState<
+    { word: string; translate: string }[]
+  >([]);
   const handleKeyDown = useCallback(
     (event, { word, translate }) => {
       if (event.key === 'Enter') {
@@ -46,9 +54,30 @@ const WordsList: React.FunctionComponent<Props> = ({
     [onClickCard]
   );
 
+  useEffect(() => {
+    if (filter) {
+      const options = {
+        threshold: 0.1,
+        keys: ['word', 'translate'],
+      };
+
+      const fuse = new Fuse(words, options);
+      const result = fuse.search(filter);
+      const mapped = result.map(({ item }) => item);
+      setFiltered(mapped);
+    }
+  }, [filter, words]);
+
+  const handleChangeFilter = useCallback(({ target: { value = '' } = {} }) => {
+    setFilter(value);
+  }, []);
+
+  const clearFilter = useCallback(() => setFilter(''), []);
+
   return (
     <>
       <div className={styles.buttonsContainer}>
+        <Search value={filter} onChange={handleChangeFilter} />
         <button
           type="button"
           className={styles.addNewWordButton}
@@ -64,27 +93,31 @@ const WordsList: React.FunctionComponent<Props> = ({
           </ul>
         ) : (
           <ul className={styles.cardsList}>
-            {showNewWord ? (
+            <If condition={showNewWord}>
               <li>
                 <NewWord onSave={onSave} />
               </li>
-            ) : null}
-            {words.map(({ word, translate }) => {
-              const onClick = () => onClickCard({ word, translate });
-              return (
-                <li key={word}>
-                  <span
-                    role="button"
-                    className={styles.cardButton}
-                    onClick={onClick}
-                    tabIndex={0}
-                    onKeyDown={(event) =>
-                      handleKeyDown(event, { word, translate })
-                    }
-                  >{`${word} - ${translate}`}</span>
-                </li>
-              );
-            })}
+            </If>
+            {(filter && filtered.length > 0) || !filter ? (
+              (filter ? filtered : words).map(({ word, translate }) => {
+                const onClick = () => onClickCard({ word, translate });
+                return (
+                  <li key={word}>
+                    <span
+                      role="button"
+                      className={styles.cardButton}
+                      onClick={onClick}
+                      tabIndex={0}
+                      onKeyDown={(event) =>
+                        handleKeyDown(event, { word, translate })
+                      }
+                    >{`${word} - ${translate}`}</span>
+                  </li>
+                );
+              })
+            ) : (
+              <NoWord word={filter} onSave={onSave} clearFilter={clearFilter} />
+            )}
           </ul>
         )}
       </div>
