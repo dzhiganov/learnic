@@ -58,3 +58,7 @@
     background-color: #9ab3f5;
     box-shadow: none;
 }
+
+.iconContainer {
+    cursor: pointer;
+}

@@ -1,16 +1,24 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import firebase from 'firebase';
 import Fuse from 'fuse.js';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { useSelector } from 'react-redux';
 import styles from './styles.module.css';
 import Skeleton from '../../atoms/Skeleton';
 import NewWord from './NewWord';
 import Search from './Search';
 import NoWord from './NoWord';
 import If from '../../atoms/If';
+import { firestore } from '../../../database';
+import type { RootState } from '../../../core/store/rootReducer';
 
 type Props = {
   words: firebase.firestore.DocumentData &
     {
+      id: string;
       word: string;
       translate: string;
     }[];
@@ -43,8 +51,10 @@ const WordsList: React.FunctionComponent<Props> = ({
 }: Props) => {
   const [filter, setFilter] = useState<string>('');
   const [filtered, setFiltered] = useState<
-    { word: string; translate: string }[]
+    { id: string; word: string; translate: string }[]
   >([]);
+  const user = useSelector(({ user: userData }: RootState) => userData);
+
   const handleKeyDown = useCallback(
     (event, { word, translate }) => {
       if (event.key === 'Enter') {
@@ -74,6 +84,18 @@ const WordsList: React.FunctionComponent<Props> = ({
 
   const clearFilter = useCallback(() => setFilter(''), []);
 
+  const deleteRow = useCallback(
+    (id) => {
+      firestore
+        .collection('users')
+        .doc(user.uid)
+        .collection('words')
+        .doc(id)
+        .delete();
+    },
+    [user]
+  );
+
   return (
     <>
       <div className={styles.buttonsContainer}>
@@ -99,7 +121,7 @@ const WordsList: React.FunctionComponent<Props> = ({
               </li>
             </If>
             {(filter && filtered.length > 0) || !filter ? (
-              (filter ? filtered : words).map(({ word, translate }) => {
+              (filter ? filtered : words).map(({ id, word, translate }) => {
                 const onClick = () => onClickCard({ word, translate });
                 return (
                   <li key={word}>
@@ -112,6 +134,15 @@ const WordsList: React.FunctionComponent<Props> = ({
                         handleKeyDown(event, { word, translate })
                       }
                     >{`${word} - ${translate}`}</span>
+                    <span className={styles.iconContainer}>
+                      <EditIcon />
+                    </span>
+                    <span
+                      className={styles.iconContainer}
+                      onClick={() => deleteRow(id)}
+                    >
+                      <DeleteIcon />
+                    </span>
                   </li>
                 );
               })

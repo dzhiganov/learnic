@@ -9,11 +9,28 @@ import styles from './styles.module.css';
 import type { User } from '../../../core/store/models/user';
 import { firestore } from '../../../database';
 import type { RootState } from '../../../core/store/rootReducer';
+import Picker from './Picker';
+import Results from './Results';
+
+type Words = {
+  word: string;
+  translate: string;
+}[];
+
+type Variants = [string, string, string, string];
 
 const WordsForToday: React.FunctionComponent = () => {
+  const [started, setStarted] = useState<boolean>(false);
+  const [finished, setFinished] = useState<boolean>(false);
   const [currentWord, setCurrentWord] = useState<string>('');
-  const [variants, setVariants] = useState<string[]>([]);
+  const [currentTranslate, setCurrentTranslate] = useState<string>('');
+  const [variants, setVariants] = useState<Variants | never[]>([]);
+  const [restWords, setRestWords] = useState<Words>([]);
+  const [succesed, setSuccesed] = useState<Words>([]);
+  const [failed, setFailed] = useState<Words>([]);
+
   const user = useSelector(({ user: userData }: RootState) => userData);
+
   const [{ value: words }, fetch] = useAsyncFn(
     async (currentUser: User): Promise<firebase.firestore.DocumentData[]> => {
       const uid = currentUser?.uid;
@@ -53,18 +70,77 @@ const WordsForToday: React.FunctionComponent = () => {
     { loading: true }
   );
 
-  const getVariants = useCallback((arr) => {
+  const getVariants = useCallback((arr = []): [string, string, string] => {
     const result: string[] = [];
-    const copy = [...arr];
+    const copy = arr.length ? [...arr] : [];
+
     times(3, () => {
-      const currentIndex = random(0, arr.length);
-      const { translate: randomTranslate } = arr[currentIndex] || {};
+      const currentIndex = random(0, arr.length - 1);
+      const { translate: randomTranslate = '' } = arr[currentIndex] || {};
       copy.splice(currentIndex, 1);
       result.push(randomTranslate);
     });
 
-    return result;
+    return result as [string, string, string];
   }, []);
+
+  const getCurrentWord = useCallback((arr: Words) => {
+    const currentIndex = random(0, arr.length - 1);
+    const { word: randomWord, translate: randomTranslate } =
+      arr[currentIndex] || {};
+
+    return {
+      randomWord,
+      randomTranslate,
+    };
+  }, []);
+
+  const setTrainWord = useCallback(() => {
+    if (restWords.length) {
+      const { randomWord, randomTranslate } = getCurrentWord(restWords || []);
+      setCurrentWord(randomWord);
+      setCurrentTranslate(randomTranslate);
+
+      const prepared = [...restWords];
+
+      const deletedIndex = prepared.findIndex(
+        ({ word }) => word === randomWord
+      );
+
+      prepared.splice(deletedIndex, 1);
+
+      const randomVariants = getVariants(words);
+      const shuffled = shuffle([
+        ...randomVariants,
+        randomTranslate,
+      ]) as Variants;
+
+      setVariants(shuffled);
+
+      setRestWords(prepared);
+      setStarted(true);
+    } else {
+      setFinished(true);
+    }
+  }, [getCurrentWord, getVariants, words, restWords]);
+
+  const handleStart = useCallback(() => setTrainWord(), [setTrainWord]);
+
+  const pick = useCallback(
+    (variant: string) => {
+      const currentData = {
+        word: currentWord,
+        translate: currentTranslate,
+      };
+      if (variant === currentTranslate) {
+        setSuccesed([...succesed, currentData]);
+      } else {
+        setFailed([...failed, currentData]);
+      }
+      setTrainWord();
+    },
+    [currentTranslate, setTrainWord, currentWord, failed, succesed]
+  );
 
   useEffect(() => {
     if (user) {
@@ -74,29 +150,49 @@ const WordsForToday: React.FunctionComponent = () => {
 
   useEffect(() => {
     if (words) {
-      const currentIndex = random(0, words.length);
-      const { word: randomWord, translate: randomTranslate } = words[
-        currentIndex
-      ];
-      setCurrentWord(randomWord);
-      const copy = [...words];
-      copy.splice(currentIndex, 1);
-      setVariants(shuffle([...getVariants(copy), randomTranslate]));
+      const prepared = words.map(({ word, translate }) => ({
+        word,
+        translate,
+      }));
+      setRestWords(prepared);
     }
-  }, [words, getVariants]);
+  }, [words]);
+
+  if (finished) {
+    return (
+      <>
+        <h2 className={styles.title}>Words For Today</h2>
+        <div className={styles.container}>
+          <Results results={[succesed.length, failed.length]} />
+        </div>
+      </>
+    );
+  }
 
   return (
-    <div className={styles.container}>
-      <div>{currentWord}</div>
-      <ul>
-        {variants.map((variant) => (
-          <li>
-            <span>{variant}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <h2 className={styles.title}>Words For Today</h2>
+      <div className={styles.container}>
+        {started ? (
+          <Picker
+            currentWord={currentWord}
+            variants={variants as Variants}
+            pick={pick}
+            wordsCount={[restWords.length, (words as Words).length]}
+          />
+        ) : (
+          <button
+            type="button"
+            className={styles.startButton}
+            onClick={handleStart}
+          >
+            Start
+          </button>
+        )}
+      </div>
+    </>
   );
 };
 
+export type { Variants };
 export default WordsForToday;

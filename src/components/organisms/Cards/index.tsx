@@ -30,7 +30,10 @@ const transitionStyles = {
 };
 
 const Cards: React.FunctionComponent = () => {
-  const [openedCard, setOpenedCard] = useState({
+  const [openedCard, setOpenedCard] = useState<{
+    word: string;
+    translate: string;
+  }>({
     word: '',
     translate: '',
   });
@@ -40,7 +43,8 @@ const Cards: React.FunctionComponent = () => {
     async (
       currentUser: User
     ): Promise<
-      firebase.firestore.DocumentData & { word: string; translate: string }[]
+      firebase.firestore.DocumentData &
+        { id: string; word: string; translate: string }[]
     > => {
       const uid = currentUser?.uid;
       if (!uid) {
@@ -48,6 +52,7 @@ const Cards: React.FunctionComponent = () => {
       }
       const result: firebase.firestore.DocumentData &
         {
+          id: string;
           word: string;
           translate: string;
         }[] = [];
@@ -62,12 +67,13 @@ const Cards: React.FunctionComponent = () => {
       }
 
       snapshot.forEach((doc) => {
-        result.push(
-          doc.data() as firebase.firestore.DocumentData & {
+        result.push({
+          id: doc.id,
+          ...(doc.data() as firebase.firestore.DocumentData & {
             word: string;
             translate: string;
-          }
-        );
+          }),
+        });
       });
 
       return result;
@@ -118,16 +124,19 @@ const Cards: React.FunctionComponent = () => {
   }, []);
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>My Words</h2>
-      <WordsList
-        words={words}
-        onShowNewWord={handleShowNewWord}
-        onSave={handleOnSave}
-        onClickCard={handleClickCard}
-        showNewWord={showNewWord}
-        loading={loading}
-      />
+    <>
+      <div className={styles.listContainer}>
+        <h2 className={styles.title}>My Words</h2>
+        <WordsList
+          words={words}
+          onShowNewWord={handleShowNewWord}
+          onSave={handleOnSave}
+          onClickCard={handleClickCard}
+          showNewWord={showNewWord}
+          loading={loading}
+        />
+      </div>
+
       <Transition in={!!openedCard.word} timeout={duration}>
         {<T extends keyof typeof transitionStyles>(state: T) => (
           <div
@@ -143,7 +152,7 @@ const Cards: React.FunctionComponent = () => {
           </div>
         )}
       </Transition>
-    </div>
+    </>
   );
 };
 
