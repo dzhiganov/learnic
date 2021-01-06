@@ -25,7 +25,7 @@ const Picker: React.FunctionComponent<Props> = ({
       <div className={styles.word}>{currentWord}</div>
       <ul className={styles.list}>
         {variants.map((variant) => (
-          <Variant variant={variant} pick={pick} />
+          <Variant key={variant} variant={variant} pick={pick} />
         ))}
       </ul>
     </div>

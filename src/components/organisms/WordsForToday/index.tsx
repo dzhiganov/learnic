@@ -2,8 +2,6 @@ import React, { useEffect, useState, useCallback } from 'react';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import firebase from 'firebase';
 import { useSelector } from 'react-redux';
-import random from 'lodash.random';
-import times from 'lodash.times';
 import shuffle from 'lodash.shuffle';
 import styles from './styles.module.css';
 import type { User } from '../../../core/store/models/user';
@@ -11,6 +9,8 @@ import { firestore } from '../../../database';
 import type { RootState } from '../../../core/store/rootReducer';
 import Picker from './Picker';
 import Results from './Results';
+import getVariants from './utils/getVariants';
+import getRandomWord from './utils/getRandomWord';
 
 type Words = {
   word: string;
@@ -70,34 +70,9 @@ const WordsForToday: React.FunctionComponent = () => {
     { loading: true }
   );
 
-  const getVariants = useCallback((arr = []): [string, string, string] => {
-    const result: string[] = [];
-    const copy = arr.length ? [...arr] : [];
-
-    times(3, () => {
-      const currentIndex = random(0, arr.length - 1);
-      const { translate: randomTranslate = '' } = arr[currentIndex] || {};
-      copy.splice(currentIndex, 1);
-      result.push(randomTranslate);
-    });
-
-    return result as [string, string, string];
-  }, []);
-
-  const getCurrentWord = useCallback((arr: Words) => {
-    const currentIndex = random(0, arr.length - 1);
-    const { word: randomWord, translate: randomTranslate } =
-      arr[currentIndex] || {};
-
-    return {
-      randomWord,
-      randomTranslate,
-    };
-  }, []);
-
   const setTrainWord = useCallback(() => {
     if (restWords.length) {
-      const { randomWord, randomTranslate } = getCurrentWord(restWords || []);
+      const { randomWord, randomTranslate } = getRandomWord(restWords || []);
       setCurrentWord(randomWord);
       setCurrentTranslate(randomTranslate);
 
@@ -109,7 +84,12 @@ const WordsForToday: React.FunctionComponent = () => {
 
       prepared.splice(deletedIndex, 1);
 
-      const randomVariants = getVariants(words);
+      const randomVariants = getVariants(
+        words as firebase.firestore.DocumentData[] & {
+          word: string;
+          translate: string;
+        }
+      );
       const shuffled = shuffle([
         ...randomVariants,
         randomTranslate,
@@ -122,7 +102,7 @@ const WordsForToday: React.FunctionComponent = () => {
     } else {
       setFinished(true);
     }
-  }, [getCurrentWord, getVariants, words, restWords]);
+  }, [words, restWords]);
 
   const handleStart = useCallback(() => setTrainWord(), [setTrainWord]);
 
@@ -194,5 +174,5 @@ const WordsForToday: React.FunctionComponent = () => {
   );
 };
 
-export type { Variants };
+export type { Variants, Words };
 export default WordsForToday;

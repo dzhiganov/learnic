@@ -21,8 +21,8 @@ const AsideMenu: React.FunctionComponent = () => {
     <div className={styles.container}>
       <ul className={styles.list}>
         {items.map(({ key, title, to }) => (
-          <Link className={styles.link} to={to}>
-            <li key={key} className={styles.item}>
+          <Link key={key} className={styles.link} to={to}>
+            <li className={styles.item}>
               <span>{title}</span>
             </li>
           </Link>
