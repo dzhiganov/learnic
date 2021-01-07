@@ -1,40 +1,40 @@
-/* eslint-disable no-prototype-builtins */
-import times from 'lodash.times';
-import random from 'lodash.random';
-import firebase from 'firebase';
+import getUniqNumbers from './getUniqNumbers';
 
-type Words = firebase.firestore.DocumentData[] & {
+type Words = {
   word: string;
   translate: string;
-};
+}[];
 
 const anotherVariantsCount = 3;
 
 interface GetVariants {
-  (words: Words): [string, string, string];
+  (words: Words, currentTranslate: string): [string, string, string];
 }
 
 type Result = [string, string, string];
 
-const getVariants: GetVariants = (words) => {
+const getVariants: GetVariants = (words, currentTranslate) => {
   if (
     !Array.isArray(words) ||
     words.length < anotherVariantsCount ||
-    words.filter((word) => !word.hasOwnProperty('translate')).length !== 0
+    words.filter(
+      (word) => !Object.prototype.hasOwnProperty.call(word, 'translate')
+    ).length !== 0
   ) {
     return Array(anotherVariantsCount).fill('') as Result;
   }
-  const result: string[] = [];
   const copy = words.length ? [...words] : [];
+  const deletedIndex = copy.findIndex(
+    ({ translate }) => translate === currentTranslate
+  );
+  copy.splice(deletedIndex, 1);
 
-  times(anotherVariantsCount, () => {
-    const currentIndex = random(0, words.length - 1);
-    const { translate: randomTranslate = '' } = words[currentIndex] || {};
-    copy.splice(currentIndex, 1);
-    result.push(randomTranslate);
-  });
+  const indexes = getUniqNumbers(copy);
 
-  return result as Result;
+  return indexes.map((index) => {
+    const { translate: randomTranslate = '' } = copy[index];
+    return randomTranslate;
+  }) as Result;
 };
 
 export { anotherVariantsCount };

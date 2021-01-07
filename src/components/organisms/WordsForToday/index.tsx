@@ -84,25 +84,19 @@ const WordsForToday: React.FunctionComponent = () => {
 
       prepared.splice(deletedIndex, 1);
 
-      const randomVariants = getVariants(
-        words as firebase.firestore.DocumentData[] & {
-          word: string;
-          translate: string;
-        }
-      );
+      const randomVariants = getVariants(words as Words, randomTranslate);
       const shuffled = shuffle([
         ...randomVariants,
         randomTranslate,
       ]) as Variants;
 
       setVariants(shuffled);
-
       setRestWords(prepared);
-      setStarted(true);
+      if (!started) setStarted(true);
     } else {
       setFinished(true);
     }
-  }, [words, restWords]);
+  }, [restWords, started, words]);
 
   const handleStart = useCallback(() => setTrainWord(), [setTrainWord]);
 
@@ -156,7 +150,7 @@ const WordsForToday: React.FunctionComponent = () => {
         {started ? (
           <Picker
             currentWord={currentWord}
-            variants={variants as Variants}
+            variants={[...variants] as Variants}
             pick={pick}
             wordsCount={[restWords.length, (words as Words).length]}
           />
