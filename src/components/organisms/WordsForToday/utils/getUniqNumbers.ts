@@ -1,5 +1,6 @@
 import times from 'lodash.times';
 import random from 'lodash.random';
+import isArrayUnique from './isArrayUnique';
 
 const anotherVariantsCount = 3;
 
@@ -15,12 +16,10 @@ const getUniqNumbers = (arr: Words): number[] => {
     result.push(currentIndex);
   });
 
-  const { size: setSize } = new Set(result);
-
-  if (result.length !== setSize) {
-    return getUniqNumbers(arr);
+  if (isArrayUnique(result)) {
+    return result;
   }
-  return result;
+  return getUniqNumbers(arr);
 };
 
 export default getUniqNumbers;
