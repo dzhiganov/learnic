@@ -1,8 +1,6 @@
-import random from 'lodash.random';
 import getUniqNumbers from './getUniqNumbers';
 import getVariants, { anotherVariantsCount } from './getVariants';
 
-jest.mock('lodash.random', () => jest.fn());
 jest.mock('./getUniqNumbers', () => jest.fn());
 
 const mockData = [
@@ -26,7 +24,6 @@ const mockData = [
 
 it('get random variants', () => {
   const randomIndex = 1;
-  random.mockImplementation(() => randomIndex);
   getUniqNumbers.mockImplementation(() => Array(3).fill(randomIndex));
   const result = getVariants(mockData);
   const expected = Array(anotherVariantsCount)
@@ -35,7 +32,7 @@ it('get random variants', () => {
 
   expect(result).toEqual(expected);
 
-  random.mockReset();
+  getUniqNumbers.mockReset();
 });
 
 it('if words is null should return array of strings', () => {
