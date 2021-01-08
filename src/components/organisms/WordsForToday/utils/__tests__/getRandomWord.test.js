@@ -1,5 +1,5 @@
 import random from 'lodash.random';
-import getRandomWord from './getRandomWord';
+import getRandomWord from '../getRandomWord';
 
 jest.mock('lodash.random', () => jest.fn());
 

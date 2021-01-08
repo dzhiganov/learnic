@@ -1,7 +1,7 @@
-import getUniqNumbers from './getUniqNumbers';
-import getVariants, { anotherVariantsCount } from './getVariants';
+import getUniqNumbers from '../getUniqNumbers';
+import getVariants from '../getVariants';
 
-jest.mock('./getUniqNumbers', () => jest.fn());
+jest.mock('../getUniqNumbers', () => jest.fn());
 
 const mockData = [
   {
@@ -23,30 +23,42 @@ const mockData = [
 ];
 
 it('get random variants', () => {
-  const randomIndex = 1;
-  getUniqNumbers.mockImplementation(() => Array(3).fill(randomIndex));
+  getUniqNumbers.mockImplementation(() => [0, 1, 2]);
   const result = getVariants(mockData);
-  const expected = Array(anotherVariantsCount)
-    .fill(mockData[randomIndex])
-    .map(({ translate }) => translate);
 
-  expect(result).toEqual(expected);
+  expect(result).toMatchInlineSnapshot(`
+    Array [
+      "test1",
+      "test2",
+      "test3",
+    ]
+  `);
 
   getUniqNumbers.mockReset();
 });
 
 it('if words is null should return array of strings', () => {
   const result = getVariants(null);
-  const expected = Array(anotherVariantsCount).fill('');
 
-  expect(result).toEqual(expected);
+  expect(result).toMatchInlineSnapshot(`
+    Array [
+      "",
+      "",
+      "",
+    ]
+  `);
 });
 
 it('if words is empty should return array of strings', () => {
   const result = getVariants([]);
-  const expected = Array(anotherVariantsCount).fill('');
 
-  expect(result).toEqual(expected);
+  expect(result).toMatchInlineSnapshot(`
+    Array [
+      "",
+      "",
+      "",
+    ]
+  `);
 });
 
 it('if words is not valid should return array of strings', () => {
@@ -56,14 +68,24 @@ it('if words is not valid should return array of strings', () => {
       someProp: 'value',
     },
   ]);
-  const expected = Array(anotherVariantsCount).fill('');
 
-  expect(result).toEqual(expected);
+  expect(result).toMatchInlineSnapshot(`
+    Array [
+      "",
+      "",
+      "",
+    ]
+  `);
 });
 
 it('if words is not array should return array of strings', () => {
   const result = getVariants({ someProp: 'someValue' });
-  const expected = Array(anotherVariantsCount).fill('');
 
-  expect(result).toEqual(expected);
+  expect(result).toMatchInlineSnapshot(`
+    Array [
+      "",
+      "",
+      "",
+    ]
+  `);
 });

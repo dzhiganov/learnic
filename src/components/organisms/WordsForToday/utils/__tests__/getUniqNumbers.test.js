@@ -1,5 +1,5 @@
-import getUniqNumbers from './getUniqNumbers';
-import isArrayUnique from './isArrayUnique';
+import getUniqNumbers from '../getUniqNumbers';
+import isArrayUnique from '../isArrayUnique';
 
 const mockData = Array(100).fill('someValue');
 
