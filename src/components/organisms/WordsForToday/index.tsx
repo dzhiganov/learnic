@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import firebase from 'firebase';
 import { useSelector } from 'react-redux';
@@ -7,32 +7,47 @@ import styles from './styles.module.css';
 import type { User } from '../../../core/store/models/user';
 import { firestore } from '../../../database';
 import type { RootState } from '../../../core/store/rootReducer';
-import Picker from './Picker';
 import Results from './Results';
-import getVariants from './utils/getVariants';
-import getRandomWord from './utils/getRandomWord';
+import Trainings from './Trainings';
+import SentencesTraining from './SentencesTraining';
+import If from '../../atoms/If';
+import TrainingTypes from './consts/trainingTypes';
+import WordsTraining from './WordsTraining';
 
-type Words = {
+type Word = {
   word: string;
   translate: string;
-}[];
+};
+
+type Words = firebase.firestore.DocumentData[] & Word[];
 
 type Variants = [string, string, string, string];
 
+type TrainingProps = {
+  setStarted: (started: boolean) => void;
+  setFinished: (finished: boolean) => void;
+  setFailed: (data: Word) => void;
+  setSuccesed: (data: Word) => void;
+  words: Words;
+  onBack: () => void;
+};
+
+const trainingComponents = {
+  [TrainingTypes.Words]: (WordsTraining as unknown) as React.ComponentType<TrainingProps>,
+  [TrainingTypes.Sentences]: (SentencesTraining as unknown) as React.ComponentType<TrainingProps>,
+};
+
 const WordsForToday: React.FunctionComponent = () => {
+  const [trainingType, setTrainingType] = useState<TrainingTypes | null>(null);
   const [started, setStarted] = useState<boolean>(false);
   const [finished, setFinished] = useState<boolean>(false);
-  const [currentWord, setCurrentWord] = useState<string>('');
-  const [currentTranslate, setCurrentTranslate] = useState<string>('');
-  const [variants, setVariants] = useState<Variants | never[]>([]);
-  const [restWords, setRestWords] = useState<Words>([]);
   const [succesed, setSuccesed] = useState<Words>([]);
   const [failed, setFailed] = useState<Words>([]);
 
   const user = useSelector(({ user: userData }: RootState) => userData);
 
   const [{ value: words }, fetch] = useAsyncFn(
-    async (currentUser: User): Promise<firebase.firestore.DocumentData[]> => {
+    async (currentUser: User): Promise<Words> => {
       const uid = currentUser?.uid;
       if (!uid) {
         throw new Error('UID must not be null');
@@ -64,57 +79,23 @@ const WordsForToday: React.FunctionComponent = () => {
         result.push(doc.data());
       });
 
-      return result;
+      return shuffle(result) as Words;
     },
     [],
     { loading: true }
   );
 
-  const setTrainWord = useCallback(() => {
-    if (restWords.length) {
-      const { randomWord, randomTranslate } = getRandomWord(restWords || []);
-      setCurrentWord(randomWord);
-      setCurrentTranslate(randomTranslate);
+  const handleRepeat = useCallback(() => {
+    setFailed([]);
+    setSuccesed([]);
+    setFinished(false);
+    setStarted(true);
+  }, []);
 
-      const prepared = [...restWords];
-
-      const deletedIndex = prepared.findIndex(
-        ({ word }) => word === randomWord
-      );
-
-      prepared.splice(deletedIndex, 1);
-
-      const randomVariants = getVariants(words as Words, randomTranslate);
-      const shuffled = shuffle([
-        ...randomVariants,
-        randomTranslate,
-      ]) as Variants;
-
-      setVariants(shuffled);
-      setRestWords(prepared);
-      if (!started) setStarted(true);
-    } else {
-      setFinished(true);
-    }
-  }, [restWords, started, words]);
-
-  const handleStart = useCallback(() => setTrainWord(), [setTrainWord]);
-
-  const pick = useCallback(
-    (variant: string) => {
-      const currentData = {
-        word: currentWord,
-        translate: currentTranslate,
-      };
-      if (variant === currentTranslate) {
-        setSuccesed([...succesed, currentData]);
-      } else {
-        setFailed([...failed, currentData]);
-      }
-      setTrainWord();
-    },
-    [currentTranslate, setTrainWord, currentWord, failed, succesed]
-  );
+  const handleSelectTraining = useCallback((type: TrainingTypes) => {
+    setStarted(true);
+    setTrainingType(type);
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -122,22 +103,38 @@ const WordsForToday: React.FunctionComponent = () => {
     }
   }, [fetch, user]);
 
-  useEffect(() => {
-    if (words) {
-      const prepared = words.map(({ word, translate }) => ({
-        word,
-        translate,
-      }));
-      setRestWords(prepared);
-    }
-  }, [words]);
+  const handleSetSuccess = useCallback(
+    (value) => setSuccesed([...succesed, value]),
+    [succesed]
+  );
+
+  const handleSetFailed = useCallback(
+    (value) => setFailed([...failed, value]),
+    [failed]
+  );
+
+  const CurrentComponent = useMemo(
+    (): React.ComponentType<TrainingProps> =>
+      trainingComponents[trainingType as TrainingTypes],
+    [trainingType]
+  );
+
+  const handleBack = useCallback(() => {
+    setFailed([]);
+    setSuccesed([]);
+    setFinished(false);
+    setStarted(false);
+  }, []);
 
   if (finished) {
     return (
       <>
         <h2 className={styles.title}>Words For Today</h2>
         <div className={styles.container}>
-          <Results results={[succesed.length, failed.length]} />
+          <Results
+            results={[succesed.length, failed.length]}
+            onRepeat={handleRepeat}
+          />
         </div>
       </>
     );
@@ -147,26 +144,23 @@ const WordsForToday: React.FunctionComponent = () => {
     <>
       <h2 className={styles.title}>Words For Today</h2>
       <div className={styles.container}>
-        {started ? (
-          <Picker
-            currentWord={currentWord}
-            variants={[...variants] as Variants}
-            pick={pick}
-            wordsCount={[restWords.length, (words as Words).length]}
+        <If condition={started && Boolean(CurrentComponent)}>
+          <CurrentComponent
+            words={words as Words}
+            setStarted={setStarted}
+            setFinished={setFinished}
+            setSuccesed={handleSetSuccess}
+            setFailed={handleSetFailed}
+            onBack={handleBack}
           />
-        ) : (
-          <button
-            type="button"
-            className={styles.startButton}
-            onClick={handleStart}
-          >
-            Start
-          </button>
-        )}
+        </If>
+        <If condition={!started}>
+          <Trainings onSelectTraining={handleSelectTraining} />
+        </If>
       </div>
     </>
   );
 };
 
-export type { Variants, Words };
+export type { Variants, Words, TrainingTypes, TrainingProps };
 export default WordsForToday;

@@ -24,7 +24,7 @@ const mockData = [
 
 it('get random variants', () => {
   getUniqNumbers.mockImplementation(() => [0, 1, 2]);
-  const result = getVariants(mockData);
+  const result = getVariants(mockData, 'word', 'test4');
 
   expect(result).toMatchInlineSnapshot(`
     Array [

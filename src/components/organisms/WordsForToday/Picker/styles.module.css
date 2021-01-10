@@ -3,9 +3,9 @@
 }
 
 .word {
-    font-size: 32px;
+    font-size: 22px;
     text-align: center;
-    margin-bottom: 12px;
+    height: 80px;
 }
 
 .list {
@@ -34,4 +34,5 @@
 .left {
     color: #7579e7;
     font-weight: 600;
+    margin-bottom: 22px;
 }

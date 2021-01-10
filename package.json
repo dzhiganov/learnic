@@ -31,6 +31,7 @@
     "start": "react-scripts start --open",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "coverage": "open ./coverage/lcov-report/index.html",
     "eject": "react-scripts eject",
     "lint": "eslint './src/**/*.{js,ts,tsx}' --quiet",
     "docker:rebuild": "docker system prune -f && docker-compose build && docker-compose up"

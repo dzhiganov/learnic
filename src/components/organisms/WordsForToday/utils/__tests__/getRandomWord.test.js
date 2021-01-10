@@ -27,8 +27,8 @@ it('get random word', () => {
   random.mockImplementation(() => randomIndex);
   const result = getRandomWord(mockData);
   const expected = {
-    randomWord: mockData[randomIndex].word,
-    randomTranslate: mockData[randomIndex].translate,
+    word: mockData[randomIndex].word,
+    translate: mockData[randomIndex].translate,
   };
 
   expect(result).toEqual(expected);

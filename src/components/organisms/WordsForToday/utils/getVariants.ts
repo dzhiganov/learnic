@@ -1,19 +1,21 @@
 import getUniqNumbers from './getUniqNumbers';
 
-type Words = {
+type Word = {
   word: string;
   translate: string;
-}[];
+};
+
+type Words = Word[];
 
 const anotherVariantsCount = 3;
 
 interface GetVariants {
-  (words: Words, currentTranslate: string): [string, string, string];
+  (words: Words, key: keyof Word, selected: Word): [string, string, string];
 }
 
 type Result = [string, string, string];
 
-const getVariants: GetVariants = (words, currentTranslate) => {
+const getVariants: GetVariants = (words, key, selected) => {
   if (
     !Array.isArray(words) ||
     words.length < anotherVariantsCount ||
@@ -24,16 +26,14 @@ const getVariants: GetVariants = (words, currentTranslate) => {
     return Array(anotherVariantsCount).fill('') as Result;
   }
   const copy = words.length ? [...words] : [];
-  const deletedIndex = copy.findIndex(
-    ({ translate }) => translate === currentTranslate
-  );
+  const deletedIndex = copy.findIndex((item) => item[key] === selected[key]);
   copy.splice(deletedIndex, 1);
 
   const indexes = getUniqNumbers(copy);
 
   return indexes.map((index) => {
-    const { translate: randomTranslate = '' } = copy[index];
-    return randomTranslate;
+    const item = copy[index];
+    return item[key];
   }) as Result;
 };
 

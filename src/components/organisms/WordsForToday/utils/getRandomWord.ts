@@ -4,16 +4,15 @@ import type { Words } from '..';
 const getRandomWord = (
   arr: Words
 ): {
-  randomWord: string;
-  randomTranslate: string;
+  word: string;
+  translate: string;
 } => {
   const currentIndex = random(0, arr.length - 1);
-  const { word: randomWord, translate: randomTranslate } =
-    arr[currentIndex] || {};
+  const { word, translate } = arr[currentIndex] || {};
 
   return {
-    randomWord,
-    randomTranslate,
+    word,
+    translate,
   };
 };
 
