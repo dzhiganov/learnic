@@ -10,6 +10,13 @@ import getVariants from '../utils/getVariants';
 import getRandomWord from '../utils/getRandomWord';
 import BackButton from '../BackButton';
 
+type Sentence = {
+  word: string;
+  example: string;
+};
+
+type Sentences = Sentence[];
+
 const SentecesTraining: React.FunctionComponent<TrainingProps> = ({
   setStarted,
   setFinished,
@@ -22,10 +29,10 @@ const SentecesTraining: React.FunctionComponent<TrainingProps> = ({
   const [currentTranslate, setCurrentTranslate] = useState<string>('');
   const [variants, setVariants] = useState<Variants | never[]>([]);
   const [restWords, setRestWords] = useState<Words>([]);
-  const [sentences, setSentences] = useState<any[]>([]);
+  const [sentences, setSentences] = useState<Sentences>([]);
   const [allWordsCount, setAllWordsCount] = useState<number>(0);
   const [{ loading }, fetch] = useAsyncFn(
-    async (keyword: string): Promise<{ word: string; example: string }> => {
+    async (keyword: string): Promise<Sentence> => {
       const data = await getDefinition(keyword);
 
       if (data && Array.isArray(data)) {
