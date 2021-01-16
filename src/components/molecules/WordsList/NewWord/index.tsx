@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 import { getTranslate } from 'core/store/api/translate';
 import useDebounce from 'react-use/lib/useDebounce';
 import styles from './styles.module.css';
+import SaveButton from './SaveButton';
+import CancelButton from './CancelButton';
 
 type Props = {
   onSave: ({
@@ -12,9 +14,13 @@ type Props = {
     word: string;
     translate: string;
   }) => Promise<void>;
+  onCancel: () => void;
 };
 
-const NewWord: React.FunctionComponent<Props> = ({ onSave }: Props) => {
+const NewWord: React.FunctionComponent<Props> = ({
+  onSave,
+  onCancel,
+}: Props) => {
   const inputRef: React.RefObject<HTMLInputElement> = useRef(null);
   const [word, setWord] = useState('');
   const [translate, setTranslate] = useState('');
@@ -72,6 +78,21 @@ const NewWord: React.FunctionComponent<Props> = ({ onSave }: Props) => {
     [onSave, translate, word]
   );
 
+  const handleOnClickSave = useCallback(() => {
+    if (word && translate) {
+      onSave({ word, translate });
+
+      setWord('');
+      setTranslate('');
+    }
+  }, [onSave, word, translate]);
+
+  const handleOnClickCancel = useCallback(() => {
+    setWord('');
+    setTranslate('');
+    onCancel();
+  }, [onCancel]);
+
   return (
     <div className={styles.container}>
       <div className={styles.inputContainer}>
@@ -91,57 +112,10 @@ const NewWord: React.FunctionComponent<Props> = ({ onSave }: Props) => {
           placeholder="Translate"
         />
       </div>
-      {word && translate ? (
-        <div className={styles.save}>
-          <div className={styles.saveIcon}>
-            <svg
-              viewBox="0 0 64 64"
-              aria-labelledby="title"
-              aria-describedby="desc"
-              role="img"
-            >
-              <title>Enter Key</title>
-              <desc>A line styled icon from Orion Icon Library.</desc>
-              <rect
-                data-name="layer2"
-                x="2"
-                y="2"
-                width="60"
-                height="60"
-                rx="7.8"
-                ry="7.8"
-                fill="none"
-                stroke="#202020"
-                strokeMiterlimit="10"
-                strokeWidth="2"
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-              <path
-                data-name="layer1"
-                fill="none"
-                stroke="#202020"
-                strokeMiterlimit="10"
-                strokeWidth="2"
-                d="M16 32h30v-8"
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-              <path
-                data-name="layer1"
-                fill="none"
-                stroke="#202020"
-                strokeMiterlimit="10"
-                strokeWidth="2"
-                d="M24 40l-8-8 8-8"
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-            </svg>
-          </div>
-          <span className={styles.saveTitle}>Press Enter to save</span>
-        </div>
-      ) : null}
+      <div className={styles.buttons}>
+        <SaveButton onSave={handleOnClickSave} />
+        <CancelButton onCancel={handleOnClickCancel} />
+      </div>
     </div>
   );
 };

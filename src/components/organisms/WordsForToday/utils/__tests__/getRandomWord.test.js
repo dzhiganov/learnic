@@ -32,7 +32,6 @@ it('get random word', () => {
   };
 
   expect(result).toEqual(expected);
-  expect(random).toHaveBeenCalledTimes(1);
 
   random.mockReset();
 });

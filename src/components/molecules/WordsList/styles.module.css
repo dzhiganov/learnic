@@ -21,6 +21,18 @@
     font-family: 'Source Sans Pro', sans-serif;
     margin: 0;
     padding: 0;
+    width: min-content;
+}
+
+.cardItem {
+    cursor: pointer;
+    width: 250px;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.cardItem:hover {
+    background-color: rgba(0, 0, 0, 0.05); 
 }
 
 .cardButton {
@@ -59,6 +71,43 @@
     box-shadow: none;
 }
 
-.iconContainer {
+.actionButton {
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: inherit;
+    padding: 0;
+    margin: 0;
+}
+
+.icons * + * {
+    margin-left: 8px;
+}
+
+.cardItemContainer {
+    display: flex;
+}
+
+.cardItemContainer svg {
+    fill: rgba(0, 0, 0, 0.5);
+    font-size: inherit;
+}
+
+.icons {
+    display: flex;
+    margin-left: auto;
+}
+
+.cardItemTextContainer {
+    height: 2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cardItemTextContainerHovered {
+    width: 200px;
 }

@@ -1,19 +1,14 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import firebase from 'firebase';
 import Fuse from 'fuse.js';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import { useSelector } from 'react-redux';
+import EditIcon from '@material-ui/icons/EditOutlined';
+import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import styles from './styles.module.css';
 import Skeleton from '../../atoms/Skeleton';
 import NewWord from './NewWord';
 import Search from './Search';
 import NoWord from './NoWord';
 import If from '../../atoms/If';
-import { firestore } from '../../../database';
-import type { RootState } from '../../../core/store/rootReducer';
 
 type Props = {
   words: firebase.firestore.DocumentData &
@@ -30,6 +25,7 @@ type Props = {
     word: string;
     translate: string;
   }) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
   onClickCard: ({
     word,
     translate,
@@ -38,6 +34,7 @@ type Props = {
     translate: string;
   }) => void;
   showNewWord: boolean;
+  setShowNewWord: (state: boolean) => void;
   loading: boolean;
 };
 
@@ -45,15 +42,17 @@ const WordsList: React.FunctionComponent<Props> = ({
   words,
   onShowNewWord,
   showNewWord,
+  setShowNewWord,
   onSave,
+  onDelete,
   onClickCard,
   loading,
 }: Props) => {
+  const [focused, setFocused] = useState<string>('');
   const [filter, setFilter] = useState<string>('');
   const [filtered, setFiltered] = useState<
     { id: string; word: string; translate: string }[]
   >([]);
-  const user = useSelector(({ user: userData }: RootState) => userData);
 
   const handleKeyDown = useCallback(
     (event, { word, translate }) => {
@@ -84,17 +83,13 @@ const WordsList: React.FunctionComponent<Props> = ({
 
   const clearFilter = useCallback(() => setFilter(''), []);
 
-  const deleteRow = useCallback(
-    (id) => {
-      firestore
-        .collection('users')
-        .doc(user.uid)
-        .collection('words')
-        .doc(id)
-        .delete();
-    },
-    [user]
-  );
+  const handleMouseDown = useCallback((id) => {
+    setFocused(id);
+  }, []);
+
+  const onCancelAddNewWord = useCallback(() => setShowNewWord(false), [
+    setShowNewWord,
+  ]);
 
   return (
     <>
@@ -109,40 +104,60 @@ const WordsList: React.FunctionComponent<Props> = ({
         </button>
       </div>
       <div className={styles.cardsContainer}>
+        <If condition={showNewWord}>
+          <NewWord onSave={onSave} onCancel={onCancelAddNewWord} />
+        </If>
         {loading ? (
           <ul className={styles.cardsList}>
             <Skeleton variant="text" width={512} height={40} repeat={4} />
           </ul>
         ) : (
-          <ul className={styles.cardsList}>
-            <If condition={showNewWord}>
-              <li>
-                <NewWord onSave={onSave} />
-              </li>
-            </If>
+          <ul className={styles.cardsList} onMouseLeave={() => setFocused('')}>
             {(filter && filtered.length > 0) || !filter ? (
               (filter ? filtered : words).map(({ id, word, translate }) => {
                 const onClick = () => onClickCard({ word, translate });
                 return (
-                  <li key={word}>
-                    <span
-                      role="button"
-                      className={styles.cardButton}
-                      onClick={onClick}
-                      tabIndex={0}
-                      onKeyDown={(event) =>
-                        handleKeyDown(event, { word, translate })
-                      }
-                    >{`${word} - ${translate}`}</span>
-                    <span className={styles.iconContainer}>
-                      <EditIcon />
-                    </span>
-                    <span
-                      className={styles.iconContainer}
-                      onClick={() => deleteRow(id)}
-                    >
-                      <DeleteIcon />
-                    </span>
+                  <li
+                    className={styles.cardItem}
+                    key={id}
+                    onMouseEnter={() => handleMouseDown(id)}
+                  >
+                    <div className={styles.cardItemContainer}>
+                      <div
+                        className={`${styles.cardItemTextContainer} ${
+                          id === focused
+                            ? styles.cardItemTextContainerHovered
+                            : ''
+                        }`}
+                      >
+                        <span
+                          role="button"
+                          className={styles.cardButton}
+                          onClick={onClick}
+                          tabIndex={0}
+                          onKeyDown={(event) =>
+                            handleKeyDown(event, { word, translate })
+                          }
+                        >{`${word} - ${translate}`}</span>
+                      </div>
+                      <If condition={id === focused}>
+                        <div className={styles.icons}>
+                          <button type="button" className={styles.actionButton}>
+                            <EditIcon />
+                          </button>
+                          <button
+                            type="button"
+                            className={styles.actionButton}
+                            onClick={() => {
+                              clearFilter();
+                              onDelete(id);
+                            }}
+                          >
+                            <DeleteIcon />
+                          </button>
+                        </div>
+                      </If>
+                    </div>
                   </li>
                 );
               })

@@ -26,13 +26,7 @@ it('get random variants', () => {
   getUniqNumbers.mockImplementation(() => [0, 1, 2]);
   const result = getVariants(mockData, 'word', 'test4');
 
-  expect(result).toMatchInlineSnapshot(`
-    Array [
-      "test1",
-      "test2",
-      "test3",
-    ]
-  `);
+  expect(result).toEqual(['test1', 'test2', 'test3']);
 
   getUniqNumbers.mockReset();
 });

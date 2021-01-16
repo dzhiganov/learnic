@@ -119,6 +119,20 @@ const Cards: React.FunctionComponent = () => {
     [user, fetch]
   );
 
+  const handleOnDelete = useCallback(
+    async (id: string) => {
+      await firestore
+        .collection('users')
+        .doc(user.uid)
+        .collection('words')
+        .doc(id)
+        .delete();
+
+      await fetch(user);
+    },
+    [fetch, user]
+  );
+
   const handleClickCard = useCallback(({ word, translate }) => {
     setOpenedCard({ word, translate });
   }, []);
@@ -131,8 +145,10 @@ const Cards: React.FunctionComponent = () => {
           words={words}
           onShowNewWord={handleShowNewWord}
           onSave={handleOnSave}
+          onDelete={handleOnDelete}
           onClickCard={handleClickCard}
           showNewWord={showNewWord}
+          setShowNewWord={setShowNewWord}
           loading={loading}
         />
       </div>
