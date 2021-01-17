@@ -6,12 +6,19 @@
     margin: 0;
 }
 
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
 .cardsContainer {
     margin-top: 1.5em;
 }
 
 .listContainer {
-    width: calc(100% - 600px - 10em);
+    display: grid;
+    grid-template-columns: 50% 50%;
+
 }
 
 .cardsList {

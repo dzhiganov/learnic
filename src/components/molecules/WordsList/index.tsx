@@ -26,6 +26,7 @@ type Props = {
     translate: string;
   }) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
+  onEdit: (id: string) => void;
   onClickCard: ({
     word,
     translate,
@@ -36,6 +37,8 @@ type Props = {
   showNewWord: boolean;
   setShowNewWord: (state: boolean) => void;
   loading: boolean;
+  edited: string;
+  onCancelEdit: () => void;
 };
 
 const WordsList: React.FunctionComponent<Props> = ({
@@ -45,8 +48,11 @@ const WordsList: React.FunctionComponent<Props> = ({
   setShowNewWord,
   onSave,
   onDelete,
+  onEdit,
   onClickCard,
+  edited,
   loading,
+  onCancelEdit,
 }: Props) => {
   const [focused, setFocused] = useState<string>('');
   const [filter, setFilter] = useState<string>('');
@@ -87,9 +93,10 @@ const WordsList: React.FunctionComponent<Props> = ({
     setFocused(id);
   }, []);
 
-  const onCancelAddNewWord = useCallback(() => setShowNewWord(false), [
-    setShowNewWord,
-  ]);
+  const onCancelAddNewWord = useCallback(() => {
+    onCancelEdit();
+    setShowNewWord(false);
+  }, [setShowNewWord, onCancelEdit]);
 
   return (
     <>
@@ -116,6 +123,16 @@ const WordsList: React.FunctionComponent<Props> = ({
             {(filter && filtered.length > 0) || !filter ? (
               (filter ? filtered : words).map(({ id, word, translate }) => {
                 const onClick = () => onClickCard({ word, translate });
+                if (id === edited) {
+                  return (
+                    <NewWord
+                      onSave={onSave}
+                      onCancel={onCancelAddNewWord}
+                      initialState={{ word, translate }}
+                      autoFetch={false}
+                    />
+                  );
+                }
                 return (
                   <li
                     className={styles.cardItem}
@@ -142,7 +159,14 @@ const WordsList: React.FunctionComponent<Props> = ({
                       </div>
                       <If condition={id === focused}>
                         <div className={styles.icons}>
-                          <button type="button" className={styles.actionButton}>
+                          <button
+                            type="button"
+                            className={styles.actionButton}
+                            onClick={() => {
+                              clearFilter();
+                              onEdit(id);
+                            }}
+                          >
                             <EditIcon />
                           </button>
                           <button

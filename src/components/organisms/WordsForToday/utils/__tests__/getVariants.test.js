@@ -34,13 +34,7 @@ it('get random variants', () => {
 it('if words is null should return array of strings', () => {
   const result = getVariants(null);
 
-  expect(result).toMatchInlineSnapshot(`
-    Array [
-      "",
-      "",
-      "",
-    ]
-  `);
+  expect(result).toEqual(Array(3).fill(''));
 });
 
 it('if words is empty should return array of strings', () => {

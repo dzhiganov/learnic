@@ -36,7 +36,7 @@ it('get translate', async () => {
   expect(response).toEqual('тест');
   expect(mockAxios.get).toHaveBeenCalledTimes(1);
   expect(mockAxios.get).toHaveBeenCalledWith(
-    `${proxy}/${baseURL}/v1/Minicard/?text=test&srcLang=ru&dstLang=en`,
+    `${proxy}/${baseURL}/v1/Minicard/?text=test&srcLang=1033&dstLang=1049`,
     {
       headers: { Authorization: 'Bearer token' },
     }

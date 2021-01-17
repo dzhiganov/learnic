@@ -31,7 +31,7 @@ const NoWord: React.FunctionComponent<Props> = ({
 
   const [,] = useDebounce(
     async () => {
-      const res = (await getTranslate(token, word, '1033', '1049')) as {
+      const res = (await getTranslate(token, word, 'ru', 'en')) as {
         Translation: {
           Translation: string;
         };

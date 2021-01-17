@@ -1,7 +1,6 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import firebase from 'firebase';
-import { Transition } from 'react-transition-group';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import { firestore } from '../../../database';
 import type { RootState } from '../../../core/store/rootReducer';
@@ -9,25 +8,6 @@ import type { User } from '../../../core/store/models/user';
 import styles from './styles.module.css';
 import WordsCard from '../../molecules/WordsCard';
 import WordsList from '../../molecules/WordsList';
-
-const duration = 700;
-
-const defaultStyle = {
-  transition: `all ${duration}ms ease-in-out`,
-  top: 0,
-  right: '-848px',
-  position: 'absolute',
-  width: '800px',
-  height: '100%',
-  overflowY: 'auto',
-};
-
-const transitionStyles = {
-  entering: { right: 0 },
-  entered: { right: 0 },
-  exiting: { right: '-848px' },
-  exited: { right: '-848px' },
-};
 
 const Cards: React.FunctionComponent = () => {
   const [openedCard, setOpenedCard] = useState<{
@@ -38,6 +18,7 @@ const Cards: React.FunctionComponent = () => {
     translate: '',
   });
   const [showNewWord, setShowNewWord] = useState(false);
+  const [edited, setEdited] = useState<string>('');
   const user = useSelector(({ user: userData }: RootState) => userData);
   const [{ value: words = [], loading }, fetch] = useAsyncFn(
     async (
@@ -133,42 +114,44 @@ const Cards: React.FunctionComponent = () => {
     [fetch, user]
   );
 
+  const handleOnEdit = useCallback((id) => {
+    setEdited(id);
+    // setShowNewWord(true);
+  }, []);
+
   const handleClickCard = useCallback(({ word, translate }) => {
     setOpenedCard({ word, translate });
   }, []);
 
-  return (
-    <>
-      <div className={styles.listContainer}>
-        <h2 className={styles.title}>My Words</h2>
-        <WordsList
-          words={words}
-          onShowNewWord={handleShowNewWord}
-          onSave={handleOnSave}
-          onDelete={handleOnDelete}
-          onClickCard={handleClickCard}
-          showNewWord={showNewWord}
-          setShowNewWord={setShowNewWord}
-          loading={loading}
-        />
-      </div>
+  const handleCancelEdit = useCallback(() => {
+    setEdited('');
+  }, []);
 
-      <Transition in={!!openedCard.word} timeout={duration}>
-        {<T extends keyof typeof transitionStyles>(state: T) => (
-          <div
-            style={{
-              ...defaultStyle,
-              ...transitionStyles[state],
-            }}
-          >
-            <WordsCard
-              word={openedCard.word}
-              translate={openedCard.translate}
-            />
-          </div>
-        )}
-      </Transition>
-    </>
+  return (
+    <div className={styles.container}>
+      <h2 className={styles.title}>My Words</h2>
+      <div className={styles.listContainer}>
+        <div>
+          <WordsList
+            words={words}
+            onShowNewWord={handleShowNewWord}
+            onSave={handleOnSave}
+            onDelete={handleOnDelete}
+            onEdit={handleOnEdit}
+            onClickCard={handleClickCard}
+            showNewWord={showNewWord}
+            setShowNewWord={setShowNewWord}
+            loading={loading}
+            edited={edited}
+            onCancelEdit={handleCancelEdit}
+          />
+        </div>
+
+        <div>
+          <WordsCard word={openedCard.word} translate={openedCard.translate} />
+        </div>
+      </div>
+    </div>
   );
 };
 

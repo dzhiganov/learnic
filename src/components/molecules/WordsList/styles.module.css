@@ -1,113 +1,118 @@
 .container {
-    padding: 1.5em 3em;
-    position: relative;
+  padding: 1.5em 3em;
+  position: relative;
+  position: absolute;
 }
 
 .title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 3rem;
-    letter-spacing: -1px;
-    padding: 0;
-    margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: 3rem;
+  letter-spacing: -1px;
+  padding: 0;
+  margin: 0;
 }
 
 .cardsContainer {
-    margin-top: 1.5em;
+  margin-top: 1.5em;
 }
 
 .cardsList {
-    list-style: none;
-    font-size: 1.2rem;
-    font-family: 'Source Sans Pro', sans-serif;
-    margin: 0;
-    padding: 0;
-    width: min-content;
+  list-style: none;
+  font-size: 1.2rem;
+  font-family: "Source Sans Pro", sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 .cardItem {
-    cursor: pointer;
-    width: 250px;
-    padding: 4px;
-    border-radius: 4px;
+  cursor: pointer;
+  width: 250px;
+  padding: 4px;
+  border-radius: 4px;
 }
 
 .cardItem:hover {
-    background-color: rgba(0, 0, 0, 0.05); 
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .cardButton {
-    cursor: pointer;
-    font-size: 1.1rem;
-    background: transparent;
-    border: none;
-    outline: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  background: transparent;
+  border: none;
+  outline: none;
 }
 
 .buttonsContainer {
-    margin-top: 1.5em;
-    display: flex;
-    align-items: baseline;
+  margin-top: 1.5em;
+  display: flex;
+  align-items: baseline;
 }
 
 .addNewWordButton {
-    cursor: pointer;
-    border: none;
-    color: #fff;
-    height: 45px;
-    background-color: #7579e7;
-    box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
-    padding: 0.45em  2em;
-    font-size: 1.1rem;
-    min-width: 64px;
-    box-sizing: border-box;
-    font-weight: 600;
-    line-height: 1.75;
-    border-radius: 8px;
-    letter-spacing: 0.02857em;
+  cursor: pointer;
+  border: none;
+  color: #fff;
+  height: 45px;
+  background-color: #7579e7;
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  padding: 0.45em 2em;
+  font-size: 1.1rem;
+  min-width: 64px;
+  box-sizing: border-box;
+  font-weight: 600;
+  line-height: 1.75;
+  border-radius: 16px;
+  letter-spacing: 0.025em;
 }
 
 .addNewWordButton:hover {
-    background-color: #9ab3f5;
-    box-shadow: none;
+  background-color: #9ab3f5;
+  box-shadow: none;
 }
 
 .actionButton {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    font-size: inherit;
-    padding: 0;
-    margin: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: inherit;
+  padding: 0;
+  margin: 0;
 }
 
 .icons * + * {
-    margin-left: 8px;
+  margin-left: 8px;
 }
 
 .cardItemContainer {
-    display: flex;
+  display: flex;
 }
 
 .cardItemContainer svg {
-    fill: rgba(0, 0, 0, 0.5);
-    font-size: inherit;
+  fill: rgba(0, 0, 0, 0.5);
+  font-size: inherit;
 }
 
 .icons {
-    display: flex;
-    margin-left: auto;
+  display: flex;
+  margin-left: auto;
 }
 
 .cardItemTextContainer {
-    height: 2rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  height: 2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .cardItemTextContainerHovered {
-    width: 200px;
+  width: 200px;
+}
+
+.modalContainer {
+    background-color: #fff;
 }

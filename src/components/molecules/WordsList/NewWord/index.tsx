@@ -7,6 +7,10 @@ import SaveButton from './SaveButton';
 import CancelButton from './CancelButton';
 
 type Props = {
+  initialState?: null | {
+    word: string;
+    translate: string;
+  };
   onSave: ({
     word,
     translate,
@@ -15,11 +19,14 @@ type Props = {
     translate: string;
   }) => Promise<void>;
   onCancel: () => void;
+  autoFetch?: boolean;
 };
 
 const NewWord: React.FunctionComponent<Props> = ({
+  initialState,
   onSave,
   onCancel,
+  autoFetch,
 }: Props) => {
   const inputRef: React.RefObject<HTMLInputElement> = useRef(null);
   const [word, setWord] = useState('');
@@ -31,7 +38,10 @@ const NewWord: React.FunctionComponent<Props> = ({
 
   const [, cancel] = useDebounce(
     async () => {
-      const res = (await getTranslate(token, word, '1033', '1049')) as {
+      if (!autoFetch) {
+        return;
+      }
+      const res = (await getTranslate(token, word, 'ru', 'en')) as {
         Translation: {
           Translation: string;
         };
@@ -51,6 +61,13 @@ const NewWord: React.FunctionComponent<Props> = ({
       inputRef.current.focus();
     }
   }, []);
+
+  useEffect(() => {
+    if (initialState) {
+      setWord(initialState?.word);
+      setTranslate(initialState?.translate);
+    }
+  }, [initialState]);
 
   const handleOnChangeWord = useCallback(({ target: { value = '' } = {} }) => {
     setWord(value);
@@ -118,6 +135,11 @@ const NewWord: React.FunctionComponent<Props> = ({
       </div>
     </div>
   );
+};
+
+NewWord.defaultProps = {
+  initialState: null,
+  autoFetch: true,
 };
 
 export default memo(NewWord);

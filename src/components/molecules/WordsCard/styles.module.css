@@ -11,8 +11,8 @@
 
 .wordSection {
     display: flex;
-  font-size: 22px;
-  font-weight: 500;
+    font-size: 26px;
+    font-weight: 600;
 }
 
 .audioButtonContainer {
@@ -33,23 +33,36 @@
 }
 
 .videoSection {
+    margin-top: 40px;
     display: inline-block;
 }
 
 .example {
     display: block;
-    padding-left: 12px;
+    padding: 8px 0px;
 }
 
 .examplesList {
     list-style: none;
     padding: 0;
     font-size: 1.25;
+    padding: 4px 0px;
 }
 
 .examplesItem {
    padding: 6px 0;
    position: relative;
    font-style: italic;
+}
+
+.noSelectedWord {
+    font-size: 22px;
+    font-weight: 600;
+    padding: 12px 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.025);
+    height: 200px;
 }
 

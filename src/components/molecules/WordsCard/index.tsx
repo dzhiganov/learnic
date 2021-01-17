@@ -7,6 +7,7 @@ import styles from './styles.module.css';
 import VideosList from '../VideosList';
 import { getExamples } from './utils';
 import Skeleton from '../../atoms/Skeleton';
+import ShowMore from './ShowMore';
 
 type Props = {
   word: string;
@@ -58,11 +59,23 @@ const WordsCard: React.FunctionComponent<Props> = ({
     if (audio && typeof audio.play === 'function') audio.play();
   }, [audio]);
 
+  if (!word) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.noSelectedWord}>
+          <span role="img" aria-label="question">
+            🤔 Select some word...
+          </span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.wordSection}>
         <div>
-          <span>{`${word}-${translate}`}</span>
+          <span>{`${word} - ${translate}`}</span>
         </div>
 
         <div className={styles.audioButtonContainer}>
@@ -81,19 +94,23 @@ const WordsCard: React.FunctionComponent<Props> = ({
             <Skeleton variant="text" width={512} height={40} repeat={3} />
           </ul>
         ) : (
-          <ul className={styles.examplesList}>
-            {Array.isArray(value.examples) && value.examples.length
-              ? value.examples
-                  .filter((def) => def)
-                  .map((def) => (
-                    <li key={def} className={styles.examplesItem}>
-                      <span className={styles.example} key={def}>
-                        {def}
-                      </span>
-                    </li>
-                  ))
-              : null}
-          </ul>
+          <>
+            <ul className={styles.examplesList}>
+              {Array.isArray(value.examples) && value.examples.length
+                ? value.examples
+                    .filter((def) => def)
+                    .splice(0, 3)
+                    .map((def) => (
+                      <li key={def} className={styles.examplesItem}>
+                        <span className={styles.example} key={def}>
+                          {def}
+                        </span>
+                      </li>
+                    ))
+                : null}
+            </ul>
+            <ShowMore onShowMore={() => {}} />
+          </>
         )}
       </div>
       <div className={styles.videoSection}>
