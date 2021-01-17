@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import styles from './styles.module.css';
 
 type Props = {
