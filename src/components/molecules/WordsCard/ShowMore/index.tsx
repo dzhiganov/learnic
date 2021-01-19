@@ -8,7 +8,7 @@ type Props = {
 const ShowMore: React.FunctionComponent<Props> = ({ onShowMore }: Props) => {
   return (
     <button type="button" className={styles.button} onClick={onShowMore}>
-      <span className={styles.icon} /> Show more
+      <span>Show more</span>
     </button>
   );
 };

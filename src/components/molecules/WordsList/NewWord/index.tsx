@@ -31,10 +31,11 @@ const NewWord: React.FunctionComponent<Props> = ({
   const inputRef: React.RefObject<HTMLInputElement> = useRef(null);
   const [word, setWord] = useState('');
   const [translate, setTranslate] = useState('');
-  const { token } = useSelector(
+  const selectedData = useSelector(
     ({ translate: translateState }: { translate: { token: string } }) =>
       translateState
   );
+  const { token = '' } = selectedData || {};
 
   const [, cancel] = useDebounce(
     async () => {
@@ -46,10 +47,10 @@ const NewWord: React.FunctionComponent<Props> = ({
           Translation: string;
         };
       };
-      const {
-        Translation: { Translation: dictionaryTranslate },
-      } = res;
-      const [value] = dictionaryTranslate.split(',');
+      const { Translation: { Translation: dictionaryTranslate = '' } = {} } =
+        res || {};
+      const [value = ''] = dictionaryTranslate.split(',');
+
       setTranslate(value);
     },
     500,
@@ -114,6 +115,8 @@ const NewWord: React.FunctionComponent<Props> = ({
     <div className={styles.container}>
       <div className={styles.inputContainer}>
         <input
+          data-testid="word"
+          name="word"
           className={styles.input}
           value={word}
           onChange={handleOnChangeWord}
@@ -122,6 +125,8 @@ const NewWord: React.FunctionComponent<Props> = ({
           placeholder="Word"
         />
         <input
+          data-testid="translate"
+          name="translate"
           className={styles.input}
           value={translate}
           onChange={handleOnChangeTranslate}
