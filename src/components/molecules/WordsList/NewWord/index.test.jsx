@@ -1,10 +1,11 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import * as translateApi from '../../../../core/store/api/translate';
 import NewWord from '.';
+import 'whatwg-fetch';
 
 jest.spyOn(translateApi, 'getTranslate');
 jest.useFakeTimers();
@@ -21,6 +22,30 @@ describe('NewWord', () => {
     jest.useRealTimers();
   });
 
+  test('should set focus on the Word input', () => {
+    const onSave = jest.fn();
+    const onCancel = jest.fn();
+    const initialState = {
+      word: 'test1',
+      translate: 'test2',
+    };
+    const store = mockStore({});
+    const { queryByTestId } = render(
+      <Provider store={store}>
+        <NewWord
+          onSave={onSave}
+          onCancel={onCancel}
+          initialState={initialState}
+          autoFetch={false}
+        />
+      </Provider>
+    );
+
+    act(() => {
+      expect(queryByTestId('word') === document.activeElement).toBeTruthy();
+    });
+  });
+
   test('should render with correct initial state', () => {
     const onSave = jest.fn();
     const onCancel = jest.fn();
@@ -29,7 +54,7 @@ describe('NewWord', () => {
       translate: 'test2',
     };
     const store = mockStore({});
-    const { container } = render(
+    const { container, queryByTestId } = render(
       <Provider store={store}>
         <NewWord
           onSave={onSave}
@@ -45,6 +70,9 @@ describe('NewWord', () => {
 
     expect(wordInput.value).toBe('test1');
     expect(translateInput.value).toBe('test2');
+    act(() => {
+      expect(queryByTestId('word') === document.activeElement).toBeTruthy();
+    });
   });
 
   test('user change input value', () => {
@@ -59,7 +87,7 @@ describe('NewWord', () => {
     const store = mockStore(initialStore);
     const { container } = render(
       <Provider store={store}>
-        <NewWord onSave={onSave} onCancel={onCancel} autoFetch={false} />
+        <NewWord onSave={onSave} onCancel={onCancel} autoFetch />
       </Provider>
     );
 
@@ -109,13 +137,6 @@ describe('NewWord', () => {
   });
 
   test('should not fetch translate if autoFetch is false', async () => {
-    translateApi.getTranslate.mockImplementation(() => {
-      return {
-        Translation: {
-          Translation: 'hello',
-        },
-      };
-    });
     const onSave = jest.fn();
     const onCancel = jest.fn();
     const initialStore = {
@@ -134,7 +155,7 @@ describe('NewWord', () => {
           onSave={onSave}
           onCancel={onCancel}
           initialState={initialState}
-          autoFetch={false}
+          autoFetch
         />
       </Provider>
     );
@@ -149,43 +170,4 @@ describe('NewWord', () => {
     expect(wordInput).toHaveValue('w');
     expect(translateInput).toHaveValue('initialTranslate');
   });
-
-  // test('should fetch translate after delay time', async () => {
-  //   translateApi.getTranslate.mockImplementation(() => {
-  //     return {
-  //       Translation: {
-  //         Translation: 'translate1, translate2, translate3',
-  //       },
-  //     };
-  //   });
-  //   const onSave = jest.fn();
-  //   const onCancel = jest.fn();
-  //   const initialStore = {
-  //     translate: {
-  //       token: 'FAKE_TOKEN',
-  //     },
-  //   };
-  //   const store = mockStore(initialStore);
-
-  //   act(() => {
-  //     render(
-  //       <Provider store={store}>
-  //         <NewWord onSave={onSave} onCancel={onCancel} autoFetch />
-  //       </Provider>
-  //     );
-  //   });
-
-  //   const wordInput = await screen.findByTestId('word');
-
-  //   userEvent.type(wordInput, 'w');
-  //   act(() => {
-  //     jest.advanceTimersByTime(500);
-  //   });
-  //   userEvent.type(wordInput, 'o');
-  //   act(() => {
-  //     jest.advanceTimersByTime(500);
-  //   });
-
-  //   expect(wordInput).toHaveValue('wo');
-  // });
 });

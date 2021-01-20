@@ -34,8 +34,11 @@ const WordsTraining: React.FunctionComponent<TrainingProps> = ({
 
       prepared.splice(deletedIndex, 1);
 
-      const randomVariants = getVariants(words as Words, 'word', random);
-      const shuffled = shuffle([...randomVariants, randomWord]) as Variants;
+      const randomVariants = getVariants(words as Words, 'translate', random);
+      const shuffled = shuffle([
+        ...randomVariants,
+        randomTranslate,
+      ]) as Variants;
       setVariants(shuffled);
 
       setRestWords(prepared);
