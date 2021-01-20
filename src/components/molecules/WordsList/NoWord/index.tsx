@@ -88,11 +88,11 @@ const NoWord: React.FunctionComponent<Props> = ({
         Enter.
         <br />
         <br />
-        Or, If you don&apos;t want press{' '}
+        Or, If you don&apos;t press{' '}
         <span className={styles.icon}>
           <Escape />
         </span>
-        Escape to back to words list
+        Escape to back the to words list
       </p>
     </div>
   );
