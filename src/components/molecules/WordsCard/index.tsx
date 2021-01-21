@@ -87,6 +87,16 @@ const WordsCard: React.FunctionComponent<Props> = ({
             <VolumeUpIcon />
           </button>
         </div>
+
+        <div className={styles.steps}>
+          {Array(7)
+            .fill(null)
+            .map(() => (
+              <span role="img" aria-label="steps">
+                🏅
+              </span>
+            ))}
+        </div>
       </div>
       <div className={styles.contextSection}>
         {loading ? (

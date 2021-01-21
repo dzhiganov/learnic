@@ -7,6 +7,7 @@ type Props = {
 };
 
 const Variant: React.FunctionComponent<Props> = ({ variant, pick }: Props) => {
+  console.log(variant);
   const onClick = useCallback(() => pick(variant), [variant, pick]);
   const onKeyDown = useCallback(
     ({ key = '' } = {}) => (key === 'Enter' ? pick(variant) : null),

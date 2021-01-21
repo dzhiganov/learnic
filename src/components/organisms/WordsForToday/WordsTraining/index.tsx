@@ -14,26 +14,19 @@ const WordsTraining: React.FunctionComponent<TrainingProps> = ({
   words,
   onBack,
 }: TrainingProps) => {
-  const [currentWord, setCurrentWord] = useState<string>('');
-  const [currentTranslate, setCurrentTranslate] = useState<string>('');
+  const [currentWordId, setCurrentWordId] = useState<string>('');
   const [variants, setVariants] = useState<Variants | never[]>([]);
   const [restWords, setRestWords] = useState<Words>([]);
 
   const setTrainWord = useCallback(
     (arr) => {
       const random = getRandomWord(arr || []);
-      const { word: randomWord, translate: randomTranslate } = random;
-      setCurrentWord(randomWord);
-      setCurrentTranslate(randomTranslate);
+      const { id: randomId, translate: randomTranslate } = random;
+      setCurrentWordId(randomId);
 
       const prepared = [...arr];
 
-      const deletedIndex = prepared.findIndex(
-        ({ word }) => word === randomWord
-      );
-
-      prepared.splice(deletedIndex, 1);
-
+      const filtered = prepared.filter(({ id }) => id !== randomId);
       const randomVariants = getVariants(words as Words, 'translate', random);
       const shuffled = shuffle([
         ...randomVariants,
@@ -41,7 +34,7 @@ const WordsTraining: React.FunctionComponent<TrainingProps> = ({
       ]) as Variants;
       setVariants(shuffled);
 
-      setRestWords(prepared);
+      setRestWords(filtered);
     },
     [words]
   );
@@ -57,18 +50,14 @@ const WordsTraining: React.FunctionComponent<TrainingProps> = ({
 
   const pick = useCallback(
     (variant: string) => {
-      const currentData = {
-        word: currentWord,
-        translate: currentTranslate,
-      };
-      if (variant === currentWord) {
-        setSuccesed(currentData);
+      if (variant === words.find(({ id }) => id === currentWordId)?.translate) {
+        setSuccesed(currentWordId);
       } else {
-        setFailed(currentData);
+        setFailed(currentWordId);
       }
       checkRestWords();
     },
-    [currentTranslate, currentWord, checkRestWords, setFailed, setSuccesed]
+    [currentWordId, checkRestWords, setFailed, setSuccesed, words]
   );
 
   useEffect(() => {
@@ -80,7 +69,7 @@ const WordsTraining: React.FunctionComponent<TrainingProps> = ({
   return (
     <>
       <Picker
-        currentWord={currentWord}
+        currentWord={words.find(({ id }) => id === currentWordId)?.word}
         variants={[...variants] as Variants}
         pick={pick}
         wordsCount={[restWords.length, words.length]}

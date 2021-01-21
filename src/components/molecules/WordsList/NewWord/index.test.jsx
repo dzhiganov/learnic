@@ -5,7 +5,6 @@ import configureStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import * as translateApi from '../../../../core/store/api/translate';
 import NewWord from '.';
-import 'whatwg-fetch';
 
 jest.spyOn(translateApi, 'getTranslate');
 jest.useFakeTimers();

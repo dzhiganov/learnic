@@ -16,6 +16,7 @@ const Picker: React.FunctionComponent<Props> = ({
   pick,
   wordsCount,
 }: Props) => {
+  console.log('VARIANTS', variants);
   const [completed, all] = wordsCount;
   const left = all - completed;
 
@@ -24,12 +25,13 @@ const Picker: React.FunctionComponent<Props> = ({
       <div className={styles.left}>{`${left}/${all}`}</div>
       <div className={styles.word}>{currentWord}</div>
       <ul className={styles.list}>
-        {variants.map((variant) => (
-          <Variant key={variant} variant={variant} pick={pick} />
+        {variants.map((variant, i) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <Variant key={i} variant={variant} pick={pick} />
         ))}
       </ul>
     </div>
   );
 };
 
-export default memo(Picker);
+export default Picker;

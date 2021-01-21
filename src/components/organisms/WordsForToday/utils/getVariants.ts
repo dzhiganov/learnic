@@ -1,6 +1,7 @@
 import getUniqNumbers from './getUniqNumbers';
 
 type Word = {
+  id: string;
   word: string;
   translate: string;
 };
@@ -25,14 +26,14 @@ const getVariants: GetVariants = (words, key, selected) => {
   ) {
     return Array(anotherVariantsCount).fill('') as Result;
   }
-  const copy = words.length ? [...words] : [];
-  const deletedIndex = copy.findIndex((item) => item[key] === selected[key]);
-  copy.splice(deletedIndex, 1);
 
-  const indexes = getUniqNumbers(copy);
+  const copy = words.length ? [...words] : [];
+  const filtered = copy.filter(({ id }) => id !== selected.id);
+
+  const indexes = getUniqNumbers(filtered);
 
   return indexes.map((index) => {
-    const item = copy[index];
+    const item = filtered[index];
     return item[key];
   }) as Result;
 };

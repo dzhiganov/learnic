@@ -25,8 +25,7 @@ const SentecesTraining: React.FunctionComponent<TrainingProps> = ({
   words,
   onBack,
 }: TrainingProps) => {
-  const [currentWord, setCurrentWord] = useState<string>('');
-  const [currentTranslate, setCurrentTranslate] = useState<string>('');
+  const [currentWordId, setCurrentWordId] = useState<string>('');
   const [variants, setVariants] = useState<Variants | never[]>([]);
   const [restWords, setRestWords] = useState<Words>([]);
   const [sentences, setSentences] = useState<Sentences>([]);
@@ -57,9 +56,8 @@ const SentecesTraining: React.FunctionComponent<TrainingProps> = ({
   const setTrainWord = useCallback(
     (arr) => {
       const random = getRandomWord(arr || []);
-      const { word: randomWord, translate: randomTranslate } = random;
-      setCurrentWord(randomWord);
-      setCurrentTranslate(randomTranslate);
+      const { id: randomId, word: randomWord } = random;
+      setCurrentWordId(randomId);
 
       const prepared = [...arr];
 
@@ -89,18 +87,14 @@ const SentecesTraining: React.FunctionComponent<TrainingProps> = ({
 
   const pick = useCallback(
     (variant: string) => {
-      const currentData = {
-        word: currentWord,
-        translate: currentTranslate,
-      };
-      if (variant === currentWord) {
-        setSuccesed(currentData);
+      if (variant === words.find(({ id }) => id === currentWordId)?.word) {
+        setSuccesed(currentWordId);
       } else {
-        setFailed(currentData);
+        setFailed(currentWordId);
       }
       checkRestWords();
     },
-    [currentTranslate, currentWord, checkRestWords, setFailed, setSuccesed]
+    [checkRestWords, setFailed, setSuccesed, currentWordId, words]
   );
 
   const fetchData = useCallback(async () => {
@@ -129,16 +123,22 @@ const SentecesTraining: React.FunctionComponent<TrainingProps> = ({
 
   const currentSentence = useMemo(() => {
     if (sentences.length) {
-      const current = sentences.find(({ word }) => word === currentWord);
+      const current = sentences.find(
+        ({ word }) =>
+          word === words.find(({ id }) => id === currentWordId)?.word
+      );
       if (!current || !current.example) {
         return '';
       }
       const replacer = Array(4).fill('_').join('');
-      const replaced = current.example.replaceAll(currentWord, replacer);
+      const replaced = current.example.replaceAll(
+        words.find(({ id }) => id === currentWordId)?.word,
+        replacer
+      );
       return replaced;
     }
     return '';
-  }, [currentWord, sentences]);
+  }, [sentences, currentWordId, words]);
 
   if (loading) {
     return <Loading />;

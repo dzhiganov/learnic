@@ -5,18 +5,22 @@ jest.mock('../getUniqNumbers', () => jest.fn());
 
 const mockData = [
   {
+    id: '1',
     word: 'test1',
     translate: 'test1',
   },
   {
+    id: '2',
     word: 'test2',
     translate: 'test2',
   },
   {
+    id: '3',
     word: 'test3',
     translate: 'test3',
   },
   {
+    id: '4',
     word: 'test4',
     translate: 'test4',
   },
