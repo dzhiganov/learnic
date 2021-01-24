@@ -6,59 +6,75 @@ import userEvent from '@testing-library/user-event';
 import * as translateApi from '../../../../core/store/api/translate';
 import NewWord from '.';
 
-jest.spyOn(translateApi, 'getTranslate');
-jest.useFakeTimers();
-translateApi.getTranslate.mockImplementation(() => {});
+let mockedTranslateApi;
+let mockedConsoleError;
+let onSave;
+let onCancel;
+
+const fakeInitialState = {
+  word: 'test1',
+  translate: 'test2',
+};
 
 const mockStore = configureStore([]);
 
+const fakeInitialStore = {
+  translate: {
+    token: 'FAKE_TOKEN',
+  },
+};
+
+const fakeStore = mockStore(fakeInitialStore);
+
 describe('NewWord', () => {
+  beforeAll(() => {
+    mockedTranslateApi = jest
+      .spyOn(translateApi, 'getTranslate')
+      .mockImplementation(() => {});
+    mockedConsoleError = jest
+      .spyOn(global.console, 'error')
+      .mockImplementationOnce(() => {});
+
+    onSave = jest.fn();
+    onCancel = jest.fn();
+  });
+  afterAll(() => {
+    jest.useRealTimers();
+    mockedTranslateApi.mockRestore();
+    mockedConsoleError.mockRestore();
+  });
+
   beforeEach(() => {
     jest.useFakeTimers();
   });
 
   afterEach(() => {
+    jest.clearAllMocks();
     jest.useRealTimers();
   });
 
   test('should set focus on the Word input', () => {
-    const onSave = jest.fn();
-    const onCancel = jest.fn();
-    const initialState = {
-      word: 'test1',
-      translate: 'test2',
-    };
-    const store = mockStore({});
     const { queryByTestId } = render(
-      <Provider store={store}>
+      <Provider store={fakeStore}>
         <NewWord
           onSave={onSave}
           onCancel={onCancel}
-          initialState={initialState}
+          initialState={fakeInitialState}
           autoFetch={false}
         />
       </Provider>
     );
 
-    act(() => {
-      expect(queryByTestId('word') === document.activeElement).toBeTruthy();
-    });
+    expect(queryByTestId('word') === document.activeElement).toBeTruthy();
   });
 
   test('should render with correct initial state', () => {
-    const onSave = jest.fn();
-    const onCancel = jest.fn();
-    const initialState = {
-      word: 'test1',
-      translate: 'test2',
-    };
-    const store = mockStore({});
     const { container, queryByTestId } = render(
-      <Provider store={store}>
+      <Provider store={fakeStore}>
         <NewWord
           onSave={onSave}
           onCancel={onCancel}
-          initialState={initialState}
+          initialState={fakeInitialState}
           autoFetch={false}
         />
       </Provider>
@@ -67,25 +83,14 @@ describe('NewWord', () => {
     const wordInput = container.querySelector('[name="word"]');
     const translateInput = container.querySelector('[name="translate"]');
 
-    expect(wordInput.value).toBe('test1');
-    expect(translateInput.value).toBe('test2');
-    act(() => {
-      expect(queryByTestId('word') === document.activeElement).toBeTruthy();
-    });
+    expect(wordInput.value).toBe(fakeInitialState.word);
+    expect(translateInput.value).toBe(fakeInitialState.translate);
+    expect(queryByTestId('word') === document.activeElement).toBeTruthy();
   });
 
   test('user change input value', () => {
-    translateApi.getTranslate.mockImplementation(() => {});
-    const onSave = jest.fn();
-    const onCancel = jest.fn();
-    const initialStore = {
-      translate: {
-        token: 'FAKE_TOKEN',
-      },
-    };
-    const store = mockStore(initialStore);
     const { container } = render(
-      <Provider store={store}>
+      <Provider store={fakeStore}>
         <NewWord onSave={onSave} onCancel={onCancel} autoFetch />
       </Provider>
     );
@@ -101,25 +106,12 @@ describe('NewWord', () => {
   });
 
   test('user change type text after delete initial values', () => {
-    translateApi.getTranslate.mockImplementation(() => {});
-    const onSave = jest.fn();
-    const onCancel = jest.fn();
-    const initialState = {
-      word: 'initialWord',
-      translate: 'initialTranslate',
-    };
-    const initialStore = {
-      translate: {
-        token: 'FAKE_TOKEN',
-      },
-    };
-    const store = mockStore(initialStore);
     const { container } = render(
-      <Provider store={store}>
+      <Provider store={fakeStore}>
         <NewWord
           onSave={onSave}
           onCancel={onCancel}
-          initialState={initialState}
+          initialState={fakeInitialState}
           autoFetch={false}
         />
       </Provider>
@@ -136,25 +128,13 @@ describe('NewWord', () => {
   });
 
   test('should not fetch translate if autoFetch is false', async () => {
-    const onSave = jest.fn();
-    const onCancel = jest.fn();
-    const initialStore = {
-      translate: {
-        token: 'FAKE_TOKEN',
-      },
-    };
-    const initialState = {
-      word: 'initialWord',
-      translate: 'initialTranslate',
-    };
-    const store = mockStore(initialStore);
     const { container } = render(
-      <Provider store={store}>
+      <Provider store={fakeStore}>
         <NewWord
           onSave={onSave}
           onCancel={onCancel}
-          initialState={initialState}
-          autoFetch
+          initialState={fakeInitialState}
+          autoFetch={false}
         />
       </Provider>
     );
@@ -167,6 +147,41 @@ describe('NewWord', () => {
     expect(translateApi.getTranslate).not.toHaveBeenCalled();
 
     expect(wordInput).toHaveValue('w');
-    expect(translateInput).toHaveValue('initialTranslate');
+    expect(translateInput).toHaveValue(fakeInitialState.translate);
+  });
+
+  test('should fetch have been called n times', async () => {
+    let container;
+    const DELAY = 500;
+
+    act(() => {
+      const rendered = render(
+        <Provider store={fakeStore}>
+          <NewWord onSave={onSave} onCancel={onCancel} autoFetch />
+        </Provider>
+      );
+      container = rendered.container;
+    });
+
+    expect(translateApi.getTranslate).toHaveBeenCalledTimes(0);
+
+    const wordInput = container.querySelector('[name="word"]');
+
+    act(() => {
+      userEvent.type(wordInput, 'w');
+      jest.advanceTimersByTime(DELAY);
+    });
+
+    expect(translateApi.getTranslate).toHaveBeenCalledTimes(1);
+    expect(wordInput).toHaveValue('w');
+
+    act(() => {
+      userEvent.type(wordInput, 'o');
+      jest.advanceTimersByTime(DELAY);
+    });
+
+    expect(translateApi.getTranslate).toHaveBeenCalledTimes(2);
+
+    expect(wordInput).toHaveValue('wo');
   });
 });

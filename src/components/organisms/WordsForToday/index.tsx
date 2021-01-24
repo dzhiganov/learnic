@@ -16,13 +16,13 @@ import TrainingTypes from './consts/trainingTypes';
 import WordsTraining from './WordsTraining';
 import NoWordsForToday from './NoWordsForToday';
 
-type Word = {
+type Word = firebase.firestore.DocumentData & {
   id: string;
   word: string;
   translate: string;
 };
 
-type Words = firebase.firestore.DocumentData[] & Word[];
+type Words = Word[];
 
 type Variants = [string, string, string, string];
 
@@ -102,10 +102,6 @@ const WordsForToday: React.FunctionComponent = () => {
     [],
     { loading: true }
   );
-
-  useEffect(() => {
-    console.log('LENGTH', words.length);
-  }, [words]);
 
   const handleRepeat = useCallback(() => {
     setFailed([]);
@@ -211,5 +207,5 @@ const WordsForToday: React.FunctionComponent = () => {
   );
 };
 
-export type { Variants, Words, TrainingTypes, TrainingProps };
+export type { Word, Variants, Words, TrainingTypes, TrainingProps };
 export default WordsForToday;

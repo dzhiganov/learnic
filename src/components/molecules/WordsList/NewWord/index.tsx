@@ -39,7 +39,7 @@ const NewWord: React.FunctionComponent<Props> = ({
 
   const [, cancel] = useDebounce(
     async () => {
-      if (!autoFetch) {
+      if (!autoFetch || !word) {
         return;
       }
       const res = (await getTranslate(token, word, 'ru', 'en')) as {
