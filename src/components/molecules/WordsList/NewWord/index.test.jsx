@@ -8,8 +8,8 @@ import NewWord from '.';
 
 let mockedTranslateApi;
 let mockedConsoleError;
-let onSave;
-let onCancel;
+const mockedOnSave = jest.fn();
+const mockedOnCancel = jest.fn();
 
 const fakeInitialState = {
   word: 'test1',
@@ -26,6 +26,28 @@ const fakeInitialStore = {
 
 const fakeStore = mockStore(fakeInitialStore);
 
+const renderNewWord = (
+  { autoFetch, initialState } = {
+    autoFetch: false,
+    initialState: fakeInitialState,
+  }
+) => {
+  const utils = render(
+    <Provider store={fakeStore}>
+      <NewWord
+        onSave={mockedOnSave}
+        onCancel={mockedOnCancel}
+        initialState={initialState}
+        autoFetch={autoFetch}
+      />
+    </Provider>
+  );
+
+  return {
+    ...utils,
+  };
+};
+
 describe('NewWord', () => {
   beforeAll(() => {
     mockedTranslateApi = jest
@@ -34,9 +56,6 @@ describe('NewWord', () => {
     mockedConsoleError = jest
       .spyOn(global.console, 'error')
       .mockImplementationOnce(() => {});
-
-    onSave = jest.fn();
-    onCancel = jest.fn();
   });
   afterAll(() => {
     jest.useRealTimers();
@@ -54,31 +73,13 @@ describe('NewWord', () => {
   });
 
   test('should set focus on the Word input', () => {
-    const { queryByTestId } = render(
-      <Provider store={fakeStore}>
-        <NewWord
-          onSave={onSave}
-          onCancel={onCancel}
-          initialState={fakeInitialState}
-          autoFetch={false}
-        />
-      </Provider>
-    );
+    const { queryByTestId } = renderNewWord();
 
     expect(queryByTestId('word') === document.activeElement).toBeTruthy();
   });
 
   test('should render with correct initial state', () => {
-    const { container, queryByTestId } = render(
-      <Provider store={fakeStore}>
-        <NewWord
-          onSave={onSave}
-          onCancel={onCancel}
-          initialState={fakeInitialState}
-          autoFetch={false}
-        />
-      </Provider>
-    );
+    const { container, queryByTestId } = renderNewWord();
 
     const wordInput = container.querySelector('[name="word"]');
     const translateInput = container.querySelector('[name="translate"]');
@@ -89,12 +90,7 @@ describe('NewWord', () => {
   });
 
   test('user change input value', () => {
-    const { container } = render(
-      <Provider store={fakeStore}>
-        <NewWord onSave={onSave} onCancel={onCancel} autoFetch />
-      </Provider>
-    );
-
+    const { container } = renderNewWord({ autoFetch: true });
     const wordInput = container.querySelector('[name="word"]');
     const translateInput = container.querySelector('[name="translate"]');
 
@@ -106,16 +102,7 @@ describe('NewWord', () => {
   });
 
   test('user change type text after delete initial values', () => {
-    const { container } = render(
-      <Provider store={fakeStore}>
-        <NewWord
-          onSave={onSave}
-          onCancel={onCancel}
-          initialState={fakeInitialState}
-          autoFetch={false}
-        />
-      </Provider>
-    );
+    const { container } = renderNewWord();
 
     const wordInput = container.querySelector('[name="word"]');
     const translateInput = container.querySelector('[name="translate"]');
@@ -128,16 +115,7 @@ describe('NewWord', () => {
   });
 
   test('should not fetch translate if autoFetch is false', async () => {
-    const { container } = render(
-      <Provider store={fakeStore}>
-        <NewWord
-          onSave={onSave}
-          onCancel={onCancel}
-          initialState={fakeInitialState}
-          autoFetch={false}
-        />
-      </Provider>
-    );
+    const { container } = renderNewWord();
 
     const wordInput = container.querySelector('[name="word"]');
     const translateInput = container.querySelector('[name="translate"]');
@@ -151,17 +129,9 @@ describe('NewWord', () => {
   });
 
   test('should fetch have been called n times', async () => {
-    let container;
     const DELAY = 500;
 
-    act(() => {
-      const rendered = render(
-        <Provider store={fakeStore}>
-          <NewWord onSave={onSave} onCancel={onCancel} autoFetch />
-        </Provider>
-      );
-      container = rendered.container;
-    });
+    const { container } = renderNewWord({ autoFetch: true });
 
     expect(translateApi.getTranslate).toHaveBeenCalledTimes(0);
 

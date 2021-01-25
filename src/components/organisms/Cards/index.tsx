@@ -91,6 +91,7 @@ const Cards: React.FunctionComponent = () => {
         translate,
         step: 0,
         date: new Date(),
+        repeat: new Date(),
       });
 
       await fetch(user);

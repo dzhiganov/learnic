@@ -3,7 +3,6 @@ import useAsyncFn from 'react-use/lib/useAsyncFn';
 import firebase from 'firebase';
 import { useSelector } from 'react-redux';
 import shuffle from 'lodash.shuffle';
-import dayjs from 'dayjs';
 import styles from './styles.module.css';
 import type { User } from '../../../core/store/models/user';
 import { firestore } from '../../../database';
@@ -15,6 +14,8 @@ import If from '../../atoms/If';
 import TrainingTypes from './consts/trainingTypes';
 import WordsTraining from './WordsTraining';
 import NoWordsForToday from './NoWordsForToday';
+import getNewRepeatTimeByStep from './utils/getNewRepeatTimeByStep';
+import queryBuilder from './utils/queryBuilder';
 
 type Word = firebase.firestore.DocumentData & {
   id: string;
@@ -66,36 +67,17 @@ const WordsForToday: React.FunctionComponent = () => {
       }
       const result: firebase.firestore.DocumentData[] = [];
 
-      const requestByStep = firestore
-        .collection('users')
-        .doc(uid)
-        .collection('words')
-        .where('step', '==', 1);
-      const snapshotByStep = await requestByStep.get();
+      const query = queryBuilder(uid);
+      const snapshotByStep = await query(['step', '==', 0]);
+      const snapshotByDate = await query(['repeat', '<=', new Date()]);
 
-      const requestByDate = firestore
-        .collection('users')
-        .doc(uid)
-        .collection('words')
-        .where(
-          'repeat',
-          '<',
-          dayjs('12.22.2020 23:59:59', 'MM.DD.YYYY HH:mm:ss').toDate()
-        )
-        .where(
-          'repeat',
-          '>',
-          dayjs('12.22.2020 00:00:00', 'MM.DD.YYYY HH:mm:ss').toDate()
-        );
-      const snapshotByDate = await requestByDate.get();
+      const mergeToResult = (
+        doc: firebase.firestore.QueryDocumentSnapshot<firebase.firestore.DocumentData>
+      ) => result.push({ id: doc.id, ...doc.data() });
 
-      snapshotByStep.forEach((doc) => {
-        result.push({ id: doc.id, ...doc.data() });
-      });
-
-      snapshotByDate.forEach((doc) => {
-        result.push({ id: doc.id, ...doc.data() });
-      });
+      [snapshotByStep, snapshotByDate].forEach((snap) =>
+        snap.forEach(mergeToResult)
+      );
 
       return shuffle(result) as Words;
     },
@@ -132,8 +114,13 @@ const WordsForToday: React.FunctionComponent = () => {
         const doc = await request.get();
         const data = doc.data();
 
+        // TODO Fix that. When word has step 6 it should be archived
+        const nextStep = data?.step >= 6 ? 6 : data?.step || 0 + 1;
+        const nextRepeat = getNewRepeatTimeByStep(nextStep);
+
         request.update({
-          step: data?.step + 1,
+          step: nextStep,
+          repeat: nextRepeat,
         });
       });
     },

@@ -16,7 +16,6 @@ const Picker: React.FunctionComponent<Props> = ({
   pick,
   wordsCount,
 }: Props) => {
-  console.log('VARIANTS', variants);
   const [completed, all] = wordsCount;
   const left = all - completed;
 
