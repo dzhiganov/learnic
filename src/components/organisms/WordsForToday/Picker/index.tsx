@@ -25,6 +25,7 @@ const Picker: React.FunctionComponent<Props> = ({
       <div className={styles.word}>{currentWord}</div>
       <ul className={styles.list}>
         {variants.map((variant, i) => (
+          // TODO use word Id insted of index
           // eslint-disable-next-line react/no-array-index-key
           <Variant key={i} variant={variant} pick={pick} />
         ))}
@@ -33,4 +34,4 @@ const Picker: React.FunctionComponent<Props> = ({
   );
 };
 
-export default Picker;
+export default memo(Picker);
