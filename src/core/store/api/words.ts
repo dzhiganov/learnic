@@ -1,14 +1,34 @@
 import firebase from 'firebase';
 import { firestore } from '../../../database';
 
-const getWords = async (uid: string): Promise<any[]> => {
-  const result: any[] = [];
+type Timestamp = firebase.firestore.Timestamp;
+
+type Raw = {
+  id: string;
+  word: string;
+  translate: string;
+  date: Timestamp;
+  repeat: Timestamp;
+};
+
+type Word = {
+  id: string;
+  word: string;
+  translate: string;
+  date: string | null;
+  repeat: string | null;
+};
+
+type Words = Word[];
+
+const getWords = async (uid: string): Promise<Words> => {
+  const result: Raw[] = [];
   const request = firestore.collection('users').doc(uid).collection('words');
   const response = await request.get();
 
   const mergeToResult = (
     doc: firebase.firestore.QueryDocumentSnapshot<firebase.firestore.DocumentData>
-  ) => result.push({ id: doc.id, ...doc.data() });
+  ) => result.push({ id: doc.id, ...doc.data() } as Raw);
 
   response.forEach(mergeToResult);
 
