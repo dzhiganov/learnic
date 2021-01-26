@@ -1,15 +1,16 @@
-import React, { memo, useState, useCallback, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import firebase from 'firebase';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
-import { firestore } from '../../../database';
-import type { RootState } from '../../../core/store/rootReducer';
-import type { User } from '../../../core/store/models/user';
+import React, { memo, useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import styles from './styles.module.css';
 import WordsCard from '../../molecules/WordsCard';
 import WordsList from '../../molecules/WordsList';
+import useSelector from '../../../utils/hooks/useSelector';
+import {
+  fetchDeleteWord,
+  fetchAddNewWord,
+} from '../../../core/store/models/words';
 
 const Cards: React.FunctionComponent = () => {
+  const dispatch = useDispatch();
   const [openedCard, setOpenedCard] = useState<{
     word: string;
     translate: string;
@@ -19,100 +20,27 @@ const Cards: React.FunctionComponent = () => {
   });
   const [showNewWord, setShowNewWord] = useState(false);
   const [edited, setEdited] = useState<string>('');
-  const user = useSelector(({ user: userData }: RootState) => userData);
-  const [{ value: words = [], loading }, fetch] = useAsyncFn(
-    async (
-      currentUser: User
-    ): Promise<
-      firebase.firestore.DocumentData &
-        { id: string; word: string; translate: string }[]
-    > => {
-      const uid = currentUser?.uid;
-      if (!uid) {
-        throw new Error('UID must not be null');
-      }
-      const result: firebase.firestore.DocumentData &
-        {
-          id: string;
-          word: string;
-          translate: string;
-        }[] = [];
-      const request = firestore
-        .collection('users')
-        .doc(uid)
-        .collection('words');
-      const snapshot = await request.get();
-
-      if (snapshot.empty) {
-        throw new Error('Snapshot is empty');
-      }
-
-      snapshot.forEach((doc) => {
-        result.push({
-          id: doc.id,
-          ...(doc.data() as firebase.firestore.DocumentData & {
-            word: string;
-            translate: string;
-          }),
-        });
-      });
-
-      return result;
-    },
-    [],
-    { loading: true }
-  );
-
-  useEffect(() => {
-    if (user) {
-      fetch(user);
-    }
-  }, [user, fetch]);
+  const words = useSelector('words.all');
+  const userId = useSelector('user.uid');
 
   const handleShowNewWord = useCallback(() => {
     setShowNewWord(true);
   }, []);
 
   const handleOnSave = useCallback(
-    async ({
-      word,
-      translate,
-    }: {
-      word: string;
-      translate: string;
-    }): Promise<void> => {
-      const request = firestore
-        .collection('users')
-        .doc(user.uid)
-        .collection('words');
-
-      await request.add({
-        word,
-        translate,
-        step: 0,
-        date: new Date(),
-        repeat: new Date(),
-      });
-
-      await fetch(user);
+    ({ word, translate }: { word: string; translate: string }) => {
+      dispatch(fetchAddNewWord({ uid: userId, word, translate }));
 
       setShowNewWord(false);
     },
-    [user, fetch]
+    [userId, dispatch]
   );
 
   const handleOnDelete = useCallback(
     async (id: string) => {
-      await firestore
-        .collection('users')
-        .doc(user.uid)
-        .collection('words')
-        .doc(id)
-        .delete();
-
-      await fetch(user);
+      dispatch(fetchDeleteWord({ uid: userId, wordId: id }));
     },
-    [fetch, user]
+    [userId, dispatch]
   );
 
   const handleOnEdit = useCallback((id) => {
@@ -142,7 +70,6 @@ const Cards: React.FunctionComponent = () => {
             onClickCard={handleClickCard}
             showNewWord={showNewWord}
             setShowNewWord={setShowNewWord}
-            loading={loading}
             edited={edited}
             onCancelEdit={handleCancelEdit}
           />

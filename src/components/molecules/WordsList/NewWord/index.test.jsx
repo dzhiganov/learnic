@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { render, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
@@ -32,15 +33,18 @@ const renderNewWord = (
     initialState: fakeInitialState,
   }
 ) => {
+  const Wrapper = ({ children }) => (
+    <Provider store={fakeStore}>{children}</Provider>
+  );
+
   const utils = render(
-    <Provider store={fakeStore}>
-      <NewWord
-        onSave={mockedOnSave}
-        onCancel={mockedOnCancel}
-        initialState={initialState}
-        autoFetch={autoFetch}
-      />
-    </Provider>
+    <NewWord
+      onSave={mockedOnSave}
+      onCancel={mockedOnCancel}
+      initialState={initialState}
+      autoFetch={autoFetch}
+    />,
+    { wrapper: Wrapper }
   );
 
   return {

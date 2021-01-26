@@ -7,6 +7,7 @@ type Props = {
   onSelectTraining: (type: TrainingTypes) => void;
 };
 
+// TODO use uniq id as keys
 const Trainings: React.FunctionComponent<Props> = ({
   onSelectTraining,
 }: Props) => {

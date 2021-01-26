@@ -4,7 +4,6 @@ import Fuse from 'fuse.js';
 import EditIcon from '@material-ui/icons/EditOutlined';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import styles from './styles.module.css';
-import Skeleton from '../../atoms/Skeleton';
 import NewWord from './NewWord';
 import Search from './Search';
 import NoWord from './NoWord';
@@ -18,13 +17,7 @@ type Props = {
       translate: string;
     }[];
   onShowNewWord: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  onSave: ({
-    word,
-    translate,
-  }: {
-    word: string;
-    translate: string;
-  }) => Promise<void>;
+  onSave: ({ word, translate }: { word: string; translate: string }) => void;
   onDelete: (id: string) => Promise<void>;
   onEdit: (id: string) => void;
   onClickCard: ({
@@ -36,7 +29,6 @@ type Props = {
   }) => void;
   showNewWord: boolean;
   setShowNewWord: (state: boolean) => void;
-  loading: boolean;
   edited: string;
   onCancelEdit: () => void;
 };
@@ -51,7 +43,6 @@ const WordsList: React.FunctionComponent<Props> = ({
   onEdit,
   onClickCard,
   edited,
-  loading,
   onCancelEdit,
 }: Props) => {
   const [focused, setFocused] = useState<string>('');
@@ -114,82 +105,77 @@ const WordsList: React.FunctionComponent<Props> = ({
         <If condition={showNewWord}>
           <NewWord onSave={onSave} onCancel={onCancelAddNewWord} />
         </If>
-        {loading ? (
-          <ul className={styles.cardsList}>
-            <Skeleton variant="text" width={512} height={40} repeat={4} />
-          </ul>
-        ) : (
-          <ul className={styles.cardsList} onMouseLeave={() => setFocused('')}>
-            {(filter && filtered.length > 0) || !filter ? (
-              (filter ? filtered : words).map(({ id, word, translate }) => {
-                const onClick = () => onClickCard({ word, translate });
-                if (id === edited) {
-                  return (
-                    <NewWord
-                      onSave={onSave}
-                      onCancel={onCancelAddNewWord}
-                      initialState={{ word, translate }}
-                      autoFetch={false}
-                    />
-                  );
-                }
+
+        <ul className={styles.cardsList} onMouseLeave={() => setFocused('')}>
+          {(filter && filtered.length > 0) || !filter ? (
+            (filter ? filtered : words).map(({ id, word, translate }) => {
+              const onClick = () => onClickCard({ word, translate });
+              if (id === edited) {
                 return (
-                  <li
-                    className={styles.cardItem}
-                    key={id}
-                    onMouseEnter={() => handleMouseDown(id)}
-                  >
-                    <div className={styles.cardItemContainer}>
-                      <div
-                        className={`${styles.cardItemTextContainer} ${
-                          id === focused
-                            ? styles.cardItemTextContainerHovered
-                            : ''
-                        }`}
-                      >
-                        <span
-                          role="button"
-                          className={styles.cardButton}
-                          onClick={onClick}
-                          tabIndex={0}
-                          onKeyDown={(event) =>
-                            handleKeyDown(event, { word, translate })
-                          }
-                        >{`${word} - ${translate}`}</span>
-                      </div>
-                      <If condition={id === focused}>
-                        <div className={styles.icons}>
-                          <button
-                            type="button"
-                            className={styles.actionButton}
-                            onClick={() => {
-                              clearFilter();
-                              onEdit(id);
-                            }}
-                          >
-                            <EditIcon />
-                          </button>
-                          <button
-                            type="button"
-                            className={styles.actionButton}
-                            onClick={() => {
-                              clearFilter();
-                              onDelete(id);
-                            }}
-                          >
-                            <DeleteIcon />
-                          </button>
-                        </div>
-                      </If>
-                    </div>
-                  </li>
+                  <NewWord
+                    onSave={onSave}
+                    onCancel={onCancelAddNewWord}
+                    initialState={{ word, translate }}
+                    autoFetch={false}
+                  />
                 );
-              })
-            ) : (
-              <NoWord word={filter} onSave={onSave} clearFilter={clearFilter} />
-            )}
-          </ul>
-        )}
+              }
+              return (
+                <li
+                  className={styles.cardItem}
+                  key={id}
+                  onMouseEnter={() => handleMouseDown(id)}
+                >
+                  <div className={styles.cardItemContainer}>
+                    <div
+                      className={`${styles.cardItemTextContainer} ${
+                        id === focused
+                          ? styles.cardItemTextContainerHovered
+                          : ''
+                      }`}
+                    >
+                      <span
+                        role="button"
+                        className={styles.cardButton}
+                        onClick={onClick}
+                        tabIndex={0}
+                        onKeyDown={(event) =>
+                          handleKeyDown(event, { word, translate })
+                        }
+                      >{`${word} - ${translate}`}</span>
+                    </div>
+                    <If condition={id === focused}>
+                      <div className={styles.icons}>
+                        <button
+                          type="button"
+                          className={styles.actionButton}
+                          onClick={() => {
+                            clearFilter();
+                            onEdit(id);
+                          }}
+                        >
+                          <EditIcon />
+                        </button>
+                        <button
+                          type="button"
+                          className={styles.actionButton}
+                          onClick={() => {
+                            clearFilter();
+                            onDelete(id);
+                          }}
+                        >
+                          <DeleteIcon />
+                        </button>
+                      </div>
+                    </If>
+                  </div>
+                </li>
+              );
+            })
+          ) : (
+            <NoWord word={filter} onSave={onSave} clearFilter={clearFilter} />
+          )}
+        </ul>
       </div>
     </>
   );

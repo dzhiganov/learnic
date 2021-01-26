@@ -3,11 +3,15 @@ import { ThunkAction } from 'redux-thunk';
 
 import user from './models/user';
 import translate from './models/translate';
+import words from './models/words';
 
 const rootReducer = combineReducers({
   user,
   translate,
+  words,
 });
+
+export type Reducers = 'user' | 'translate' | 'words';
 
 export type RootState = ReturnType<typeof rootReducer>;
 

@@ -11,13 +11,7 @@ type Props = {
     word: string;
     translate: string;
   };
-  onSave: ({
-    word,
-    translate,
-  }: {
-    word: string;
-    translate: string;
-  }) => Promise<void>;
+  onSave: ({ word, translate }: { word: string; translate: string }) => void;
   onCancel: () => void;
   autoFetch?: boolean;
 };

@@ -8,13 +8,7 @@ import Escape from '../../../atoms/Icons/Escape';
 
 type Props = {
   word: string;
-  onSave: ({
-    word,
-    translate,
-  }: {
-    word: string;
-    translate: string;
-  }) => Promise<void>;
+  onSave: ({ word, translate }: { word: string; translate: string }) => void;
   clearFilter: () => void;
 };
 
@@ -49,7 +43,8 @@ const NoWord: React.FunctionComponent<Props> = ({
   const handleKeyDown = useCallback(
     (event) => {
       if (event.key === 'Enter') {
-        onSave({ word, translate }).then(clearFilter);
+        onSave({ word, translate });
+        clearFilter();
       } else if (event.key === 'Escape') {
         clearFilter();
       }
