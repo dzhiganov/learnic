@@ -9,6 +9,7 @@ type Raw = {
   translate: string;
   date: Timestamp;
   repeat: Timestamp;
+  step: number;
 };
 
 type Word = {
@@ -17,6 +18,7 @@ type Word = {
   translate: string;
   date: string | null;
   repeat: string | null;
+  step: number;
 };
 
 type Words = Word[];
