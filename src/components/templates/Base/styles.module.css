@@ -1,12 +1,12 @@
 .container {
   display: grid;
-  grid-template-columns: 200px auto;
+  grid-template-columns: 250px auto;
   min-height: 100vh;
   background-color: rgb(238, 232, 237);;
 }
 
 .content {
-  margin: 1em 2em;
+  margin: 1em 0;
   padding: 1.5em 3em;
   position: relative;
   background-color: #fff;
