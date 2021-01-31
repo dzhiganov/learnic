@@ -1,8 +1,8 @@
 import React, { memo, useEffect, useState } from 'react';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import styles from './styles.module.css';
-import { getList } from '../../../core/store/api/videos';
-import Skeleton from '../../atoms/Skeleton';
+import { getList } from '~store/api/videos';
+import Skeleton from '~c/atoms/Skeleton';
 import VideoItem from './VideoItem';
 
 type Props = {

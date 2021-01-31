@@ -1,9 +1,9 @@
 import React, { memo, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from './styles.module.css';
-import WordsCard from '../../molecules/WordsCard';
-import WordsList from '../../molecules/WordsList';
-import useSelector from '../../../utils/hooks/useSelector';
+import WordsCard from '~c/molecules/WordsCard';
+import WordsList from '~c/molecules/WordsList';
+import useSelector from '~hooks/useSelector';
 import {
   fetchDeleteWord,
   fetchAddNewWord,

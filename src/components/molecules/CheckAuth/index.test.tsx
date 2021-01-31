@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import CheckAuth from '.';
-import { Statuses } from '../../../core/store/models/user';
+import { Statuses } from '~actions/user';
 
 const mockStore = configureStore();
 

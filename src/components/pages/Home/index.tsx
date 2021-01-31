@@ -4,13 +4,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
-import Base from '../../templates/Base';
-import Cards from '../../organisms/Cards';
-import WordsForToday from '../../organisms/WordsForToday';
-import { HOME_WORDS, HOME_WORDS_FOR_TODAY } from '../../../core/router/paths';
-import type { RootState } from '../../../core/store/rootReducer';
-import { fetchWords } from '../../../core/store/models/words';
-import If from '../../atoms/If';
+import Base from '~c/templates/Base';
+import Cards from '~c/organisms/Cards';
+import WordsForToday from '~c/organisms/WordsForToday';
+import { HOME_WORDS, HOME_WORDS_FOR_TODAY } from '~router/paths';
+import type { RootState } from '~store/rootReducer';
+import { fetchWords } from '~actions/words';
+import If from '~c/atoms/If';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {

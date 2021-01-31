@@ -5,9 +5,9 @@ import { useDispatch } from 'react-redux';
 import styles from './styles.module.css';
 import VideosList from '../VideosList';
 import AddExample from './AddExample';
-import useSelector from '../../../utils/hooks/useSelector';
-import { update } from '../../../core/store/api/words';
-import { fetchWords } from '../../../core/store/models/words';
+import useSelector from '~hooks/useSelector';
+import { update } from '~api/words';
+import { fetchWords } from '~actions/words';
 
 type Props = {
   id: string;
@@ -114,7 +114,7 @@ const WordsCard: React.FunctionComponent<Props> = ({
         <>
           <ul className={styles.examplesList}>
             {Array.isArray(value.examples) && value.examples.length
-              ? value.examples.splice(0, 3).map((def: string) => (
+              ? value.examples.map((def: string) => (
                   <li key={def} className={styles.examplesItem}>
                     <span className={styles.example} key={def}>
                       {def}

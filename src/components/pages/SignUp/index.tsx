@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import Form from '../../organisms/Form';
+import Form from '~c/organisms/Form';
 import database from '../../../database';
 import styles from './styles.module.css';
-import { HOME } from '../../../core/router/paths';
+import { HOME } from '~router/paths';
 
 type Credentials = {
   login: string;

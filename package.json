@@ -92,5 +92,15 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "prettier": "^2.2.0",
     "redux-mock-store": "^1.5.4"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "~c/(.*)": ["<rootDir>/src/components/$1"],
+      "~hooks/(.*)": ["<rootDir>/src/utils/hooks/$1"],
+      "~actions/(.*)": ["<rootDir>/src/core/store/models/$1"],
+      "~api/(.*)": ["<rootDir>/src/core/store/api/$1"],
+      "~router/(.*)": ["<rootDir>/src/core/router/$1"],
+      "~store/(.*)": ["<rootDir>/src/core/store/$1"]
+    }
   }
 }

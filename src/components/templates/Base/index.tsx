@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './styles.module.css';
-import AsideMenu from '../../organisms/AsideMenu';
+import AsideMenu from '~c/organisms/AsideMenu';
 
 interface Props {
   children: JSX.Element | JSX.Element[];

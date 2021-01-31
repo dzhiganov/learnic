@@ -1,9 +1,9 @@
 import React, { useEffect, memo } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import type { RootState } from '../../../core/store/rootReducer';
-import { LOGIN, SIGNUP, HOME, INDEX } from '../../../core/router/paths';
-import { Statuses } from '../../../core/store/models/user';
+import type { RootState } from '~store/rootReducer';
+import { LOGIN, SIGNUP, HOME, INDEX } from '~router/paths';
+import { Statuses } from '~actions/user';
 
 type Props = {
   children: JSX.Element;

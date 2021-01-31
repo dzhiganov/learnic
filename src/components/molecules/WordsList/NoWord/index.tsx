@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import { getTranslate } from 'core/store/api/translate';
 import useDebounce from 'react-use/lib/useDebounce';
 import styles from './styles.module.css';
-import Enter from '../../../atoms/Icons/Enter';
-import Escape from '../../../atoms/Icons/Escape';
+import Enter from '~c/atoms/Icons/Enter';
+import Escape from '~c/atoms/Icons/Escape';
 
 type Props = {
   word: string;

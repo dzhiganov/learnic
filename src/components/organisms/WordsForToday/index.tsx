@@ -7,13 +7,13 @@ import { firestore } from '../../../database';
 import Results from './Results';
 import Trainings from './Trainings';
 import SentencesTraining from './SentencesTraining';
-import If from '../../atoms/If';
+import If from '~c/atoms/If';
 import TrainingTypes from './consts/trainingTypes';
 import WordsTraining from './WordsTraining';
 import NoWordsForToday from './NoWordsForToday';
 import getNewRepeatTimeByStep from './utils/getNewRepeatTimeByStep';
-import useSelector from '../../../utils/hooks/useSelector';
-import { fetchWords } from '../../../core/store/models/words';
+import useSelector from '~hooks/useSelector';
+import { fetchWords } from '~actions/words';
 
 type Word = firebase.firestore.DocumentData & {
   id: string;

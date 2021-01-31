@@ -7,7 +7,7 @@ import styles from './styles.module.css';
 import NewWord from './NewWord';
 import Search from './Search';
 import NoWord from './NoWord';
-import If from '../../atoms/If';
+import If from '~c/atoms/If';
 
 type Props = {
   words: firebase.firestore.DocumentData &

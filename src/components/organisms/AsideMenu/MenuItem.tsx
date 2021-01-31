@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import useSelector from '../../../utils/hooks/useSelector';
+import useSelector from '~hooks/useSelector';
 import styles from './styles.module.css';
 import { keys } from './consts';
 

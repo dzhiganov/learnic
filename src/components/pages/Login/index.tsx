@@ -1,10 +1,10 @@
 import React, { memo, useCallback } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import Form from '../../organisms/Form';
+import Form from '~c/organisms/Form';
 import database from '../../../database';
 import styles from './styles.module.css';
-import { HOME } from '../../../core/router/paths';
-import { fetchFirebaseUser } from '../../../core/store/models/user';
+import { HOME } from '~router/paths';
+import { fetchFirebaseUser } from '~actions/user';
 
 type Credentials = {
   login: string;

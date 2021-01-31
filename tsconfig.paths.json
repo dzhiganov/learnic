@@ -3,7 +3,11 @@
       "baseUrl": "./src",
       "paths": {
         "~c/*": ["components/*"],
-        "~hooks/*": ["utils/hooks/*"]
+        "~hooks/*": ["utils/hooks/*"],
+        "~actions/*": ["core/store/models/*"],
+        "~api/*": ["core/store/api/*"],
+        "~router/*": ["core/router/*"],
+        "~store/*": ["core/store/*"]
       }
     }
 }
