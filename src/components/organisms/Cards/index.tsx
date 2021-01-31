@@ -12,9 +12,11 @@ import {
 const Cards: React.FunctionComponent = () => {
   const dispatch = useDispatch();
   const [openedCard, setOpenedCard] = useState<{
+    id: string;
     word: string;
     translate: string;
   }>({
+    id: '',
     word: '',
     translate: '',
   });
@@ -48,8 +50,8 @@ const Cards: React.FunctionComponent = () => {
     // setShowNewWord(true);
   }, []);
 
-  const handleClickCard = useCallback(({ word, translate }) => {
-    setOpenedCard({ word, translate });
+  const handleClickCard = useCallback(({ id, word, translate }) => {
+    setOpenedCard({ id, word, translate });
   }, []);
 
   const handleCancelEdit = useCallback(() => {
@@ -76,7 +78,11 @@ const Cards: React.FunctionComponent = () => {
         </div>
 
         <div>
-          <WordsCard word={openedCard.word} translate={openedCard.translate} />
+          <WordsCard
+            id={openedCard.id}
+            word={openedCard.word}
+            translate={openedCard.translate}
+          />
         </div>
       </div>
     </div>

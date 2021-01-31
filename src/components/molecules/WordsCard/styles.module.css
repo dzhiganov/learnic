@@ -30,6 +30,7 @@
 
 .contextSection {
     display: inline-block;
+    margin-top: 40px;
 }
 
 .videoSection {
@@ -68,4 +69,24 @@
 
 .steps {
     filter: grayscale(100%);
+}
+
+.addExampleButton {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    color: #fff;
+    background-color: #7579e7;
+    padding: 0.5em  1.5em;
+    font-size: 1rem;
+    min-width: 64px;
+    box-sizing: border-box;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+.addExampleButton:hover {
+    background-color: #5F62B8;
+    box-shadow: none;
 }

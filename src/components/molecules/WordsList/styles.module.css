@@ -55,20 +55,18 @@
   color: #fff;
   height: 45px;
   background-color: #7579e7;
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
-    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
   padding: 0.45em 2em;
   font-size: 1.1rem;
   min-width: 64px;
   box-sizing: border-box;
   font-weight: 600;
   line-height: 1.75;
-  border-radius: 16px;
+  border-radius: 8px;
   letter-spacing: 0.025em;
 }
 
 .addNewWordButton:hover {
-  background-color: #9ab3f5;
+  background-color: #5F62B8;
   box-shadow: none;
 }
 

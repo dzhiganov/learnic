@@ -21,9 +21,11 @@ type Props = {
   onDelete: (id: string) => Promise<void>;
   onEdit: (id: string) => void;
   onClickCard: ({
+    id,
     word,
     translate,
   }: {
+    id: string;
     word: string;
     translate: string;
   }) => void;
@@ -52,9 +54,9 @@ const WordsList: React.FunctionComponent<Props> = ({
   >([]);
 
   const handleKeyDown = useCallback(
-    (event, { word, translate }) => {
+    (event, { id, word, translate }) => {
       if (event.key === 'Enter') {
-        onClickCard({ word, translate });
+        onClickCard({ id, word, translate });
       }
     },
     [onClickCard]
@@ -109,7 +111,7 @@ const WordsList: React.FunctionComponent<Props> = ({
         <ul className={styles.cardsList} onMouseLeave={() => setFocused('')}>
           {(filter && filtered.length > 0) || !filter ? (
             (filter ? filtered : words).map(({ id, word, translate }) => {
-              const onClick = () => onClickCard({ word, translate });
+              const onClick = () => onClickCard({ id, word, translate });
               if (id === edited) {
                 return (
                   <NewWord

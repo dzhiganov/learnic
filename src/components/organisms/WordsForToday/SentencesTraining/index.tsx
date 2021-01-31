@@ -1,17 +1,15 @@
 import React, { memo, useEffect, useMemo, useState, useCallback } from 'react';
-import { getDefinition } from 'core/store/api/dictionary';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
 import shuffle from 'lodash.shuffle';
+import lRandom from 'lodash.random';
 import Picker from '../Picker';
-import getExamples from '../utils/prepareExamples';
 import type { Word, Variants, TrainingProps, Words } from '..';
-import Loading from '../../../atoms/Loading';
 import getVariants from '../utils/getVariants';
 import getRandomWord from '../utils/getRandomWord';
 import BackButton from '../BackButton';
+import useSelector from '~hooks/useSelector';
 
 type Sentence = {
-  word: string;
+  id: string;
   example: string;
 };
 
@@ -22,9 +20,9 @@ const SentecesTraining: React.FunctionComponent<TrainingProps> = ({
   setFinished,
   setFailed,
   setSuccesed,
-  words,
   onBack,
 }: TrainingProps) => {
+  const words: Words = useSelector('words.training');
   const [currentWordId, setCurrentWordId] = useState<string>('');
   const [variants, setVariants] = useState<Variants | unknown[]>([]);
   const [restWords, setRestWords] = useState<Words>([]);
@@ -34,29 +32,6 @@ const SentecesTraining: React.FunctionComponent<TrainingProps> = ({
   const currentData = useMemo(
     (): Word | undefined => words.find(({ id }) => currentWordId === id),
     [currentWordId, words]
-  );
-
-  const [{ loading }, fetch] = useAsyncFn(
-    async (keyword: string): Promise<Sentence> => {
-      const data = await getDefinition(keyword);
-
-      if (data && Array.isArray(data)) {
-        const { examples: resExamples } = getExamples(data);
-        const [example] = resExamples;
-
-        return {
-          word: keyword,
-          example,
-        };
-      }
-
-      return {
-        word: keyword,
-        example: '',
-      };
-    },
-    [],
-    { loading: true }
   );
 
   const setTrainWord = useCallback(
@@ -101,17 +76,20 @@ const SentecesTraining: React.FunctionComponent<TrainingProps> = ({
   );
 
   const fetchData = useCallback(async () => {
-    // TODO Refactor
-    const data = await Promise.all(words.map(({ word }) => fetch(word)));
-    const filtered = data.filter(({ example }) => example);
-    setSentences(filtered);
+    const data = words.map(({ id, examples }) => {
+      const currentExample = examples[lRandom(0, examples.length - 1)];
+      return {
+        id,
+        example: currentExample,
+      };
+    });
+    setSentences(data);
     const filteredRestWords = words.filter(
-      ({ word: target }) =>
-        filtered.findIndex(({ word }) => word === target) !== -1
+      ({ id: targetId }) => data.findIndex(({ id }) => id === targetId) !== -1
     ) as Words;
     setRestWords(filteredRestWords);
     setAllWordsCount(filteredRestWords.length);
-  }, [fetch, words]);
+  }, [words]);
 
   useEffect(() => {
     if (words) {
@@ -120,14 +98,12 @@ const SentecesTraining: React.FunctionComponent<TrainingProps> = ({
   }, [fetchData, words]);
 
   useEffect(() => {
-    if (!loading) {
-      setTrainWord(words);
-    }
-  }, [loading, words, setTrainWord]);
+    setTrainWord(words);
+  }, [words, setTrainWord]);
 
   const currentSentence = useMemo((): string => {
     if (sentences.length) {
-      const finded = sentences.find(({ word }) => word === currentData?.word);
+      const finded = sentences.find(({ id }) => id === currentData?.id);
 
       if (!finded || !finded.example) {
         return '';
@@ -142,10 +118,6 @@ const SentecesTraining: React.FunctionComponent<TrainingProps> = ({
     }
     return '';
   }, [currentData, sentences]);
-
-  if (loading) {
-    return <Loading />;
-  }
 
   return (
     <>

@@ -84,16 +84,53 @@ const WordsForToday: React.FunctionComponent = () => {
       const doc = await request.get();
       const data = doc.data();
 
-      // TODO Fix that. When word has step 6 it should be archived
-      const nextStep = data?.step >= 6 ? 6 : data?.step || 0 + 1;
-      const nextRepeat = getNewRepeatTimeByStep(nextStep);
+      if (trainingType === TrainingTypes.Words) {
+        let noExamples = false;
 
-      request.update({
-        step: nextStep,
-        repeat: nextRepeat,
-      });
+        const { examples } = words[id];
+
+        if (!Array.isArray(examples) || !examples.length) {
+          noExamples = true;
+        }
+
+        if (data?.repeatSentenceDone || noExamples) {
+          // TODO Fix that. When word has step 6 it should be archived
+          const nextStep = data?.step >= 6 ? 6 : data?.step || 0 + 1;
+          const nextRepeat = getNewRepeatTimeByStep(nextStep);
+
+          request.update({
+            step: nextStep,
+            repeat: nextRepeat,
+            repeatTranslateDone: false,
+            repeatSentenceDone: false,
+          });
+        } else {
+          request.update({
+            repeatTranslateDone: true,
+          });
+        }
+      }
+
+      if (trainingType === TrainingTypes.Sentences) {
+        if (data?.repeatTranslateDone) {
+          // TODO Fix that. When word has step 6 it should be archived
+          const nextStep = data?.step >= 6 ? 6 : data?.step || 0 + 1;
+          const nextRepeat = getNewRepeatTimeByStep(nextStep);
+
+          request.update({
+            step: nextStep,
+            repeat: nextRepeat,
+            repeatTranslateDone: false,
+            repeatSentenceDone: false,
+          });
+        } else {
+          request.update({
+            repeatSentenceDone: true,
+          });
+        }
+      }
     });
-  }, [succesed, uid]);
+  }, [succesed, uid, trainingType, words]);
 
   useEffect(() => {
     if (finished) {

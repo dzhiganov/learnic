@@ -5,7 +5,7 @@
 .word {
     font-size: 22px;
     text-align: center;
-    height: 80px;
+    margin-bottom: 20px;
 }
 
 .list {

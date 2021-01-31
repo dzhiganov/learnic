@@ -1,15 +1,16 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import React, { memo, useEffect, useCallback, useMemo } from 'react';
-import { getDefinition } from 'core/store/api/dictionary';
+import React, { memo, useState, useEffect, useCallback, useMemo } from 'react';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
+import { useDispatch } from 'react-redux';
 import styles from './styles.module.css';
 import VideosList from '../VideosList';
-import { getExamples } from './utils';
-import Skeleton from '../../atoms/Skeleton';
-import ShowMore from './ShowMore';
+import AddExample from './AddExample';
+import useSelector from '../../../utils/hooks/useSelector';
+import { update } from '../../../core/store/api/words';
+import { fetchWords } from '../../../core/store/models/words';
 
 type Props = {
+  id: string;
   word: string;
   translate: string;
 };
@@ -20,33 +21,24 @@ const defaultDefinition = {
 };
 
 const WordsCard: React.FunctionComponent<Props> = ({
+  id,
   word,
   translate,
 }: Props) => {
-  const [{ value = defaultDefinition, loading }, fetch] = useAsyncFn(
-    async (keyword: string): Promise<{ examples: string[]; audio: string }> => {
-      const data = await getDefinition(keyword);
-
-      if (data && Array.isArray(data)) {
-        const { examples: resExamples, audio: resAudio } = getExamples(data);
-
-        return {
-          examples: resExamples,
-          audio: resAudio as string,
-        };
-      }
-
-      return defaultDefinition;
-    },
-    [],
-    { loading: true }
-  );
+  const dispatch = useDispatch();
+  const [showAddExample, setShowAddExample] = useState<boolean>(false);
+  const uid = useSelector('user.uid');
+  // TODO set type imported from redux store
+  const value =
+    useSelector('words.all').find(
+      ({ word: currentWord }: { word: string }) => currentWord === word
+    ) || defaultDefinition;
 
   useEffect(() => {
     if (word) {
       fetch(word);
     }
-  }, [word, fetch]);
+  }, [word]);
 
   const audio = useMemo((): HTMLAudioElement | null => {
     if (value?.audio) {
@@ -58,6 +50,24 @@ const WordsCard: React.FunctionComponent<Props> = ({
   const handlePlayAudio = useCallback(() => {
     if (audio && typeof audio.play === 'function') audio.play();
   }, [audio]);
+
+  const handleClickAddExample = useCallback(() => {
+    setShowAddExample(true);
+  }, []);
+
+  const handleCancelAddWord = useCallback(() => {
+    setShowAddExample(false);
+  }, []);
+
+  const onAddNewExample = useCallback(
+    async (example) => {
+      await update({ uid, wordId: id, updatedFields: { example } });
+      dispatch(fetchWords(uid));
+      setShowAddExample(false);
+    },
+
+    [id, uid, dispatch]
+  );
 
   if (!word) {
     return (
@@ -87,41 +97,33 @@ const WordsCard: React.FunctionComponent<Props> = ({
             <VolumeUpIcon />
           </button>
         </div>
-
-        <div className={styles.steps}>
-          {Array(7)
-            .fill(null)
-            .map(() => (
-              <span role="img" aria-label="steps">
-                🏅
-              </span>
-            ))}
-        </div>
       </div>
       <div className={styles.contextSection}>
-        {loading ? (
+        <div>
+          <button
+            className={styles.addExampleButton}
+            type="button"
+            onClick={handleClickAddExample}
+          >
+            + Add example
+          </button>
+        </div>
+        {showAddExample ? (
+          <AddExample onSave={onAddNewExample} onCancel={handleCancelAddWord} />
+        ) : null}
+        <>
           <ul className={styles.examplesList}>
-            <Skeleton variant="text" width={512} height={40} repeat={3} />
+            {Array.isArray(value.examples) && value.examples.length
+              ? value.examples.splice(0, 3).map((def: string) => (
+                  <li key={def} className={styles.examplesItem}>
+                    <span className={styles.example} key={def}>
+                      {def}
+                    </span>
+                  </li>
+                ))
+              : null}
           </ul>
-        ) : (
-          <>
-            <ul className={styles.examplesList}>
-              {Array.isArray(value.examples) && value.examples.length
-                ? value.examples
-                    .filter((def) => def)
-                    .splice(0, 3)
-                    .map((def) => (
-                      <li key={def} className={styles.examplesItem}>
-                        <span className={styles.example} key={def}>
-                          {def}
-                        </span>
-                      </li>
-                    ))
-                : null}
-            </ul>
-            <ShowMore onShowMore={() => {}} />
-          </>
-        )}
+        </>
       </div>
       <div className={styles.videoSection}>
         {word ? <VideosList keyword={word} /> : null}
