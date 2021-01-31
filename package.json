@@ -34,7 +34,7 @@
   },
   "scripts": {
     "start": "craco start --open",
-    "build": "react-scripts build",
+    "build": "craco build",
     "test": "react-scripts test",
     "coverage": "open ./coverage/lcov-report/index.html",
     "eject": "react-scripts eject",
