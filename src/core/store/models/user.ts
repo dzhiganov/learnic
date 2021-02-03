@@ -32,6 +32,9 @@ const issuesDisplaySlice = createSlice({
   name: 'issuesDisplay',
   initialState,
   reducers: {
+    getUserChecking(state) {
+      state.status = Statuses.Pending;
+    },
     getUserSuccess(state, action: PayloadAction<FirebaseUser>) {
       const { uid, displayName, email } = action.payload;
       state.uid = uid;
@@ -46,12 +49,17 @@ const issuesDisplaySlice = createSlice({
   },
 });
 
-export const { getUserSuccess, getUserFailed } = issuesDisplaySlice.actions;
+export const {
+  getUserSuccess,
+  getUserFailed,
+  getUserChecking,
+} = issuesDisplaySlice.actions;
 
 export default issuesDisplaySlice.reducer;
 
 export const fetchFirebaseUser = (): AppThunk => async (dispatch) => {
   try {
+    dispatch(getUserChecking());
     database.auth().onAuthStateChanged((user) => {
       if (user) {
         const { uid, displayName, email } = user as FirebaseUser;

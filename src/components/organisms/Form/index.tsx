@@ -61,6 +61,7 @@ const Form: React.FunctionComponent<Props> = ({ onSubmit, title }: Props) => {
         </div>
         <div className={styles.buttonContainer}>
           <button
+            data-testId="submit-button"
             type="submit"
             className={styles.submitButton}
             onClick={wrappedOnSubmit}

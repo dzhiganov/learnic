@@ -21,7 +21,14 @@ const CheckAuth = ({ children }: Props): JSX.Element => {
     fetchUserStatus === Statuses.Success || fetchUserStatus === Statuses.Failed;
 
   useEffect(() => {
-    if (pathname === SIGNUP) return;
+    if (pathname === SIGNUP && userId) {
+      history.push(HOME);
+      return;
+    }
+
+    if (pathname === SIGNUP && !userId) {
+      return;
+    }
 
     if (isReady && !userId) {
       history.push(LOGIN);

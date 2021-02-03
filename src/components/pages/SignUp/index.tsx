@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Form from '~c/organisms/Form';
 import database from '../../../database';
 import styles from './styles.module.css';
-import { HOME } from '~router/paths';
+import { fetchFirebaseUser } from '~actions/user';
 
 type Credentials = {
   login: string;
@@ -11,15 +11,17 @@ type Credentials = {
 };
 
 const SignUp: React.FunctionComponent = () => {
-  const history = useHistory();
+  const dispatch = useDispatch();
   const handleSignUp = useCallback(
     ({ login, password }: Credentials): void => {
       database
         .auth()
         .createUserWithEmailAndPassword(login, password)
-        .then(() => history.push(HOME));
+        .then(() => {
+          dispatch(fetchFirebaseUser());
+        });
     },
-    [history]
+    [dispatch]
   );
 
   return (

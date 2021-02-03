@@ -24,6 +24,7 @@
   },
   "extends": "./tsconfig.paths.json",
   "include": [
-    "src"
+    "src/**/*",
+    "cypress/**/*"
   ]
 }

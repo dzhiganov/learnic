@@ -1,2 +1,5 @@
 # Craco config
 /craco.config.js
+
+# Eslint config
+/.eslintrc.js

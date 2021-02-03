@@ -29,6 +29,7 @@
     "react-transition-group": "^4.4.1",
     "react-use": "^15.3.4",
     "redux-thunk": "^2.3.0",
+    "test-data-bot": "^0.8.0",
     "typescript": "^4.1.2",
     "web-vitals": "^0.2.4"
   },
@@ -80,10 +81,12 @@
     "@types/redux-mock-store": "^1.0.2",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
+    "cypress": "^6.3.0",
     "eslint": "^7.14.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-typescript": "^12.0.0",
     "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.1.3",
     "eslint-plugin-jsx-a11y": "^6.4.1",
@@ -95,12 +98,24 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "~c/(.*)": ["<rootDir>/src/components/$1"],
-      "~hooks/(.*)": ["<rootDir>/src/utils/hooks/$1"],
-      "~actions/(.*)": ["<rootDir>/src/core/store/models/$1"],
-      "~api/(.*)": ["<rootDir>/src/core/store/api/$1"],
-      "~router/(.*)": ["<rootDir>/src/core/router/$1"],
-      "~store/(.*)": ["<rootDir>/src/core/store/$1"]
+      "~c/(.*)": [
+        "<rootDir>/src/components/$1"
+      ],
+      "~hooks/(.*)": [
+        "<rootDir>/src/utils/hooks/$1"
+      ],
+      "~actions/(.*)": [
+        "<rootDir>/src/core/store/models/$1"
+      ],
+      "~api/(.*)": [
+        "<rootDir>/src/core/store/api/$1"
+      ],
+      "~router/(.*)": [
+        "<rootDir>/src/core/router/$1"
+      ],
+      "~store/(.*)": [
+        "<rootDir>/src/core/store/$1"
+      ]
     }
   }
 }

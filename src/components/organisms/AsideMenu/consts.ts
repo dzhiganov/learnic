@@ -1,4 +1,4 @@
-import { HOME_WORDS, HOME_WORDS_FOR_TODAY } from '../../../core/router/paths';
+import { HOME_WORDS, HOME_WORDS_FOR_TODAY } from '~router/paths';
 
 const keys = {
   ALL_WORDS: 'all-words',
