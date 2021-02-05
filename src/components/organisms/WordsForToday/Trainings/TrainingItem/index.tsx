@@ -1,7 +1,7 @@
 import React, { memo, useCallback } from 'react';
-import type { TrainingTypes } from '..';
+import type { TrainingTypes } from '../..';
 import styles from './styles.module.css';
-import typesData from '../consts/typesData';
+import typesData from '../../consts/typesData';
 
 type Props = {
   onSelect: (type: TrainingTypes) => void;

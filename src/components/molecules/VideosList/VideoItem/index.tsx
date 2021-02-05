@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { memo, useState, useCallback } from 'react';
-import styles from '../styles.module.css';
+import styles from './styles.module.css';
 
 type Props = {
   id: string;
@@ -32,7 +32,7 @@ const VideoItem: React.FunctionComponent<Props> = ({ id }: Props) => {
 
   return (
     <div className={styles.video} onClick={handleClick}>
-      <a className={styles.videoLink} href={`https://youtu.be/${id}`}>
+      <a href={`https://youtu.be/${id}`}>
         <picture>
           <source
             type="image/webp"

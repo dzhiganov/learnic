@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import React, { useEffect, memo } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -32,7 +33,11 @@ const CheckAuth = ({ children }: Props): JSX.Element => {
 
     if (isReady && !userId) {
       history.push(LOGIN);
-    } else if (isReady && userId && pathname === INDEX) {
+    } else if (
+      isReady &&
+      userId &&
+      (pathname === INDEX || pathname === LOGIN)
+    ) {
       history.push(HOME);
     }
   }, [history, userId, fetchUserStatus, isReady, pathname]);

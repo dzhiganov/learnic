@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './styles.module.css';
 import TrainingTypes from '../consts/trainingTypes';
-import TrainingItem from './TrainingsItem';
+import TrainingItem from './TrainingItem';
 
 type Props = {
   onSelectTraining: (type: TrainingTypes) => void;

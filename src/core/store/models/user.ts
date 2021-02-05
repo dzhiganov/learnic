@@ -60,6 +60,8 @@ export default issuesDisplaySlice.reducer;
 export const fetchFirebaseUser = (): AppThunk => async (dispatch) => {
   try {
     dispatch(getUserChecking());
+
+    // TODO should move to api
     database.auth().onAuthStateChanged((user) => {
       if (user) {
         const { uid, displayName, email } = user as FirebaseUser;
@@ -71,4 +73,16 @@ export const fetchFirebaseUser = (): AppThunk => async (dispatch) => {
   } catch (err) {
     dispatch(getUserFailed());
   }
+};
+
+export const logout = (): AppThunk => async (dispatch) => {
+  database
+    .auth()
+    .signOut()
+    .then(() => {
+      // do something...
+    })
+    .catch(() => {
+      dispatch(getUserFailed());
+    });
 };

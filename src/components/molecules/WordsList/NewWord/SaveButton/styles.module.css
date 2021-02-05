@@ -1,0 +1,24 @@
+.saveButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 24px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background-color: #16c79a;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    width: 100px;
+}
+
+.saveButton svg {
+    width: 1em;
+    height: 1em;
+}
+
+.saveTitle {
+    font-size: 16px;
+}

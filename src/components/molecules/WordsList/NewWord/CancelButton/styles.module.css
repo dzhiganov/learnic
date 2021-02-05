@@ -1,0 +1,26 @@
+.saveButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 24px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background-color: #16c79a;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    width: 100px;   
+}
+
+.cancelButton {
+    composes: saveButton;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: transparent;
+    color: #000;
+}
+
+.saveTitle {
+    font-size: 16px;
+}

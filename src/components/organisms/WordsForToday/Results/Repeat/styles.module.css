@@ -1,0 +1,16 @@
+.repeatIconContainer {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #7579E7;
+}
+
+.repeatIconContainer svg {
+    font-size: 32px;
+    transition: ease-in-out 100ms;
+}
+
+.repeatIconContainer:hover svg {
+    transform: scale(1.2);
+}
