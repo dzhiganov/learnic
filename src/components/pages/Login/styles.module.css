@@ -14,9 +14,10 @@
 @media (min-width: 576px) {
     .container {
       margin-top: 3em;
-      width: 400px;
+      width: 500px;
       padding: 6em 4em;
       justify-content: center;
+      height: initial;
     }
 }
 
