@@ -1,9 +1,11 @@
 .container {
   display: flex;
-  justify-content: flex-end;
-  padding-bottom: 8px;
-  padding-top: 8px;
-  padding-right: 24px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  background-color: #fff;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 8px 6px;
 }
 
 .userMenu {
@@ -24,4 +26,15 @@
 .userMenuItem:hover,
 .userMenuItem:focus {
     background-color: #c9cbff;
+}
+
+.logo {
+    padding: 0 24px;
+    /* color: #7579e7; */
+    background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+    font-size: 30px;
+    font-family: 'Proza Libre', sans-serif;
 }

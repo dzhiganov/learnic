@@ -21,8 +21,8 @@ const VideoItem: React.FunctionComponent<Props> = ({ id }: Props) => {
       <div className={styles.video} onClick={handleClick}>
         <iframe
           title={id}
-          width="512"
-          height="288"
+          width="100%"
+          height="100%"
           src={`https://www.youtube.com/embed/${id}?rel=0&showinfo=0&autoplay=1`}
           allow="autoplay"
         />

@@ -1,17 +1,21 @@
 .container {
     width: 100%;
     max-width: 600px;
-    border-left: 1px solid #f0f0f0;
     height: 100%;
     top: 0;
-    padding: 12px 24px;
     display: flex;
     flex-direction: column;
 }
 
+@media (min-width: 576px) {
+    .container {
+      padding: 12px 24px;
+    }
+}
+
 .wordSection {
     display: flex;
-    font-size: 26px;
+    font-size: 32px;
     font-weight: 600;
 }
 
@@ -30,11 +34,11 @@
 
 .contextSection {
     display: inline-block;
-    margin-top: 40px;
+    margin-top: 25px;
 }
 
 .videoSection {
-    margin-top: 40px;
+    margin-top: 25px;
     display: inline-block;
 }
 
@@ -85,4 +89,36 @@
 .addExampleButton:hover {
     background-color: #5F62B8;
     box-shadow: none;
+}
+
+.backButtonContainer {
+    margin: 22px 0;
+}
+
+
+.saveButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 24px;
+    background: transparent;
+    border: none;
+    outline: none;
+    background-color: #16c79a;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    /* width: 160px; */
+}
+
+.backButton {
+    composes: saveButton;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: transparent;
+    color: #000;
+}
+
+.cancelButton:focus, .cancelButton:hover {
+    background-color: rgba(0, 0 ,0,0.05);
 }

@@ -8,16 +8,27 @@ type Props = {
   id: string;
   title: string;
   to: string;
+  onClick: () => void;
 };
 
-const MenuItem: React.FunctionComponent<Props> = ({ id, title, to }: Props) => {
+const MenuItem: React.FunctionComponent<Props> = ({
+  id,
+  title,
+  to,
+  onClick,
+}: Props) => {
   const { pathname } = useLocation();
   const { length: trainingLength } = useSelector('words.training') || [];
   const isActive = pathname === to;
   const showTrainingCount = id === keys.WORDS_FOR_TODAY && trainingLength > 0;
 
   return (
-    <Link className={styles.link} to={to} data-testid="page-link">
+    <Link
+      className={styles.link}
+      to={to}
+      data-testid="page-link"
+      onClick={onClick}
+    >
       <li className={`${styles.item} ${isActive ? styles.itemActive : ''}`}>
         <div>
           <span>{title}</span>

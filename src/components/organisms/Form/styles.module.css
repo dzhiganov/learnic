@@ -76,3 +76,15 @@
     display: inline-block;
     margin-bottom: 6px;
 }
+
+/* Same code in TopBar */
+.logo {
+    padding: 0 24px;
+    /* color: #7579e7; */
+    background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+    font-size: 30px;
+    font-family: 'Proza Libre', sans-serif;
+}

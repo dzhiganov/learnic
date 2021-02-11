@@ -1,4 +1,12 @@
 .container {
   cursor: pointer;
   outline: none;
+  width: 40px;
+  height: 40px;
+  padding-right: 6px;
+}
+
+.avatar {
+  width: 100% !important;
+  height: 100% !important;
 }

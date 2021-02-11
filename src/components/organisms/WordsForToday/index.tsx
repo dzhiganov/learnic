@@ -19,6 +19,7 @@ type Word = firebase.firestore.DocumentData & {
   id: string;
   word: string;
   translate: string;
+  examples: string[];
 };
 
 type Words = Word[];
@@ -56,7 +57,8 @@ const WordsForToday: React.FunctionComponent = () => {
   const [succesed, setSuccesed] = useState<string[]>([]);
   const [failed, setFailed] = useState<string[]>([]);
   const uid = useSelector('user.uid');
-  const words = useSelector('words.training');
+  const words = useSelector('words.training') as Words;
+  const allWords = useSelector('words.all') as Words;
 
   const shuffledWords = useMemo(() => shuffle(words), [words]);
 
@@ -87,7 +89,8 @@ const WordsForToday: React.FunctionComponent = () => {
       if (trainingType === TrainingTypes.Words) {
         let noExamples = false;
 
-        const { examples } = words[id];
+        const { examples } =
+          words.find(({ id: targetId }) => targetId === id) || {};
 
         if (!Array.isArray(examples) || !examples.length) {
           noExamples = true;

@@ -1,13 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Source+Sans+Pro&family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Source+Sans+Pro&family=Open+Sans&family=Proza+Libre:wght@700&display=swap');
+
 
 
 body {
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
     line-height: 1.5;
-    background-color: #f5f5f7;
+    background-color: #f6f6f6;
 }
 
 button {
     font-family: inherit;
+}
+
+* {
+    box-sizing: border-box;
 }

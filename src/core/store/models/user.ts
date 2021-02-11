@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { AppThunk } from '..';
-import database from '../../../database';
+import database, { googleProvider } from '../../../database';
 
 export type User = {
   status: Statuses;
@@ -56,6 +56,17 @@ export const {
 } = issuesDisplaySlice.actions;
 
 export default issuesDisplaySlice.reducer;
+
+export const authWithGoogle = (): AppThunk => async (dispatch) => {
+  dispatch(getUserChecking());
+
+  database
+    .auth()
+    .signInWithPopup(googleProvider)
+    .catch(() => {
+      dispatch(getUserFailed());
+    });
+};
 
 export const fetchFirebaseUser = (): AppThunk => async (dispatch) => {
   try {

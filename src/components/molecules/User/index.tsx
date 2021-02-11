@@ -24,7 +24,7 @@ const User: React.FunctionComponent<Props> = ({ onClick }: Props) => {
       onKeyDown={handleKeyDown}
       tabIndex={0}
     >
-      <Avatar src="/broken-image.jpg" />
+      <Avatar src="/broken-image.jpg" className={styles.avatar} />
     </div>
   );
 };

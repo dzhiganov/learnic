@@ -12,7 +12,13 @@
 }
 
 .listContainer {
-    display: grid;
-    grid-template-columns: 50% 50%;
+    display: flex;
+    flex-direction: column;
+}
 
+@media (min-width: 576px) {
+    .listContainer {
+        display: grid;
+        grid-template-columns: 50% 50%;
+    }
 }

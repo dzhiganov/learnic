@@ -10,12 +10,18 @@
 
 .list {
     margin: 0;
-    padding: 0 20px;
+    padding: 0;
     list-style: none;
     display: grid;
     grid-template-columns: 50% 50%;
     grid-column-gap: 5px;
     grid-row-gap: 5px;
+}
+
+@media (min-width: 576px) {
+    .list {
+        padding: 0 20px;
+    }
 }
 
 .left {

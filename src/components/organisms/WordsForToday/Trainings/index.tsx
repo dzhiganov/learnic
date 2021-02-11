@@ -16,6 +16,7 @@ const Trainings: React.FunctionComponent<Props> = ({
       <ul className={styles.list}>
         {Object.values(TrainingTypes).map((type) => (
           <TrainingItem
+            key={type}
             onSelect={onSelectTraining}
             type={type as TrainingTypes}
           />
