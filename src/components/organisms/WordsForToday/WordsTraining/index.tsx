@@ -5,6 +5,7 @@ import type { Word, Words, Variants, TrainingProps } from '..';
 import getVariants from '../utils/getVariants';
 import getRandomWord from '../utils/getRandomWord';
 import BackButton from '../BackButton';
+import useSelector from '~hooks/useSelector';
 
 const WordsTraining: React.FunctionComponent<TrainingProps> = ({
   setStarted,
@@ -17,6 +18,7 @@ const WordsTraining: React.FunctionComponent<TrainingProps> = ({
   const [currentWordId, setCurrentWordId] = useState<string>('');
   const [variants, setVariants] = useState<Variants | unknown[]>([]);
   const [restWords, setRestWords] = useState<Words>([]);
+  const allWords: Words = useSelector('words.all');
 
   const currentData = useMemo(
     (): Word | undefined => words.find(({ id }) => currentWordId === id),
@@ -30,7 +32,11 @@ const WordsTraining: React.FunctionComponent<TrainingProps> = ({
       setCurrentWordId(randomId);
 
       const filtered = arr.filter(({ id }) => id !== randomId);
-      const randomVariants = getVariants(words as Words, 'translate', random);
+      const randomVariants = getVariants(
+        allWords as Words,
+        'translate',
+        random
+      );
       const shuffled = shuffle([
         ...randomVariants,
         randomTranslate,
@@ -39,7 +45,7 @@ const WordsTraining: React.FunctionComponent<TrainingProps> = ({
 
       setRestWords(filtered);
     },
-    [words]
+    [allWords]
   );
 
   const checkRestWords = useCallback(() => {

@@ -1,15 +1,14 @@
 import React, { memo, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import useMedia from 'react-use/lib/useMedia';
 import styles from './styles.module.css';
 import WordsCard from '~c/molecules/WordsCard';
 import WordsList from '~c/molecules/WordsList';
 import useSelector from '~hooks/useSelector';
-import {
-  fetchDeleteWord,
-  fetchAddNewWord,
-} from '../../../core/store/models/words';
+import { fetchDeleteWord, fetchAddNewWord } from '~actions/words';
 
 const Cards: React.FunctionComponent = () => {
+  const isWide = useMedia('(min-width: 576px)');
   const dispatch = useDispatch();
   const [openedCard, setOpenedCard] = useState<{
     id: string;
@@ -60,30 +59,43 @@ const Cards: React.FunctionComponent = () => {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>My Words</h2>
+      {isWide || (!isWide && !openedCard.id) ? (
+        <h2 className={styles.title}>My Words</h2>
+      ) : null}
       <div className={styles.listContainer}>
-        <div>
-          <WordsList
-            words={words}
-            onShowNewWord={handleShowNewWord}
-            onSave={handleOnSave}
-            onDelete={handleOnDelete}
-            onEdit={handleOnEdit}
-            onClickCard={handleClickCard}
-            showNewWord={showNewWord}
-            setShowNewWord={setShowNewWord}
-            edited={edited}
-            onCancelEdit={handleCancelEdit}
-          />
-        </div>
+        {isWide || (!isWide && !openedCard.id) ? (
+          <div>
+            <WordsList
+              words={words}
+              onShowNewWord={handleShowNewWord}
+              onSave={handleOnSave}
+              onDelete={handleOnDelete}
+              onEdit={handleOnEdit}
+              onClickCard={handleClickCard}
+              showNewWord={showNewWord}
+              setShowNewWord={setShowNewWord}
+              edited={edited}
+              onCancelEdit={handleCancelEdit}
+            />
+          </div>
+        ) : null}
 
-        <div>
-          <WordsCard
-            id={openedCard.id}
-            word={openedCard.word}
-            translate={openedCard.translate}
-          />
-        </div>
+        {isWide || (!isWide && openedCard.id) ? (
+          <div>
+            <WordsCard
+              id={openedCard.id}
+              word={openedCard.word}
+              translate={openedCard.translate}
+              onClose={() =>
+                setOpenedCard({
+                  id: '',
+                  word: '',
+                  translate: '',
+                })
+              }
+            />
+          </div>
+        ) : null}
       </div>
     </div>
   );

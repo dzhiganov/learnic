@@ -2,7 +2,7 @@
     cursor: pointer;
     border: none;
     color: #000;
-    height: 150px;
+    min-height: 150px;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.1);
     padding: 0.45em  2em;

@@ -1,15 +1,23 @@
 .container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    width: 400px;
-    padding: 6em 4em;
+    width: 100%;
+    padding: 32px 32px;
     margin: 0 auto;
-    margin-top: 3em;
     background-color: #fff;
     box-shadow: 0 15px 35px 0 rgba(60,66,87,.08), 0 5px 15px 0 rgba(0,0,0,.12);
     border-radius: 4px;
+    height: 100vh;
+}
+
+@media (min-width: 576px) {
+    .container {
+      margin-top: 3em;
+      width: 400px;
+      padding: 6em 4em;
+      justify-content: center;
+    }
 }
 
 .linkToSignUpBlock {
@@ -28,4 +36,75 @@
 
 .learnic {
     color: #892cdc;
+}
+
+.providers {
+    width: 100%;
+}
+
+.providerButton {
+    background: transparent;
+    font-size: 17px;
+    line-height: 1.1;
+    font-weight: 600;
+    min-width: 28px;
+    padding: 18px 32px;
+    border-radius: 28px;
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 8px;
+    border-radius: 12px;
+    white-space: normal;
+    display: flex;
+    justify-content: center;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
+
+.providerButton:hover, 
+.providerButton:focus {
+    background-color: rgba(0, 0 ,0,0.05);
+}
+
+.providerButton > svg {
+    width: 1em;
+    height: 1em;
+    margin-right: 8px;
+}
+
+.separator {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+.separator::before, .separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.separator::before {
+    margin-right: .25em;
+}
+.separator::after {
+    margin-left: .25em;
+}
+
+/* Same code in TopBar and Form */
+.logo {
+    /* color: #7579e7; */
+    background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+    font-size: 30px;
+    font-family: 'Proza Libre', sans-serif;
+}
+
+.title {
+    display: block;
+    text-align: center;
 }

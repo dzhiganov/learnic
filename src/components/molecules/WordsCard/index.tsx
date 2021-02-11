@@ -2,6 +2,8 @@
 import React, { memo, useState, useEffect, useCallback, useMemo } from 'react';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import { useDispatch } from 'react-redux';
+import useMedia from 'react-use/lib/useMedia';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import styles from './styles.module.css';
 import VideosList from '../VideosList';
 import AddExample from './AddExample';
@@ -13,6 +15,7 @@ type Props = {
   id: string;
   word: string;
   translate: string;
+  onClose: () => void;
 };
 
 const defaultDefinition = {
@@ -24,7 +27,9 @@ const WordsCard: React.FunctionComponent<Props> = ({
   id,
   word,
   translate,
+  onClose,
 }: Props) => {
+  const isWide = useMedia('(min-width: 576px)');
   const dispatch = useDispatch();
   const [showAddExample, setShowAddExample] = useState<boolean>(false);
   const uid = useSelector('user.uid');
@@ -69,6 +74,10 @@ const WordsCard: React.FunctionComponent<Props> = ({
     [id, uid, dispatch]
   );
 
+  const backToTheList = useCallback(() => {
+    onClose();
+  }, [onClose]);
+
   if (!word) {
     return (
       <div className={styles.container}>
@@ -83,6 +92,17 @@ const WordsCard: React.FunctionComponent<Props> = ({
 
   return (
     <div className={styles.container}>
+      {!isWide ? (
+        <div className={styles.backButtonContainer}>
+          <button
+            type="button"
+            className={styles.backButton}
+            onClick={backToTheList}
+          >
+            <KeyboardBackspaceIcon />
+          </button>
+        </div>
+      ) : null}
       <div className={styles.wordSection}>
         <div>
           <span>{`${word} - ${translate}`}</span>

@@ -23,6 +23,7 @@ const SentecesTraining: React.FunctionComponent<TrainingProps> = ({
   onBack,
 }: TrainingProps) => {
   const words: Words = useSelector('words.training');
+  const allWords: Words = useSelector('words.all');
   const [currentWordId, setCurrentWordId] = useState<string>('');
   const [variants, setVariants] = useState<Variants | unknown[]>([]);
   const [restWords, setRestWords] = useState<Words>([]);
@@ -42,13 +43,13 @@ const SentecesTraining: React.FunctionComponent<TrainingProps> = ({
 
       const filtered = arr.filter(({ id }) => id !== randomId) as Words;
 
-      const randomVariants = getVariants(words, 'word', random);
+      const randomVariants = getVariants(allWords, 'word', random);
       const shuffled = shuffle([...randomVariants, randomWord]) as Variants;
       setVariants(shuffled);
 
       setRestWords(filtered);
     },
-    [words]
+    [allWords]
   );
 
   const checkRestWords = useCallback(() => {

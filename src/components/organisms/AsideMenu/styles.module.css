@@ -1,5 +1,6 @@
 .container {
    font-size: 18px;
+   height: 100%;
 }
 
 .list {
@@ -7,5 +8,17 @@
     padding: 0;
     margin: 0;
     padding-top: 20px;
+}
+
+.topBar {
+    display: flex;
+    justify-content: flex-end;
+    background-color: #fff;
+    border-bottom: #f0f0f0;
+}
+
+.topBar svg {
+    width: 40px;
+    height: 40px;
 }
 

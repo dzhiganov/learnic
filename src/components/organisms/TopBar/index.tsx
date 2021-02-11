@@ -1,11 +1,13 @@
 import React, { memo, useState, useMemo, useCallback } from 'react';
 import Popover from '@material-ui/core/Popover';
 import { useDispatch } from 'react-redux';
+import useMedia from 'react-use/lib/useMedia';
 import User from '~c/molecules/User';
 import styles from './styles.module.css';
 import { logout } from '~actions/user';
 
 const TopBar: React.FunctionComponent = () => {
+  const isWide = useMedia('(min-width: 576px)');
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
 
@@ -43,8 +45,13 @@ const TopBar: React.FunctionComponent = () => {
     [handleLogout]
   );
 
+  if (!isWide) {
+    return null;
+  }
+
   return (
     <div className={styles.container}>
+      <div className={styles.logo}>Learnic</div>
       <User onClick={handleClick} />
       <Popover
         anchorEl={anchorEl}

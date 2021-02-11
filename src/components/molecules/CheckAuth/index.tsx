@@ -3,7 +3,7 @@ import React, { useEffect, memo } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import type { RootState } from '~store/rootReducer';
-import { LOGIN, SIGNUP, HOME, INDEX } from '~router/paths';
+import { LOGIN, SIGNUP, HOME_WORDS, INDEX } from '~router/paths';
 import { Statuses } from '~actions/user';
 
 type Props = {
@@ -23,7 +23,7 @@ const CheckAuth = ({ children }: Props): JSX.Element => {
 
   useEffect(() => {
     if (pathname === SIGNUP && userId) {
-      history.push(HOME);
+      history.push(HOME_WORDS);
       return;
     }
 
@@ -38,7 +38,7 @@ const CheckAuth = ({ children }: Props): JSX.Element => {
       userId &&
       (pathname === INDEX || pathname === LOGIN)
     ) {
-      history.push(HOME);
+      history.push(HOME_WORDS);
     }
   }, [history, userId, fetchUserStatus, isReady, pathname]);
 

@@ -7,7 +7,7 @@
 }
 
 .container {
-    width: 800px;
+    max-width: 800px;
     min-height: 200px;
     background-color: rgba(0, 0, 0, 0.025);
     border-radius: 6px;
@@ -26,13 +26,20 @@
 }
 
 .list {
+    width: 100%;
     margin: 0;
-    padding: 0 20px;
+    padding: 0;
     list-style: none;
     display: grid;
     grid-template-columns: 50% 50%;
     grid-column-gap: 5px;
     grid-row-gap: 5px;
+}
+
+@media (min-width: 576px) {
+    .list {
+        padding: 0 20px;
+    }
 }
 
 .item {

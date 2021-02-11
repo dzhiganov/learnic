@@ -29,8 +29,8 @@ const SignUp: React.FunctionComponent = () => {
       <Form
         onSubmit={handleSignUp}
         title={
-          <span>
-            Sign up <span className={styles.learnic}>Learnic</span>
+          <span className={styles.title}>
+            Sign up <span className={styles.logo}>Learnic</span>
           </span>
         }
       />
