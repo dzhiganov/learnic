@@ -39,3 +39,17 @@
     display: block;
     text-align: center;
 }
+
+.linkBlock {
+    margin-top: 1em;
+}
+
+.link {
+    text-decoration: underline;
+    color: #000;
+}
+
+.link:hover, 
+.link:focus {
+    text-decoration: none;
+}

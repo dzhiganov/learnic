@@ -48,7 +48,7 @@
     text-align: center;
     white-space: nowrap;
     border-radius: 6px;
-    background: #892cdc;
+    background-color: #7579e7;
     color: #fff;
     font-size: 17px;
     line-height: 1.1;
@@ -68,7 +68,7 @@
 
 .submitButton:hover, 
 .submitButton:focus {
-    background: #bc6ff1;
+    background-color: #5F62B8;
 }
 
 

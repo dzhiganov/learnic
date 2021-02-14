@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 import Form from '~c/organisms/Form';
 import database from '../../../database';
 import styles from './styles.module.css';
@@ -34,6 +35,11 @@ const SignUp: React.FunctionComponent = () => {
           </span>
         }
       />
+      <div className={styles.linkBlock}>
+        <Link to="/signin" className={styles.link}>
+          Already have an account? Sign In
+        </Link>
+      </div>
     </div>
   );
 };
