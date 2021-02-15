@@ -1,4 +1,5 @@
 export const INDEX = '/';
+export const PROMO = '/promo';
 export const HOME = '/home';
 export const LOGIN = '/login';
 export const SIGNUP = '/signup';
