@@ -20,7 +20,7 @@ const LangPicker: React.FunctionComponent = () => {
     [t]
   );
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
     i18n.changeLanguage(value);
   };
