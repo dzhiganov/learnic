@@ -4,9 +4,7 @@
     font-weight: 500;
     text-align: left;
     font-size: 16px;
-    /* padding-left: 30px; */
     transition: border 150ms ease-in-out;
-    border-radius: 0 4px 4px 0;
 }
 
 

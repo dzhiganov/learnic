@@ -103,11 +103,10 @@ const WordsList: React.FunctionComponent<Props> = ({
           New Word
         </button>
       </div>
+      <If condition={showNewWord}>
+        <NewWord onSave={onSave} onCancel={onCancelAddNewWord} />
+      </If>
       <div className={styles.cardsContainer}>
-        <If condition={showNewWord}>
-          <NewWord onSave={onSave} onCancel={onCancelAddNewWord} />
-        </If>
-
         <ul className={styles.cardsList} onMouseLeave={() => setFocused('')}>
           {(filter && filtered.length > 0) || !filter ? (
             (filter ? filtered : words).map(({ id, word, translate }) => {

@@ -10,5 +10,5 @@
 
   .content {
     font-size: inherit;
-    min-height: stretch;
+    min-height: 100vh;
   }

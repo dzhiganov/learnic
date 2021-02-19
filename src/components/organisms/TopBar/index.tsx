@@ -2,11 +2,14 @@ import React, { memo, useState, useMemo, useCallback } from 'react';
 import Popover from '@material-ui/core/Popover';
 import { useDispatch } from 'react-redux';
 import useMedia from 'react-use/lib/useMedia';
+import { useTranslation } from 'react-i18next';
 import User from '~c/molecules/User';
 import styles from './styles.module.css';
 import { logout } from '~actions/user';
+import LangPicker from '~c/molecules/LangPicker';
 
 const TopBar: React.FunctionComponent = () => {
+  const { t } = useTranslation();
   const isWide = useMedia('(min-width: 576px)');
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
@@ -38,11 +41,11 @@ const TopBar: React.FunctionComponent = () => {
     () => [
       {
         id: 'logout',
-        title: 'Log out',
+        title: t('TOP_BAR.LOGOUT'),
         onClick: handleLogout,
       },
     ],
-    [handleLogout]
+    [handleLogout, t]
   );
 
   if (!isWide) {
@@ -51,36 +54,41 @@ const TopBar: React.FunctionComponent = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.logo}>Learnic</div>
-      <User onClick={handleClick} />
-      <Popover
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        open={open}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'center',
-          horizontal: 'center',
-        }}
-      >
-        <ul className={styles.userMenu}>
-          {menuItems.map(({ id, title, onClick }) => (
-            <li className={styles.userMenuItem} key={id}>
-              <div
-                role="button"
-                tabIndex={0}
-                onKeyDown={handleKeyDownLogout}
-                onClick={onClick}
-              >
-                {title}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </Popover>
+      <div className={styles.wrapper}>
+        <div className={styles.logo}>Learnic</div>
+        <div className={styles.controls}>
+          <LangPicker />
+          <User onClick={handleClick} />
+        </div>
+        <Popover
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          open={open}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'center',
+            horizontal: 'center',
+          }}
+        >
+          <ul className={styles.userMenu}>
+            {menuItems.map(({ id, title, onClick }) => (
+              <li className={styles.userMenuItem} key={id}>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={handleKeyDownLogout}
+                  onClick={onClick}
+                >
+                  {title}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Popover>
+      </div>
     </div>
   );
 };

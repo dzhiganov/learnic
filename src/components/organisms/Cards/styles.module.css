@@ -21,4 +21,22 @@
         display: grid;
         grid-template-columns: 50% 50%;
     }
+
+    .listContainer > * {
+        max-height: 100%;
+        overflow: auto;
+    }
+}
+
+.wordsListContainer {
+    height: 90vh;
+    overflow: auto;
+    border-right: 1px solid #f0f0f0;
+    padding: 25px; 
+}
+
+.wordsCardContainer {
+    height: 90vh;
+    overflow: auto;
+    padding: 25px;
 }

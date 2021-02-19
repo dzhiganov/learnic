@@ -1,11 +1,10 @@
 .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 8px 0;
-  background-color: #fff;
+  background-color: #0f1123;
   border-bottom: 1px solid #f0f0f0;
   padding: 8px 6px;
+  height: 60px;
+  margin-bottom: 22px;
 }
 
 .userMenu {
@@ -37,4 +36,21 @@
     font-weight: 900;
     font-size: 30px;
     font-family: 'Proza Libre', sans-serif;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+}
+
+.controls > *:first-of-type {
+    margin-right: 12px;
+}
+
+.wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

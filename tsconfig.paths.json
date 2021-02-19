@@ -2,6 +2,7 @@
     "compilerOptions": {
       "baseUrl": "./src",
       "paths": {
+        "~/*": ["*"],
         "~c/*": ["components/*"],
         "~hooks/*": ["utils/hooks/*"],
         "~actions/*": ["core/store/models/*"],

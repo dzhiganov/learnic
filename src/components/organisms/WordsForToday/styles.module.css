@@ -11,12 +11,10 @@
     min-height: 200px;
     background-color: rgba(0, 0, 0, 0.025);
     border-radius: 6px;
-    padding: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-
 }
 
 .word {
@@ -75,4 +73,8 @@
 .startButton:hover {
     background-color: #9ab3f5;
     box-shadow: none;
+}
+
+.wrapper {
+    padding: 25px;
 }

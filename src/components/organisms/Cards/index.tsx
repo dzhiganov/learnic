@@ -59,12 +59,12 @@ const Cards: React.FunctionComponent = () => {
 
   return (
     <div className={styles.container}>
-      {isWide || (!isWide && !openedCard.id) ? (
-        <h2 className={styles.title}>My Words</h2>
-      ) : null}
       <div className={styles.listContainer}>
         {isWide || (!isWide && !openedCard.id) ? (
-          <div>
+          <div className={styles.wordsListContainer}>
+            {isWide || (!isWide && !openedCard.id) ? (
+              <h2 className={styles.title}>My Words</h2>
+            ) : null}
             <WordsList
               words={words}
               onShowNewWord={handleShowNewWord}
@@ -81,7 +81,7 @@ const Cards: React.FunctionComponent = () => {
         ) : null}
 
         {isWide || (!isWide && openedCard.id) ? (
-          <div>
+          <div className={styles.wordsCardContainer}>
             <WordsCard
               id={openedCard.id}
               word={openedCard.word}

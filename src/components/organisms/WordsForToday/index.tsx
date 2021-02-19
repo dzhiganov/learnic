@@ -42,10 +42,10 @@ const trainingComponents = {
 
 const wrapped = (ui: JSX.Element) => {
   return (
-    <>
+    <div className={styles.wrapper}>
       <h2 className={styles.title}>Words For Today</h2>
       <div className={styles.container}>{ui}</div>
-    </>
+    </div>
   );
 };
 
