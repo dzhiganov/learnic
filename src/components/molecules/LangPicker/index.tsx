@@ -14,7 +14,7 @@ const LangPicker: React.FunctionComponent = () => {
       },
       {
         key: 'en',
-        title: t('LANG_PICKER.ENG'),
+        title: t('LANG_PICKER.EN'),
       },
     ],
     [t]

@@ -1,0 +1,58 @@
+{
+    "LANG_PICKER":{
+      "RU":"Russian",
+      "EN":"English"
+    },
+    "TOP_BAR":{
+      "LOGOUT":"Log out"
+    },
+    "ASIDE_MENU":{
+      "DICTIONARY":"Dictionary",
+      "TRAININGS":"Training"
+    },
+    "DICTIONARY":{
+      "TITLE":"Dictionary",
+      "NEW_WORD_BUTTON":"New Word",
+      "NEW_WORD_WINDOW":{
+        "WORD_PLACEHOLDER":"Word",
+        "TRANSLATE_PLACEHOLDER":"Translate",
+        "SAVE_BUTTON":"Save",
+        "CANCEL_BUTTON":"Cancel"
+      },
+      "WORD_CARD":{
+        "ADD_EXAMPLE_BUTTON":"Add Example",
+        "SAVE_BUTTON":"Save",
+        "CANCEL_BUTTON":"Cancel"
+      },
+      "SELECT_WORD": "🤔 Select some word..." 
+    },
+    "TRAINING":{
+      "TITLE": "Trainings",
+      "TRAINING_LIST":{
+        "TRANSLATE_TRAINING":{
+          "TITLE":"Select right translation",
+          "DESCRIPTION":"You will have to choose one of the four translation options"
+        },
+        "SENTENCE_TRAINING":{
+          "TITLE":"Insert the appropriate word",
+          "DESCRIPTION":"You will have to insert the appropriate word in the sentence, choosing from four options"
+        }
+      },
+      "BACK_TO_THE_LIST_BUTTON":"Back to the training list"
+    },
+    "LOGIN_PAGE":{
+      "TITLE":"Sign in",
+      "ALTERNATE":"Or",
+      "WITH_GOOGLE":"Sign in with Google",
+      "NO_ACCOUNT":"if you don't have an account, you can create it"
+    },
+    "SIGN_UP_PAGE":{
+      "TITLE":"Sign up",
+      "ALREADY_HAVE_ACCOUNT":"Already have an account? Sign In"
+    },
+    "SUBMIT_FORM": {
+      "EMAIL": "Email",
+      "PASSWORD": "Password",
+      "SUBMIT": "Continue"
+    }
+  }

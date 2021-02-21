@@ -1,4 +1,5 @@
 import React, { memo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { TrainingTypes } from '../..';
 import styles from './styles.module.css';
 import typesData from '../../consts/typesData';
@@ -12,6 +13,7 @@ const TrainingsItem: React.FunctionComponent<Props> = ({
   onSelect,
   type,
 }: Props) => {
+  const { t } = useTranslation();
   const handleOnClick = useCallback(() => onSelect(type), [type, onSelect]);
   const handleKeyDown = useCallback(
     (event) => {
@@ -31,8 +33,10 @@ const TrainingsItem: React.FunctionComponent<Props> = ({
         tabIndex={0}
         onKeyDown={handleKeyDown}
       >
-        <div className={styles.itemTitle}>{typesData[type].title}</div>
-        <div className={styles.itemDef}>{typesData[type].definition}</div>
+        <div className={styles.itemTitle}>{`${typesData[type].prefix} ${t(
+          typesData[type].title
+        )}`}</div>
+        <div className={styles.itemDef}>{t(typesData[type].definition)}</div>
       </div>
     </li>
   );

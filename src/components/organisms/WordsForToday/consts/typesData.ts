@@ -2,13 +2,14 @@ import trainingTypes from './trainingTypes';
 
 const typesData = {
   [trainingTypes.Words]: {
-    title: '📜 Select right translation',
-    definition: 'You will have to choose one of the four translation options.',
+    title: 'TRAINING.TRAINING_LIST.TRANSLATE_TRAINING.TITLE',
+    prefix: '📜',
+    definition: 'TRAINING.TRAINING_LIST.TRANSLATE_TRAINING.DESCRIPTION',
   },
   [trainingTypes.Sentences]: {
-    title: '🎓 Insert the appropriate word',
-    definition:
-      'You will have to insert the appropriate word in the sentence, choosing from four options.',
+    title: 'TRAINING.TRAINING_LIST.SENTENCE_TRAINING.TITLE',
+    prefix: '🎓',
+    definition: 'TRAINING.TRAINING_LIST.SENTENCE_TRAINING.DESCRIPTION',
   },
 };
 

@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 
 type Props = {
@@ -10,6 +11,7 @@ const AddExample: React.FunctionComponent<Props> = ({
   onSave,
   onCancel,
 }: Props) => {
+  const { t } = useTranslation();
   const [example, setExample] = useState<string>('');
 
   const handleOnSave = useCallback(async () => {
@@ -37,14 +39,14 @@ const AddExample: React.FunctionComponent<Props> = ({
           type="button"
           onClick={handleOnSave}
         >
-          Save
+          {t('DICTIONARY.WORD_CARD.SAVE_BUTTON')}
         </button>
         <button
           className={styles.cancelButton}
           type="button"
           onClick={onCancel}
         >
-          Cancel
+          {t('DICTIONARY.WORD_CARD.CANCEL_BUTTON')}
         </button>
       </div>
     </div>

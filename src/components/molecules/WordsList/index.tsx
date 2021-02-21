@@ -3,6 +3,7 @@ import firebase from 'firebase';
 import Fuse from 'fuse.js';
 import EditIcon from '@material-ui/icons/EditOutlined';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
+import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 import NewWord from './NewWord';
 import Search from './Search';
@@ -47,6 +48,7 @@ const WordsList: React.FunctionComponent<Props> = ({
   edited,
   onCancelEdit,
 }: Props) => {
+  const { t } = useTranslation();
   const [focused, setFocused] = useState<string>('');
   const [filter, setFilter] = useState<string>('');
   const [filtered, setFiltered] = useState<
@@ -100,7 +102,7 @@ const WordsList: React.FunctionComponent<Props> = ({
           className={styles.addNewWordButton}
           onClick={onShowNewWord}
         >
-          New Word
+          {t('DICTIONARY.NEW_WORD_BUTTON')}
         </button>
       </div>
       <If condition={showNewWord}>

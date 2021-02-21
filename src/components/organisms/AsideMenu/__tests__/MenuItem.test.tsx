@@ -8,6 +8,7 @@ import MenuItem from '../MenuItem';
 import { keys } from '../consts';
 
 const mockStore = configureStore([]);
+jest.mock('react-i18next');
 
 describe('MenuItem', () => {
   test('shoud render with correct attributes', () => {
@@ -25,17 +26,23 @@ describe('MenuItem', () => {
     const history = createMemoryHistory({ initialEntries: ['/'] });
     const FAKE_ID = 'FAKE_ID';
     const FAKE_TITLE = 'FAKE_TITLE';
+    const FAKE_PREFIX = 'FAKE_PREFIX';
     const FAKE_LINK = 'FAKE_LINK';
 
-    const { getByTestId, getByText, queryByTestId } = render(
+    const { getByTestId, queryByTestId } = render(
       <Router history={history}>
         <Provider store={fakeStore}>
-          <MenuItem id={FAKE_ID} title={FAKE_TITLE} to={FAKE_LINK} />
+          <MenuItem
+            id={FAKE_ID}
+            title={FAKE_TITLE}
+            prefix={FAKE_PREFIX}
+            to={FAKE_LINK}
+            onClick={() => {}}
+          />
         </Provider>
       </Router>
     );
 
-    expect(getByText(FAKE_TITLE)).toBeTruthy();
     expect(getByTestId('page-link')).toHaveAttribute('href', `/${FAKE_LINK}`);
     expect(queryByTestId('training-count')).toBeNull();
   });
@@ -48,6 +55,7 @@ describe('MenuItem', () => {
     const FAKE_WORD = 'FAKE_WORD';
     const FAKE_TITLE = 'FAKE_TITLE';
     const FAKE_LINK = 'FAKE_LINK';
+    const FAKE_PREFIX = 'FAKE_PREFIX';
 
     const anotherFakeInitialStore = {
       translate: {
@@ -65,9 +73,11 @@ describe('MenuItem', () => {
       <Router history={anotherHistory}>
         <Provider store={anotherFakeStore}>
           <MenuItem
-            id={keys.WORDS_FOR_TODAY}
+            id={keys.TRAININGS}
             title={FAKE_TITLE}
             to={FAKE_LINK}
+            prefix={FAKE_PREFIX}
+            onClick={() => {}}
           />
         </Provider>
       </Router>

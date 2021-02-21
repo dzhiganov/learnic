@@ -2,6 +2,7 @@ import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getTranslate } from 'core/store/api/translate';
 import useDebounce from 'react-use/lib/useDebounce';
+import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 import SaveButton from './SaveButton';
 import CancelButton from './CancelButton';
@@ -22,6 +23,7 @@ const NewWord: React.FunctionComponent<Props> = ({
   onCancel,
   autoFetch,
 }: Props) => {
+  const { t } = useTranslation();
   const inputRef: React.RefObject<HTMLInputElement> = useRef(null);
   const [word, setWord] = useState('');
   const [translate, setTranslate] = useState('');
@@ -116,7 +118,7 @@ const NewWord: React.FunctionComponent<Props> = ({
           onChange={handleOnChangeWord}
           ref={inputRef}
           onKeyDown={handleKeyDown}
-          placeholder="Word"
+          placeholder={t('DICTIONARY.NEW_WORD_WINDOW.WORD_PLACEHOLDER')}
         />
         <input
           data-testid="translate"
@@ -125,7 +127,7 @@ const NewWord: React.FunctionComponent<Props> = ({
           value={translate}
           onChange={handleOnChangeTranslate}
           onKeyDown={handleKeyDown}
-          placeholder="Translate"
+          placeholder={t('DICTIONARY.NEW_WORD_WINDOW.TRANSLATE_PLACEHOLDER')}
         />
       </div>
       <div className={styles.buttons}>

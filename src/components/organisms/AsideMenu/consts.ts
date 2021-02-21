@@ -1,20 +1,22 @@
 import { HOME_WORDS, HOME_WORDS_FOR_TODAY } from '~router/paths';
 
 const keys = {
-  ALL_WORDS: 'all-words',
-  WORDS_FOR_TODAY: 'words-for-today',
+  DICTIONARY: 'dictionary',
+  TRAININGS: 'trainings',
   LOGOUT: 'logout',
 };
 
 const items = [
   {
-    key: keys.ALL_WORDS,
-    title: '📚 My words',
+    key: keys.DICTIONARY,
+    title: 'ASIDE_MENU.DICTIONARY',
+    prefix: '📚',
     to: HOME_WORDS,
   },
   {
-    key: keys.WORDS_FOR_TODAY,
-    title: '📖  Words for Today',
+    key: keys.TRAININGS,
+    title: 'ASIDE_MENU.TRAININGS',
+    prefix: '📖',
     to: HOME_WORDS_FOR_TODAY,
   },
 ];

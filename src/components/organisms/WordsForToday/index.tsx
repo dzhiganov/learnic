@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import firebase from 'firebase';
 import shuffle from 'lodash.shuffle';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 import { firestore } from '../../../database';
 import Results from './Results';
@@ -40,10 +41,11 @@ const trainingComponents = {
   [TrainingTypes.Sentences]: (SentencesTraining as unknown) as React.ComponentType<TrainingProps>,
 };
 
-const wrapped = (ui: JSX.Element) => {
+const Wrapper = (ui: JSX.Element) => {
+  const { t } = useTranslation();
   return (
     <div className={styles.wrapper}>
-      <h2 className={styles.title}>Words For Today</h2>
+      <h2 className={styles.title}>{t('TRAINING.TITLE')}</h2>
       <div className={styles.container}>{ui}</div>
     </div>
   );
@@ -164,11 +166,11 @@ const WordsForToday: React.FunctionComponent = () => {
   }, []);
 
   if (!words.length) {
-    return wrapped(<NoWordsForToday />);
+    return Wrapper(<NoWordsForToday />);
   }
 
   if (finished) {
-    return wrapped(
+    return Wrapper(
       <Results
         results={[succesed.length, failed.length]}
         onRepeat={handleRepeat}
@@ -176,7 +178,7 @@ const WordsForToday: React.FunctionComponent = () => {
     );
   }
 
-  return wrapped(
+  return Wrapper(
     <>
       <If condition={started && Boolean(CurrentComponent)}>
         <CurrentComponent

@@ -1,6 +1,7 @@
 import React, { memo, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import useMedia from 'react-use/lib/useMedia';
+import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 import WordsCard from '~c/molecules/WordsCard';
 import WordsList from '~c/molecules/WordsList';
@@ -8,6 +9,7 @@ import useSelector from '~hooks/useSelector';
 import { fetchDeleteWord, fetchAddNewWord } from '~actions/words';
 
 const Cards: React.FunctionComponent = () => {
+  const { t } = useTranslation();
   const isWide = useMedia('(min-width: 576px)');
   const dispatch = useDispatch();
   const [openedCard, setOpenedCard] = useState<{
@@ -63,7 +65,7 @@ const Cards: React.FunctionComponent = () => {
         {isWide || (!isWide && !openedCard.id) ? (
           <div className={styles.wordsListContainer}>
             {isWide || (!isWide && !openedCard.id) ? (
-              <h2 className={styles.title}>My Words</h2>
+              <h2 className={styles.title}>{t('DICTIONARY.TITLE')}</h2>
             ) : null}
             <WordsList
               words={words}

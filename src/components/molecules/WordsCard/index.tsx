@@ -4,6 +4,7 @@ import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import { useDispatch } from 'react-redux';
 import useMedia from 'react-use/lib/useMedia';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
+import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 import VideosList from '../VideosList';
 import AddExample from './AddExample';
@@ -29,6 +30,7 @@ const WordsCard: React.FunctionComponent<Props> = ({
   translate,
   onClose,
 }: Props) => {
+  const { t } = useTranslation();
   const isWide = useMedia('(min-width: 576px)');
   const dispatch = useDispatch();
   const [showAddExample, setShowAddExample] = useState<boolean>(false);
@@ -83,7 +85,7 @@ const WordsCard: React.FunctionComponent<Props> = ({
       <div className={styles.container}>
         <div className={styles.noSelectedWord}>
           <span role="img" aria-label="question">
-            🤔 Select some word...
+            {t('DICTIONARY.SELECT_WORD')}
           </span>
         </div>
       </div>
@@ -125,7 +127,7 @@ const WordsCard: React.FunctionComponent<Props> = ({
             type="button"
             onClick={handleClickAddExample}
           >
-            + Add example
+            {`+ ${t('DICTIONARY.WORD_CARD.ADD_EXAMPLE_BUTTON')}`}
           </button>
         </div>
         {showAddExample ? (

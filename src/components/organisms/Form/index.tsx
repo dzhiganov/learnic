@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 
 type Props = {
@@ -7,6 +8,7 @@ type Props = {
 };
 
 const Form: React.FunctionComponent<Props> = ({ onSubmit, title }: Props) => {
+  const { t } = useTranslation();
   const [password, setPassword] = useState('');
   const [login, setLogin] = useState('');
 
@@ -37,7 +39,7 @@ const Form: React.FunctionComponent<Props> = ({ onSubmit, title }: Props) => {
       <div>
         <div>
           <label htmlFor="login">
-            <span className={styles.inputTitle}>Email</span>
+            <span className={styles.inputTitle}>{t('SUBMIT_FORM.EMAIL')}</span>
             <input
               id="login"
               type="text"
@@ -49,7 +51,9 @@ const Form: React.FunctionComponent<Props> = ({ onSubmit, title }: Props) => {
         </div>
         <div>
           <label htmlFor="password">
-            <span className={styles.inputTitle}>Password</span>
+            <span className={styles.inputTitle}>
+              {t('SUBMIT_FORM.PASSWORD')}
+            </span>
             <input
               id="pass"
               type="password"
@@ -66,7 +70,7 @@ const Form: React.FunctionComponent<Props> = ({ onSubmit, title }: Props) => {
             className={styles.submitButton}
             onClick={wrappedOnSubmit}
           >
-            Continue
+            {t('SUBMIT_FORM.SUBMIT')}
           </button>
         </div>
       </div>

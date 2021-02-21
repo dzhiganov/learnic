@@ -15,11 +15,12 @@ const AsideMenu: React.FunctionComponent = () => {
   const list = useMemo(() => {
     return (
       <ul className={styles.list}>
-        {items.map(({ key, title, to }) => (
+        {items.map(({ key, title, to, prefix }) => (
           <MenuItem
             key={key}
             id={key}
             title={title}
+            prefix={prefix}
             to={to}
             onClick={() => setShowMenu(false)}
           />

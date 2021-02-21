@@ -2,6 +2,7 @@
 import React, { memo, useCallback } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import Form from '~c/organisms/Form';
 import database from '../../../database';
 import styles from './styles.module.css';
@@ -14,6 +15,7 @@ type Credentials = {
 };
 
 const Login = (): React.ReactElement => {
+  const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -32,13 +34,9 @@ const Login = (): React.ReactElement => {
     <div className={styles.container}>
       <Form
         onSubmit={handleLogin}
-        title={
-          <span className={styles.title}>
-            Sign in <span className={styles.logo}>Learnic</span>
-          </span>
-        }
+        title={<span className={styles.title}>{t('LOGIN_PAGE.TITLE')}</span>}
       />
-      <div className={styles.separator}>Or</div>
+      <div className={styles.separator}>{t('SUBMIT_FORM.ALTERNATE')}</div>
       <div className={styles.providers}>
         <button
           type="button"
@@ -70,12 +68,12 @@ const Login = (): React.ReactElement => {
               d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
             />
           </svg>
-          Sign in with Google
+          {t('LOGIN_PAGE.WITH_GOOGLE')}
         </button>
       </div>
       <div className={styles.linkToSignUpBlock}>
         <Link to="/signup" className={styles.link}>
-          if you don&apos;t have an account, you can create it
+          {t('LOGIN_PAGE.NO_ACCOUNT')}
         </Link>
       </div>
     </div>
