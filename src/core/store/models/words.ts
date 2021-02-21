@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-// import firebase from 'firebase';
 import type { AppThunk } from '..';
-import { getWords, deleteWord, addNewWord } from '../api/words';
-
-// type Timestamp = firebase.firestore.Timestamp;
+import { getWords, deleteWord, addNewWord, update } from '../api/words';
 
 export type Words = {
   id: string;
@@ -86,6 +83,24 @@ export const fetchAddNewWord = ({
 }): AppThunk => async (dispatch) => {
   dispatch(getLoadingStart());
   await addNewWord({ uid, word, translate });
+  const all = await getWords(uid);
+  dispatch(getWordsSuccess(all));
+};
+
+export const fetchUpdate = ({
+  uid,
+  id,
+  data,
+}: {
+  uid: string;
+  id: string;
+  data: {
+    word: string;
+    translate: string;
+  };
+}): AppThunk => async (dispatch) => {
+  dispatch(getLoadingStart());
+  await update({ uid, wordId: id, updatedFields: data });
   const all = await getWords(uid);
   dispatch(getWordsSuccess(all));
 };

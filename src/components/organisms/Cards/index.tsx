@@ -6,7 +6,7 @@ import styles from './styles.module.css';
 import WordsCard from '~c/molecules/WordsCard';
 import WordsList from '~c/molecules/WordsList';
 import useSelector from '~hooks/useSelector';
-import { fetchDeleteWord, fetchAddNewWord } from '~actions/words';
+import { fetchDeleteWord, fetchAddNewWord, fetchUpdate } from '~actions/words';
 
 const Cards: React.FunctionComponent = () => {
   const { t } = useTranslation();
@@ -31,10 +31,31 @@ const Cards: React.FunctionComponent = () => {
   }, []);
 
   const handleOnSave = useCallback(
-    ({ word, translate }: { word: string; translate: string }) => {
-      dispatch(fetchAddNewWord({ uid: userId, word, translate }));
-
-      setShowNewWord(false);
+    ({
+      id,
+      word,
+      translate,
+    }: {
+      id?: string;
+      word: string;
+      translate: string;
+    }) => {
+      if (id) {
+        dispatch(
+          fetchUpdate({
+            uid: userId,
+            id,
+            data: {
+              word,
+              translate,
+            },
+          })
+        );
+        setEdited('');
+      } else {
+        dispatch(fetchAddNewWord({ uid: userId, word, translate }));
+        setShowNewWord(false);
+      }
     },
     [userId, dispatch]
   );
@@ -48,7 +69,6 @@ const Cards: React.FunctionComponent = () => {
 
   const handleOnEdit = useCallback((id) => {
     setEdited(id);
-    // setShowNewWord(true);
   }, []);
 
   const handleClickCard = useCallback(({ id, word, translate }) => {

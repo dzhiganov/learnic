@@ -8,16 +8,26 @@ import SaveButton from './SaveButton';
 import CancelButton from './CancelButton';
 
 type Props = {
+  id: string;
   initialState?: null | {
     word: string;
     translate: string;
   };
-  onSave: ({ word, translate }: { word: string; translate: string }) => void;
+  onSave: ({
+    id,
+    word,
+    translate,
+  }: {
+    id?: string;
+    word: string;
+    translate: string;
+  }) => void;
   onCancel: () => void;
   autoFetch?: boolean;
 };
 
 const NewWord: React.FunctionComponent<Props> = ({
+  id,
   initialState,
   onSave,
   onCancel,
@@ -82,24 +92,24 @@ const NewWord: React.FunctionComponent<Props> = ({
     (event) => {
       if (event.key === 'Enter') {
         if (word && translate) {
-          onSave({ word, translate });
+          onSave({ id, word, translate });
 
           setWord('');
           setTranslate('');
         }
       }
     },
-    [onSave, translate, word]
+    [id, onSave, translate, word]
   );
 
   const handleOnClickSave = useCallback(() => {
     if (word && translate) {
-      onSave({ word, translate });
+      onSave({ id, word, translate });
 
       setWord('');
       setTranslate('');
     }
-  }, [onSave, word, translate]);
+  }, [id, onSave, word, translate]);
 
   const handleOnClickCancel = useCallback(() => {
     setWord('');

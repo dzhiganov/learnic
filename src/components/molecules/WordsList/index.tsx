@@ -18,7 +18,7 @@ type Props = {
       translate: string;
     }[];
   onShowNewWord: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  onSave: ({ word, translate }: { word: string; translate: string }) => void;
+  onSave: (data: { id?: string; word: string; translate: string }) => void;
   onDelete: (id: string) => Promise<void>;
   onEdit: (id: string) => void;
   onClickCard: ({
@@ -106,7 +106,7 @@ const WordsList: React.FunctionComponent<Props> = ({
         </button>
       </div>
       <If condition={showNewWord}>
-        <NewWord onSave={onSave} onCancel={onCancelAddNewWord} />
+        <NewWord id="" onSave={onSave} onCancel={onCancelAddNewWord} />
       </If>
       <div className={styles.cardsContainer}>
         <ul className={styles.cardsList} onMouseLeave={() => setFocused('')}>
@@ -116,6 +116,8 @@ const WordsList: React.FunctionComponent<Props> = ({
               if (id === edited) {
                 return (
                   <NewWord
+                    key={id}
+                    id={id}
                     onSave={onSave}
                     onCancel={onCancelAddNewWord}
                     initialState={{ word, translate }}
