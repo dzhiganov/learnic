@@ -37,22 +37,27 @@
     display: inline-block;
 }
 
-.example {
-    display: block;
-    padding: 8px 0px;
-}
-
 .examplesList {
     list-style: none;
     padding: 0;
-    font-size: 1.25;
-    padding: 4px 0px;
+    margin: 4px 0;
+}
+
+.example {
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.exampleCount {
+    color: rgba(0 ,0 ,0, 0.4);
+    font-weight: 500;
 }
 
 .examplesItem {
-   padding: 6px 0;
    position: relative;
-   font-style: italic;
+   font-weight: 500;
+   display: block;
+   padding: 8px 0px;
 }
 
 .noSelectedWord {
@@ -71,23 +76,23 @@
     align-items: center;
     cursor: pointer;
     border: none;
-    color: #fff;
-    background-color: #7579e7;
-    padding: 0.5em  1.5em;
-    font-size: 1rem;
+    color: #7579e7;
+    background-color: transparent;
+    padding: 0.5em  0;
+    font-size: 1.1rem;
     min-width: 64px;
     box-sizing: border-box;
     font-weight: 600;
     border-radius: 8px;
+    height: 45px;
 }
 
 .addExampleButton:hover {
-    background-color: #5F62B8;
-    box-shadow: none;
+    color: #5F62B8;
 }
 
 .backButtonContainer {
-    margin: 22px 0;
+    margin: 18px 0;
 }
 
 
@@ -104,7 +109,6 @@
     color: #fff;
     cursor: pointer;
     font-size: 16px;
-    /* width: 160px; */
 }
 
 .backButton {

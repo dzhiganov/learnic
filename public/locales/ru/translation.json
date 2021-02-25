@@ -14,13 +14,13 @@
       "TITLE":"Словарь",
       "NEW_WORD_BUTTON":"Добавить слово",
       "NEW_WORD_WINDOW":{
-        "WORD_PLACEHOLDER":"Слово",
+        "WORD_PLACEHOLDER":"Слово или фраза для повторения",
         "TRANSLATE_PLACEHOLDER":"Перевод",
         "SAVE_BUTTON":"Сохранить",
         "CANCEL_BUTTON":"Отменить"
       },
       "WORD_CARD":{
-        "ADD_EXAMPLE_BUTTON":"Добавить пример",
+        "ADD_EXAMPLE_BUTTON":"Новый пример",
         "SAVE_BUTTON":"Сохранить",
         "CANCEL_BUTTON":"Отменить",
         "STEPS": {

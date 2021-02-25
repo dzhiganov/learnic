@@ -139,8 +139,9 @@ const WordsCard: React.FunctionComponent<Props> = ({
         <>
           <ul className={styles.examplesList}>
             {Array.isArray(value.examples) && value.examples.length
-              ? value.examples.map((def: string) => (
+              ? value.examples.map((def: string, i: number) => (
                   <li key={def} className={styles.examplesItem}>
+                    <span className={styles.exampleCount}>{`${i + 1}) `}</span>
                     <span className={styles.example} key={def}>
                       {def}
                     </span>

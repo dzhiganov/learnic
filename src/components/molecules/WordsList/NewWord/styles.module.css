@@ -4,12 +4,13 @@
     padding: 22px;
     border-radius: 4px;
     border: 1px solid rgba(0, 0, 0, 0.05);
-    margin-right: 50px;
+    margin-top: 20px;
 }
 
-.inputContainer {
+.inputsContainer {
     width: 100%;
     display: flex;
+    flex-direction: column;
 }
 
 .input {
@@ -25,15 +26,13 @@
     border-width: 1px;
     border-style: solid;
     box-sizing: border-box;
-    margin-bottom: 0.8rem;
+    margin-bottom: 25px;
     padding: 0.3rem 0.6rem;
     text-align: left;
     appearance: none;
     align-items: center;
-}
-
-.input + .input {
-    margin-left: 18px;
+    font-family: inherit;
+    resize: none;
 }
 
 .input:focus, 
@@ -67,7 +66,7 @@
     color: #fff;
     cursor: pointer;
     width: 100px;
-    
+    font-weight: 800;
 }
 
 .cancelButton {
@@ -100,4 +99,17 @@
 
 .saveTitle {
     font-size: 16px;
+}
+
+.inputContainer {
+    display: flex;
+}
+
+.lang {
+    display: inline-block;
+    color: rgba(0 ,0 ,0, 0.5);
+    font-weight: 600;
+    margin-right: 10px;
+    font-size: 18px;
+    margin-top: 8px;
 }

@@ -7,11 +7,18 @@
     border: none;
     outline: none;
     font-size: 16px;
-    background-color: #16c79a;
+    border: 2px solid  #16c79a;
+    color: #16c79a;
     border-radius: 4px;
-    color: #fff;
     cursor: pointer;
-    width: 100px;
+    width: 120px;
+    font-weight: 600;
+}
+
+.saveButton:hover,
+.saveButton:focus {
+    background-color:#16c79a;
+    color: #fff;
 }
 
 .saveButton svg {

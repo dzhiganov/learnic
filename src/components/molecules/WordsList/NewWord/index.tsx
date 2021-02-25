@@ -34,7 +34,7 @@ const NewWord: React.FunctionComponent<Props> = ({
   autoFetch,
 }: Props) => {
   const { t } = useTranslation();
-  const inputRef: React.RefObject<HTMLInputElement> = useRef(null);
+  const inputRef: React.RefObject<HTMLTextAreaElement> = useRef(null);
   const [word, setWord] = useState('');
   const [translate, setTranslate] = useState('');
   const selectedData = useSelector(
@@ -119,26 +119,37 @@ const NewWord: React.FunctionComponent<Props> = ({
 
   return (
     <div className={styles.container}>
-      <div className={styles.inputContainer}>
-        <input
-          data-testid="word"
-          name="word"
-          className={styles.input}
-          value={word}
-          onChange={handleOnChangeWord}
-          ref={inputRef}
-          onKeyDown={handleKeyDown}
-          placeholder={t('DICTIONARY.NEW_WORD_WINDOW.WORD_PLACEHOLDER')}
-        />
-        <input
-          data-testid="translate"
-          name="translate"
-          className={styles.input}
-          value={translate}
-          onChange={handleOnChangeTranslate}
-          onKeyDown={handleKeyDown}
-          placeholder={t('DICTIONARY.NEW_WORD_WINDOW.TRANSLATE_PLACEHOLDER')}
-        />
+      <div className={styles.inputsContainer}>
+        <div className={styles.inputContainer}>
+          <div className={styles.lang}>
+            <span>EN</span>
+          </div>
+          <textarea
+            data-testid="word"
+            name="word"
+            className={styles.input}
+            value={word}
+            onChange={handleOnChangeWord}
+            ref={inputRef}
+            onKeyDown={handleKeyDown}
+            placeholder={t('DICTIONARY.NEW_WORD_WINDOW.WORD_PLACEHOLDER')}
+          />
+        </div>
+
+        <div className={styles.inputContainer}>
+          <div className={styles.lang}>
+            <span>RU</span>
+          </div>
+          <textarea
+            data-testid="translate"
+            name="translate"
+            className={styles.input}
+            value={translate}
+            onChange={handleOnChangeTranslate}
+            onKeyDown={handleKeyDown}
+            placeholder={t('DICTIONARY.NEW_WORD_WINDOW.TRANSLATE_PLACEHOLDER')}
+          />
+        </div>
       </div>
       <div className={styles.buttons}>
         <SaveButton onSave={handleOnClickSave} />

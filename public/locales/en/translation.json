@@ -14,7 +14,7 @@
       "TITLE":"Dictionary",
       "NEW_WORD_BUTTON":"New Word",
       "NEW_WORD_WINDOW":{
-        "WORD_PLACEHOLDER":"Word",
+        "WORD_PLACEHOLDER":"Word or phrase you want to learn",
         "TRANSLATE_PLACEHOLDER":"Translate",
         "SAVE_BUTTON":"Save",
         "CANCEL_BUTTON":"Cancel"
