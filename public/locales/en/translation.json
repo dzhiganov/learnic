@@ -22,12 +22,18 @@
       "WORD_CARD":{
         "ADD_EXAMPLE_BUTTON":"Add Example",
         "SAVE_BUTTON":"Save",
-        "CANCEL_BUTTON":"Cancel"
+        "CANCEL_BUTTON":"Cancel",
+        "STEPS": {
+          "REPEAT": "Repeat",
+          "NEXT_REPEAT": "Next repeat",
+          "NEXT_REPEAT_DATE": "{{date, D MMMM YYYY}}",
+          "TODAY": "Today"
+        }
       },
       "SELECT_WORD": "🤔 Select some word..." 
     },
     "TRAINING":{
-      "TITLE": "Trainings",
+      "TITLE": "Training",
       "TRAINING_LIST":{
         "TRANSLATE_TRAINING":{
           "TITLE":"Select right translation",
@@ -38,6 +44,7 @@
           "DESCRIPTION":"You will have to insert the appropriate word in the sentence, choosing from four options"
         }
       },
+      "NO_TRAINING_WORDS": "You don't have words for training today",
       "BACK_TO_THE_LIST_BUTTON":"Back to the training list"
     },
     "LOGIN_PAGE":{

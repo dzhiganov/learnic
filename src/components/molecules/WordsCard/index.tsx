@@ -11,6 +11,7 @@ import AddExample from './AddExample';
 import useSelector from '~hooks/useSelector';
 import { update } from '~api/words';
 import { fetchWords } from '~actions/words';
+import StepsPopup from './StepsPopup';
 
 type Props = {
   id: string;
@@ -119,6 +120,8 @@ const WordsCard: React.FunctionComponent<Props> = ({
             <VolumeUpIcon />
           </button>
         </div>
+
+        <StepsPopup step={value.step} repeat={value.repeat} />
       </div>
       <div className={styles.contextSection}>
         <div>

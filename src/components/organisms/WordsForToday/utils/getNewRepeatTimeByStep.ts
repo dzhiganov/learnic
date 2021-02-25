@@ -41,4 +41,5 @@ const getNewRepeatTimeByStep = (step = 0): Date => {
   return dayjs(new Date()).add(steps[step].value, steps[step].unit).toDate();
 };
 
+export { steps };
 export default getNewRepeatTimeByStep;

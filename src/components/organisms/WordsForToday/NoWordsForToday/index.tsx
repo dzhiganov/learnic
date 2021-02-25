@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 
 type Props = {
@@ -6,9 +7,11 @@ type Props = {
 };
 
 const NoWordsForToday: React.FunctionComponent<Props> = () => {
+  const { t } = useTranslation();
+
   return (
     <span className={styles.title} role="img" aria-label="emoji">
-      🙄 You don&apos;t have words for training today
+      🙄 {t('TRAINING.NO_TRAINING_WORDS')}
     </span>
   );
 };

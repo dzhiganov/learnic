@@ -7,7 +7,6 @@ import styles from './styles.module.css';
 import { firestore } from '../../../database';
 import Results from './Results';
 import Trainings from './Trainings';
-import SentencesTraining from './SentencesTraining';
 import If from '~c/atoms/If';
 import TrainingTypes from './consts/trainingTypes';
 import WordsTraining from './WordsTraining';
@@ -38,7 +37,6 @@ type TrainingProps = {
 
 const trainingComponents = {
   [TrainingTypes.Words]: (WordsTraining as unknown) as React.ComponentType<TrainingProps>,
-  [TrainingTypes.Sentences]: (SentencesTraining as unknown) as React.ComponentType<TrainingProps>,
 };
 
 const Wrapper = (ui: JSX.Element) => {
@@ -88,53 +86,17 @@ const WordsForToday: React.FunctionComponent = () => {
       const data = doc.data();
 
       if (trainingType === TrainingTypes.Words) {
-        let noExamples = false;
+        // TODO Fix that. When word has step 6 it should be archived
+        const nextStep = data?.step >= 6 ? 6 : data?.step || 0 + 1;
+        const nextRepeat = getNewRepeatTimeByStep(nextStep);
 
-        const { examples } =
-          words.find(({ id: targetId }) => targetId === id) || {};
-
-        if (!Array.isArray(examples) || !examples.length) {
-          noExamples = true;
-        }
-
-        if (data?.repeatSentenceDone || noExamples) {
-          // TODO Fix that. When word has step 6 it should be archived
-          const nextStep = data?.step >= 6 ? 6 : data?.step || 0 + 1;
-          const nextRepeat = getNewRepeatTimeByStep(nextStep);
-
-          request.update({
-            step: nextStep,
-            repeat: nextRepeat,
-            repeatTranslateDone: false,
-            repeatSentenceDone: false,
-          });
-        } else {
-          request.update({
-            repeatTranslateDone: true,
-          });
-        }
-      }
-
-      if (trainingType === TrainingTypes.Sentences) {
-        if (data?.repeatTranslateDone) {
-          // TODO Fix that. When word has step 6 it should be archived
-          const nextStep = data?.step >= 6 ? 6 : data?.step || 0 + 1;
-          const nextRepeat = getNewRepeatTimeByStep(nextStep);
-
-          request.update({
-            step: nextStep,
-            repeat: nextRepeat,
-            repeatTranslateDone: false,
-            repeatSentenceDone: false,
-          });
-        } else {
-          request.update({
-            repeatSentenceDone: true,
-          });
-        }
+        request.update({
+          step: nextStep,
+          repeat: nextRepeat,
+        });
       }
     });
-  }, [succesed, uid, trainingType, words]);
+  }, [succesed, uid, trainingType]);
 
   useEffect(() => {
     if (finished) {

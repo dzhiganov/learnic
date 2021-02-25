@@ -176,8 +176,6 @@ const addNewWord = async ({
     step: 0,
     date: new Date(),
     repeat: new Date(),
-    repeatTranslateDone: false,
-    repeatSentenceDone: false,
     audio,
     examples: examples.filter((example: string) => example),
   });
