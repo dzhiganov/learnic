@@ -97,3 +97,12 @@
 .cardItemTextContainerHovered {
   width: 200px;
 }
+
+.disable {
+  background-color: #ccc;
+}
+
+.disable:focus,
+.disable:hover {
+  background-color: #ccc;
+}

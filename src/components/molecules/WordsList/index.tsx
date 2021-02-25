@@ -99,7 +99,10 @@ const WordsList: React.FunctionComponent<Props> = ({
         <Search value={filter} onChange={handleChangeFilter} />
         <button
           type="button"
-          className={styles.addNewWordButton}
+          disabled={showNewWord}
+          className={`${styles.addNewWordButton} ${
+            showNewWord ? styles.disable : ''
+          }`}
           onClick={onShowNewWord}
         >
           {t('DICTIONARY.NEW_WORD_BUTTON')}
