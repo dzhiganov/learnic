@@ -30,18 +30,24 @@ const issuesDisplaySlice = createSlice({
     getLoadingStart(state) {
       state.isLoading = true;
     },
-    getWordsSuccess(state, action: PayloadAction<Words>) {
-      state.all = action.payload;
+    getLoadingEnd(state) {
       state.isLoading = false;
     },
-    getTrainingWords(state, action: PayloadAction<Words>) {
-      state.training = action.payload;
+    getWordsSuccess(state, action: PayloadAction<Words>) {
+      state.all = action.payload;
+    },
+    getTrainingWords(state) {
+      state.training = state.all.filter(({ step = 0, repeat = null }) => {
+        const repeatDate = repeat ? new Date(repeat) : null;
+        return step === 0 || (repeatDate && repeatDate < new Date());
+      });
     },
   },
 });
 
 export const {
   getLoadingStart,
+  getLoadingEnd,
   getWordsSuccess,
   getTrainingWords,
 } = issuesDisplaySlice.actions;
@@ -51,12 +57,10 @@ export default issuesDisplaySlice.reducer;
 export const fetchWords = (uid: string): AppThunk => async (dispatch) => {
   dispatch(getLoadingStart());
   const all = await getWords(uid);
-  const training = all.filter(({ step = 0, repeat = null }) => {
-    const repeatDate = repeat ? new Date(repeat) : null;
-    return step === 0 || (repeatDate && repeatDate < new Date());
-  });
+
   dispatch(getWordsSuccess(all));
-  dispatch(getTrainingWords(training));
+  dispatch(getTrainingWords());
+  dispatch(getLoadingEnd());
 };
 
 export const fetchDeleteWord = ({
@@ -68,8 +72,8 @@ export const fetchDeleteWord = ({
 }): AppThunk => async (dispatch) => {
   dispatch(getLoadingStart());
   await deleteWord({ uid, wordId });
-  const all = await getWords(uid);
-  dispatch(getWordsSuccess(all));
+  dispatch(fetchWords(uid));
+  dispatch(getLoadingEnd());
 };
 
 export const fetchAddNewWord = ({
@@ -83,24 +87,31 @@ export const fetchAddNewWord = ({
 }): AppThunk => async (dispatch) => {
   dispatch(getLoadingStart());
   await addNewWord({ uid, word, translate });
-  const all = await getWords(uid);
-  dispatch(getWordsSuccess(all));
+  dispatch(fetchWords(uid));
+  dispatch(getLoadingEnd());
 };
 
 export const fetchUpdate = ({
   uid,
   id,
   data,
+  // TODO move options to the top level
+  showLoading = true,
 }: {
   uid: string;
   id: string;
   data: {
-    word: string;
-    translate: string;
+    word?: string;
+    translate?: string;
+    repeat?: Date;
+    step?: number;
   };
+  showLoading?: boolean;
 }): AppThunk => async (dispatch) => {
-  dispatch(getLoadingStart());
+  if (showLoading) {
+    dispatch(getLoadingStart());
+  }
   await update({ uid, wordId: id, updatedFields: data });
-  const all = await getWords(uid);
-  dispatch(getWordsSuccess(all));
+  dispatch(fetchWords(uid));
+  dispatch(getLoadingEnd());
 };

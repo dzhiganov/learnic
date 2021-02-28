@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import omit from 'lodash.omit';
 import { firestore } from '../../../database';
 import { getDefinition } from './dictionary';
 
@@ -65,21 +66,28 @@ const fetchDefinition = async (
   examples: string[];
   audio: string;
 }> => {
-  const data = await getDefinition(keyword);
+  try {
+    const data = await getDefinition(keyword);
 
-  if (data && Array.isArray(data)) {
-    const { examples: resExamples, audio: resAudio } = getExamples(data);
+    if (data && Array.isArray(data)) {
+      const { examples: resExamples, audio: resAudio } = getExamples(data);
+
+      return {
+        examples: resExamples,
+        audio: resAudio as string,
+      };
+    }
 
     return {
-      examples: resExamples,
-      audio: resAudio as string,
+      examples: [],
+      audio: '',
+    };
+  } catch (error) {
+    return {
+      examples: [],
+      audio: '',
     };
   }
-
-  return {
-    examples: [],
-    audio: '',
-  };
 };
 
 const getWords = async (uid: string): Promise<Words> => {
@@ -100,7 +108,7 @@ const getWords = async (uid: string): Promise<Words> => {
   }));
 };
 
-const update = async ({
+const update = ({
   uid,
   wordId,
   updatedFields,
@@ -111,36 +119,32 @@ const update = async ({
     word?: string;
     translate?: string;
     example?: string;
+    repeat?: Date;
+    step?: number;
   };
 }): Promise<void> => {
-  const updateObject = {} as {
+  const updateObject = {
+    ...omit(updatedFields, 'examples'),
+  } as {
     word?: string;
     translate?: string;
-    examples?: firebase.firestore.FieldValue;
+    example?: firebase.firestore.FieldValue;
+    repeat?: Date;
+    step?: number;
   };
 
   if (updatedFields.example) {
-    updateObject.examples = firebase.firestore.FieldValue.arrayUnion(
+    updateObject.example = firebase.firestore.FieldValue.arrayUnion(
       updatedFields.example
     );
   }
 
-  if (updatedFields.word) {
-    updateObject.word = updatedFields.word;
-  }
-
-  if (updatedFields.translate) {
-    updateObject.translate = updatedFields.translate;
-  }
-
-  await firestore
+  return firestore
     .collection('users')
     .doc(uid)
     .collection('words')
     .doc(wordId)
-    .update({
-      ...updateObject,
-    });
+    .update(updateObject);
 };
 
 const deleteWord = async ({

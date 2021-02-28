@@ -26,8 +26,8 @@
         "STEPS": {
           "REPEAT": "Repeat",
           "NEXT_REPEAT": "Next repeat",
-          "NEXT_REPEAT_DATE": "{{date, D MMMM YYYY}}",
-          "TODAY": "Today"
+          "NEXT_REPEAT_DATE": "{{date, D MMMM YYYY H mm}}",
+          "TODAY": "Now"
         }
       },
       "SELECT_WORD": "🤔 Select some word..." 
@@ -45,7 +45,11 @@
         }
       },
       "NO_TRAINING_WORDS": "You don't have words for training today",
-      "BACK_TO_THE_LIST_BUTTON":"Back to the training list"
+      "BACK_TO_THE_LIST_BUTTON":"Back to the training list",
+      "RESULTS": {
+        "SUCCESED": "Succesed",
+        "FAILED": "Failed"
+      }
     },
     "LOGIN_PAGE":{
       "TITLE":"Sign in",

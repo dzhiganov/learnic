@@ -48,7 +48,7 @@ const WordsTraining: React.FunctionComponent<TrainingProps> = ({
     [allWords]
   );
 
-  const checkRestWords = useCallback(() => {
+  const checkRestWords = useCallback(async () => {
     if (restWords.length) {
       setTrainWord(restWords);
       setStarted(true);

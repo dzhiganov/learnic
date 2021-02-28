@@ -18,23 +18,23 @@
 
 .item:hover , 
 .item:focus {
-    background-color: #c9cbff;
+    background-color: #dddef7;
 }
 
 
 .itemActive {
-    background-color:#9ab3f5;;
+    background-color:#a3b8f0;
 }
 
 .itemActive:hover, 
 .itemActive:focus {
-    background-color:#9ab3f5;;
+    background-color:#a3b8f0;
 }
 
 .note {
     font-size: 11px;
     border-radius: 50%;
-    background-color: #c9cbff;
+    background-color: #a3b8f0;
     color: rgba(0, 0, 0, 0.9);
     font-weight: 600;
     width: 18px;

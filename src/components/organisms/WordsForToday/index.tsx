@@ -1,10 +1,15 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+} from 'react';
 import firebase from 'firebase';
 import shuffle from 'lodash.shuffle';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
-import { firestore } from '../../../database';
 import Results from './Results';
 import Trainings from './Trainings';
 import If from '~c/atoms/If';
@@ -13,7 +18,7 @@ import WordsTraining from './WordsTraining';
 import NoWordsForToday from './NoWordsForToday';
 import getNewRepeatTimeByStep from './utils/getNewRepeatTimeByStep';
 import useSelector from '~hooks/useSelector';
-import { fetchWords } from '~actions/words';
+import { fetchUpdate, fetchWords } from '~actions/words';
 
 type Word = firebase.firestore.DocumentData & {
   id: string;
@@ -58,6 +63,8 @@ const WordsForToday: React.FunctionComponent = () => {
   const [failed, setFailed] = useState<string[]>([]);
   const uid = useSelector('user.uid');
   const words = useSelector('words.training') as Words;
+  const wordsRef = useRef<Words>([]);
+  wordsRef.current = words;
 
   const shuffledWords = useMemo(() => shuffle(words), [words]);
 
@@ -76,36 +83,39 @@ const WordsForToday: React.FunctionComponent = () => {
 
   const updateWordStatuses = useCallback(async () => {
     succesed.forEach(async (id) => {
-      const request = firestore
-        .collection('users')
-        .doc(uid)
-        .collection('words')
-        .doc(id);
+      const currentWord = wordsRef.current.find(
+        ({ id: itemId }) => id === itemId
+      );
+      // TODO Fix that. When word has step 6 it should be archived
+      const nextStep =
+        currentWord?.step >= 6 ? 6 : currentWord?.step + 1 || 0 + 1;
+      const nextRepeat = getNewRepeatTimeByStep(nextStep);
+      const data = {
+        step: nextStep,
+        repeat: nextRepeat,
+      };
 
-      const doc = await request.get();
-      const data = doc.data();
-
-      if (trainingType === TrainingTypes.Words) {
-        // TODO Fix that. When word has step 6 it should be archived
-        const nextStep = data?.step >= 6 ? 6 : data?.step || 0 + 1;
-        const nextRepeat = getNewRepeatTimeByStep(nextStep);
-
-        request.update({
-          step: nextStep,
-          repeat: nextRepeat,
-        });
-      }
+      dispatch(
+        fetchUpdate({
+          uid,
+          id,
+          data,
+          showLoading: false,
+        })
+      );
     });
-  }, [succesed, uid, trainingType]);
+  }, [dispatch, succesed, uid]);
 
   useEffect(() => {
-    if (finished) {
+    if (finished && succesed.length) {
       updateWordStatuses();
     }
-  }, [finished, updateWordStatuses]);
+  }, [finished, updateWordStatuses, succesed]);
 
   const handleSetSuccess = useCallback(
-    (value) => setSuccesed([...succesed, value]),
+    (value) => {
+      setSuccesed([...succesed, value]);
+    },
     [succesed]
   );
 
@@ -127,10 +137,6 @@ const WordsForToday: React.FunctionComponent = () => {
     setStarted(false);
   }, []);
 
-  if (!words.length) {
-    return Wrapper(<NoWordsForToday />);
-  }
-
   if (finished) {
     return Wrapper(
       <Results
@@ -138,6 +144,10 @@ const WordsForToday: React.FunctionComponent = () => {
         onRepeat={handleRepeat}
       />
     );
+  }
+
+  if (!words.length) {
+    return Wrapper(<NoWordsForToday />);
   }
 
   return Wrapper(
