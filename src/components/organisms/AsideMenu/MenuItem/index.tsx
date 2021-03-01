@@ -34,7 +34,7 @@ const MenuItem: React.FunctionComponent<Props> = ({
       onClick={onClick}
     >
       <li className={`${styles.item} ${isActive ? styles.itemActive : ''}`}>
-        <div>
+        <div className={styles.itemWrapper}>
           <span>{`${prefix} ${t(title)}`}</span>
           {showTrainingCount ? (
             <span className={styles.note} data-testid="training-count">

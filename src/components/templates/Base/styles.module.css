@@ -24,7 +24,7 @@
     border-radius: 6px;
     display: grid;
     grid-template-columns: 240px auto;
-    height: 90vh;
+    height: 87vh;
     overflow: hidden;
   }
 }
@@ -37,4 +37,11 @@
 
 .content {
   font-size: inherit;
+}
+
+.footer {
+  font-size: 12px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.4);
+  padding-top: 8px;
 }
