@@ -1,4 +1,4 @@
-import { HOME_WORDS, HOME_WORDS_FOR_TODAY, HOME_CARDS } from '~router/paths';
+import { HOME_WORDS, HOME_CARDS } from '~router/paths';
 
 const keys = {
   DICTIONARY: 'dictionary',
