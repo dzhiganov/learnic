@@ -18,7 +18,6 @@ const AsideMenu: React.FunctionComponent = () => {
         {items.map(({ key, title, to }) => (
           <MenuItem
             key={key}
-            id={key}
             title={title}
             to={to}
             onClick={() => setShowMenu(false)}

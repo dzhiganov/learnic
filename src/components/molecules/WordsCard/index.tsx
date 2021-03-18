@@ -12,17 +12,13 @@ import useSelector from '~hooks/useSelector';
 import { update } from '~api/words';
 import { fetchWords } from '~actions/words';
 import StepsPopup from './StepsPopup';
+import { Words } from '~/core/store/models/words';
 
 type Props = {
   id: string;
   word: string;
   translate: string;
   onClose: () => void;
-};
-
-const defaultDefinition = {
-  examples: [],
-  audio: '',
 };
 
 const WordsCard: React.FunctionComponent<Props> = ({
@@ -35,12 +31,11 @@ const WordsCard: React.FunctionComponent<Props> = ({
   const isWide = useMedia('(min-width: 576px)');
   const dispatch = useDispatch();
   const [showAddExample, setShowAddExample] = useState<boolean>(false);
-  const uid = useSelector('user.uid');
+  const uid = useSelector<string>('user.uid');
   // TODO set type imported from redux store
-  const value =
-    useSelector('words.all').find(
-      ({ word: currentWord }: { word: string }) => currentWord === word
-    ) || defaultDefinition;
+  const value = useSelector<Words>('words.all').find(
+    ({ word: currentWord }: { word: string }) => currentWord === word
+  );
 
   const audio = useMemo((): HTMLAudioElement | null => {
     if (value?.audio) {
@@ -115,7 +110,10 @@ const WordsCard: React.FunctionComponent<Props> = ({
           </button>
         </div>
 
-        <StepsPopup step={value.step} repeat={value.repeat} />
+        <StepsPopup
+          step={value?.step || 0}
+          repeat={(value?.repeat as unknown) as Date}
+        />
       </div>
       <div className={styles.contextSection}>
         <div>
@@ -132,8 +130,8 @@ const WordsCard: React.FunctionComponent<Props> = ({
         ) : null}
         <>
           <ul className={styles.examplesList}>
-            {Array.isArray(value.examples) && value.examples.length
-              ? value.examples.map((def: string, i: number) => (
+            {Array.isArray(value?.examples) && value?.examples.length
+              ? value?.examples.map((def: string, i: number) => (
                   <li key={def} className={styles.examplesItem}>
                     <span className={styles.exampleCount}>{`${i + 1}) `}</span>
                     <span className={styles.example} key={def}>

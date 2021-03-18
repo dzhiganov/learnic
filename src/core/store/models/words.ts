@@ -2,14 +2,18 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { AppThunk } from '..';
 import { getWords, deleteWord, addNewWord, update } from '../api/words';
 
-export type Words = {
+export type Word = {
   id: string;
   word: string;
   translate: string;
   date: string | null;
   repeat: string | null;
   step: number;
-}[];
+  audio?: string;
+  examples: string[];
+};
+
+export type Words = Word[];
 
 type State = {
   all: Words;
@@ -56,7 +60,7 @@ export default issuesDisplaySlice.reducer;
 
 export const fetchWords = (uid: string): AppThunk => async (dispatch) => {
   dispatch(getLoadingStart());
-  const all = await getWords(uid);
+  const all = (await getWords(uid)) as Words;
 
   dispatch(getWordsSuccess(all));
   dispatch(getTrainingWords());

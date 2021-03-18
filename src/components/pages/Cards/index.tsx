@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable prefer-const */
 import React, { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
@@ -16,6 +14,7 @@ import styles from './styles.module.css';
 import Card from './Card/Card';
 import { fetchUpdate } from '~actions/words';
 import getNewRepeatTimeByStep from './utils/getNewRepeatTimeByStep';
+import type { Words } from '~/core/store/models/words';
 
 const BorderLinearProgress = withStyles((theme: Theme) =>
   createStyles({
@@ -37,11 +36,11 @@ const BorderLinearProgress = withStyles((theme: Theme) =>
 const Cards: React.FunctionComponent = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const uid = useSelector('user.uid');
-  const words = useSelector('words.training') as any[];
+  const uid = useSelector<string>('user.uid');
+  const words = useSelector<Words>('words.training');
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [successful, setSuccesseful] = useState<any[]>([]);
-  const [failed, setFailed] = useState<any[]>([]);
+  const [successful, setSuccesseful] = useState<number[]>([]);
+  const [failed, setFailed] = useState<number[]>([]);
 
   const back = useCallback(() => {
     const newIndex = currentIndex - 1;
@@ -97,7 +96,8 @@ const Cards: React.FunctionComponent = () => {
     setCurrentIndex(newIndex);
 
     window.requestAnimationFrame(() => {
-      let { id, step: currentStep } = words[currentIndex];
+      const { id } = words[currentIndex];
+      let { step: currentStep } = words[currentIndex];
       if (currentStep === 0) {
         currentStep = 1;
       }

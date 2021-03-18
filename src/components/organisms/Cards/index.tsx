@@ -7,6 +7,7 @@ import WordsCard from '~c/molecules/WordsCard';
 import WordsList from '~c/molecules/WordsList';
 import useSelector from '~hooks/useSelector';
 import { fetchDeleteWord, fetchAddNewWord, fetchUpdate } from '~actions/words';
+import { Words } from '~/core/store/models/words';
 
 const Cards: React.FunctionComponent = () => {
   const { t } = useTranslation();
@@ -23,8 +24,8 @@ const Cards: React.FunctionComponent = () => {
   });
   const [showNewWord, setShowNewWord] = useState(false);
   const [edited, setEdited] = useState<string>('');
-  const words = useSelector('words.all');
-  const userId = useSelector('user.uid');
+  const words = useSelector<Words>('words.all');
+  const userId = useSelector<string>('user.uid');
 
   const handleShowNewWord = useCallback(() => {
     setShowNewWord(true);

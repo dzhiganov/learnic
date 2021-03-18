@@ -14,16 +14,17 @@ type Raw = {
   step: number;
 };
 
-type Word = {
+type WordSchema = {
   id: string;
   word: string;
   translate: string;
   date: string | null;
   repeat: string | null;
   step: number;
+  examples?: string[];
 };
 
-type Words = Word[];
+type WordSchemas = WordSchema[];
 
 export const getExamples = (
   data: Array<{
@@ -90,7 +91,7 @@ const fetchDefinition = async (
   }
 };
 
-const getWords = async (uid: string): Promise<Words> => {
+const getWords = async (uid: string): Promise<WordSchemas> => {
   const result: Raw[] = [];
   const request = firestore.collection('users').doc(uid).collection('words');
   const response = await request.get();
