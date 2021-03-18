@@ -1,9 +1,8 @@
 .container {
   padding: 8px 0;
-  /* background-color: #0f1123; */
   background-color: #fff;
   border-bottom: 1px solid #f0f0f0;
-  padding: 8px 6px;
+  padding: 0 6px;
   height: 60px;
   margin-bottom: 28px;
 }
@@ -53,4 +52,5 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 100%;
 }

@@ -7,6 +7,7 @@ import User from '~c/molecules/User';
 import styles from './styles.module.css';
 import { logout } from '~actions/user';
 import LangPicker from '~c/molecules/LangPicker';
+import AsideMenu from '~c/organisms/AsideMenu';
 
 const TopBar: React.FunctionComponent = () => {
   const { t } = useTranslation();
@@ -56,6 +57,7 @@ const TopBar: React.FunctionComponent = () => {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <div className={styles.logo}>Learnic</div>
+        <AsideMenu />
         <div className={styles.controls}>
           <LangPicker />
           <User onClick={handleClick} />

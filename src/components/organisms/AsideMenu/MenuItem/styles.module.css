@@ -1,10 +1,13 @@
 .item {
     cursor: pointer;
-    padding: 10px 18px;
+    padding: 10px 32px;
     font-weight: 500;
     text-align: left;
     font-size: 16px;
     transition: border 200ms;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
 }
 
 
@@ -32,7 +35,6 @@
 }
 
 .note {
-    font-size: 11px;
     border-radius: 50%;
     background-color: #a3b8f0;
     color: rgba(0, 0, 0, 0.9);

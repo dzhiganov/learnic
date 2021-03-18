@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import React, { memo, useState, useEffect, useCallback, useMemo } from 'react';
+import React, { memo, useState, useCallback, useMemo } from 'react';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import { useDispatch } from 'react-redux';
 import useMedia from 'react-use/lib/useMedia';
@@ -41,12 +41,6 @@ const WordsCard: React.FunctionComponent<Props> = ({
     useSelector('words.all').find(
       ({ word: currentWord }: { word: string }) => currentWord === word
     ) || defaultDefinition;
-
-  useEffect(() => {
-    if (word) {
-      fetch(word);
-    }
-  }, [word]);
 
   const audio = useMemo((): HTMLAudioElement | null => {
     if (value?.audio) {

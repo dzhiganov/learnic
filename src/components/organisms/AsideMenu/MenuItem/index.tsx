@@ -9,7 +9,6 @@ type Props = {
   id: string;
   title: string;
   to: string;
-  prefix: string;
   onClick: () => void;
 };
 
@@ -17,7 +16,6 @@ const MenuItem: React.FunctionComponent<Props> = ({
   id,
   title,
   to,
-  prefix,
   onClick,
 }: Props) => {
   const { t } = useTranslation();
@@ -35,7 +33,7 @@ const MenuItem: React.FunctionComponent<Props> = ({
     >
       <li className={`${styles.item} ${isActive ? styles.itemActive : ''}`}>
         <div className={styles.itemWrapper}>
-          <span>{`${prefix} ${t(title)}`}</span>
+          <span>{t(title)}</span>
           {showTrainingCount ? (
             <span className={styles.note} data-testid="training-count">
               {trainingLength}

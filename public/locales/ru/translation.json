@@ -8,7 +8,8 @@
     },
     "ASIDE_MENU":{
       "DICTIONARY":"Словарь",
-      "TRAININGS":"Тренировки"
+      "TRAININGS":"Тренировки",
+      "CARDS": "Карточки"
     },
     "DICTIONARY":{
       "TITLE":"Словарь",
@@ -65,5 +66,12 @@
       "PASSWORD": "Пароль",
       "SUBMIT": "Продолжить",
       "ALTERNATE":"Или"
+    },
+    "CARDS": {
+      "TITLE": "Все слова",
+      "FLIP": "Нажмите чтобы перевернуть",
+      "DONE": "Готово",
+      "FAIL": "Повторить"
     }
+
   }

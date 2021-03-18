@@ -1,23 +1,22 @@
-import { HOME_WORDS, HOME_WORDS_FOR_TODAY } from '~router/paths';
+import { HOME_WORDS, HOME_WORDS_FOR_TODAY, HOME_CARDS } from '~router/paths';
 
 const keys = {
   DICTIONARY: 'dictionary',
   TRAININGS: 'trainings',
   LOGOUT: 'logout',
+  CARDS: 'cards',
 };
 
 const items = [
   {
     key: keys.DICTIONARY,
     title: 'ASIDE_MENU.DICTIONARY',
-    prefix: '📚',
     to: HOME_WORDS,
   },
   {
-    key: keys.TRAININGS,
-    title: 'ASIDE_MENU.TRAININGS',
-    prefix: '📖',
-    to: HOME_WORDS_FOR_TODAY,
+    key: keys.CARDS,
+    title: 'ASIDE_MENU.CARDS',
+    to: HOME_CARDS,
   },
 ];
 

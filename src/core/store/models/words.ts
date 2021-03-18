@@ -61,6 +61,8 @@ export const fetchWords = (uid: string): AppThunk => async (dispatch) => {
   dispatch(getWordsSuccess(all));
   dispatch(getTrainingWords());
   dispatch(getLoadingEnd());
+
+  return all;
 };
 
 export const fetchDeleteWord = ({

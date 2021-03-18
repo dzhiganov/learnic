@@ -8,7 +8,8 @@
     },
     "ASIDE_MENU":{
       "DICTIONARY":"Dictionary",
-      "TRAININGS":"Training"
+      "TRAININGS":"Training",
+      "CARDS": "Cards"
     },
     "DICTIONARY":{
       "TITLE":"Dictionary",
