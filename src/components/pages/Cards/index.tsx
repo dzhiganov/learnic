@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -9,12 +9,14 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useDispatch } from 'react-redux';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { createStyles, withStyles, Theme } from '@material-ui/core/styles';
+import useAsyncFn from 'react-use/lib/useAsyncFn';
 import useSelector from '~hooks/useSelector';
 import styles from './styles.module.css';
 import Card from './Card/Card';
 import { fetchUpdate } from '~actions/words';
 import getNewRepeatTimeByStep from './utils/getNewRepeatTimeByStep';
-import type { Words } from '~/core/store/models/words';
+// import type { Words } from '~/core/store/models/words';
+import { getWords } from '~api/words';
 
 const BorderLinearProgress = withStyles((theme: Theme) =>
   createStyles({
@@ -37,10 +39,15 @@ const Cards: React.FunctionComponent = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const uid = useSelector<string>('user.uid');
-  const words = useSelector<Words>('words.training');
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [successful, setSuccesseful] = useState<number[]>([]);
   const [failed, setFailed] = useState<number[]>([]);
+
+  const [{ value: words = [] }, fetch] = useAsyncFn(getWords, []);
+
+  useEffect(() => {
+    fetch(uid, true);
+  }, [fetch, uid]);
 
   const back = useCallback(() => {
     const newIndex = currentIndex - 1;
@@ -56,12 +63,13 @@ const Cards: React.FunctionComponent = () => {
 
   const handleDone = useCallback(() => {
     setSuccesseful([...successful, currentIndex]);
+    const oldIndex = currentIndex;
     const newIndex = currentIndex + 1;
     if (!words[newIndex]) return;
     setCurrentIndex(newIndex);
 
     window.requestAnimationFrame(() => {
-      const { id, step: currentStep } = words[currentIndex];
+      const { id, step: currentStep } = words[oldIndex];
       const nextStep = currentStep >= 6 ? 6 : currentStep + 1 || 0 + 1;
       const nextRepeat = getNewRepeatTimeByStep(nextStep);
 
@@ -92,12 +100,13 @@ const Cards: React.FunctionComponent = () => {
   const handleRepeat = useCallback(() => {
     setFailed([...failed, currentIndex]);
     const newIndex = currentIndex + 1;
+    const oldIndex = currentIndex;
     if (!words[newIndex]) return;
     setCurrentIndex(newIndex);
 
     window.requestAnimationFrame(() => {
-      const { id } = words[currentIndex];
-      let { step: currentStep } = words[currentIndex];
+      const { id } = words[oldIndex];
+      let { step: currentStep } = words[oldIndex];
       if (currentStep === 0) {
         currentStep = 1;
       }

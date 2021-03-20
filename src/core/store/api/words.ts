@@ -91,7 +91,10 @@ const fetchDefinition = async (
   }
 };
 
-const getWords = async (uid: string): Promise<WordSchemas> => {
+const getWords = async (
+  uid: string,
+  onlyTraingins = false
+): Promise<WordSchemas> => {
   const result: Raw[] = [];
   const request = firestore.collection('users').doc(uid).collection('words');
   const response = await request.get();
@@ -102,11 +105,19 @@ const getWords = async (uid: string): Promise<WordSchemas> => {
 
   response.forEach(mergeToResult);
 
-  return result.map(({ date = null, repeat = null, ...other }) => ({
+  const prepared = result.map(({ date = null, repeat = null, ...other }) => ({
     ...other,
     date: date ? date.toDate().toString() : null,
     repeat: repeat ? repeat.toDate().toString() : null,
   }));
+
+  if (onlyTraingins) {
+    return prepared.filter(({ step = 0, repeat = null }) => {
+      const repeatDate = repeat ? new Date(repeat) : null;
+      return step === 0 || (repeatDate && repeatDate < new Date());
+    });
+  }
+  return prepared;
 };
 
 const update = ({
