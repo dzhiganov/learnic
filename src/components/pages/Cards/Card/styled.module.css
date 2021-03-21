@@ -61,19 +61,6 @@
     transform: perspective(1800px) rotateY(0deg);
 }
 
-.flipButton {
-    color: #7579e7;
-    outline: none;
-    background-color: transparent;
-    cursor: pointer;
-    border: none;
-    font-weight: 600;
-    font-size: 16px;
-    width: max-content;
-    display: flex;
-    align-items: center;
-}
-
 .flip {
     font-size: 15px;
     color: rgb(80, 80, 80);

@@ -1,3 +1,4 @@
+/* eslint-disable css-modules/no-unused-class */
 import React, { memo, useCallback, useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './styled.module.css';

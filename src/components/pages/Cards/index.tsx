@@ -11,11 +11,11 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { createStyles, withStyles, Theme } from '@material-ui/core/styles';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import useSelector from '~hooks/useSelector';
+// eslint-disable-next-line css-modules/no-unused-class
 import styles from './styles.module.css';
 import Card from './Card/Card';
 import { fetchUpdate } from '~actions/words';
 import getNewRepeatTimeByStep from './utils/getNewRepeatTimeByStep';
-// import type { Words } from '~/core/store/models/words';
 import { getWords } from '~api/words';
 
 const BorderLinearProgress = withStyles((theme: Theme) =>

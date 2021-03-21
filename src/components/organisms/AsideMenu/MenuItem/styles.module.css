@@ -34,19 +34,6 @@
     background-color:#a3b8f0;
 }
 
-.note {
-    border-radius: 50%;
-    background-color: #a3b8f0;
-    color: rgba(0, 0, 0, 0.9);
-    font-weight: 600;
-    width: 18px;
-    height: 18px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 8px;
-}
-
 .itemWrapper {
     display: flex;
     align-items: center;

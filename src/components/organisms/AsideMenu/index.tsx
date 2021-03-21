@@ -31,7 +31,7 @@ const AsideMenu: React.FunctionComponent = () => {
     return (
       <div className={styles.topBar}>
         <Button onClick={() => setShowMenu(true)}>
-          <MenuIcon className={styles.menuIcon} />
+          <MenuIcon />
         </Button>
         <Drawer
           open={showMenu}

@@ -29,12 +29,6 @@
   }
 }
 
-.wrapper {
-  position: relative;
-  background-color: #fff;
-  border-radius: 4px;
-}
-
 .content {
   font-size: inherit;
 }

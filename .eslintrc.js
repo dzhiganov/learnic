@@ -10,8 +10,9 @@ module.exports = {
       'prettier/@typescript-eslint',
       'plugin:prettier/recommended',
       'plugin:cypress/recommended',
+      'plugin:css-modules/recommended'
     ],
-    plugins: ['react', '@typescript-eslint', 'jest', 'eslint-plugin-cypress'],
+    plugins: ['react', '@typescript-eslint', 'jest', 'eslint-plugin-cypress', 'css-modules'],
     env: {
       browser: true,
       es6: true,

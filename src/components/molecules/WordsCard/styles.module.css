@@ -117,7 +117,3 @@
     background: transparent;
     color: #000;
 }
-
-.cancelButton:focus, .cancelButton:hover {
-    background-color: rgba(0, 0 ,0,0.05);
-}
