@@ -3,10 +3,11 @@ import type { AppThunk } from '..';
 import database, { googleProvider } from '../../../database';
 
 export type User = {
-  status: Statuses;
+  status?: Statuses;
   uid: string;
   name: string;
   email: string;
+  photoURL: string;
 };
 
 export enum Statuses {
@@ -20,12 +21,18 @@ const initialState: User = {
   uid: '',
   name: '',
   email: '',
+  photoURL: '',
 };
 
 type FirebaseUser = {
   uid: string;
   displayName: string;
   email: string;
+  providerData?: [
+    {
+      photoURL?: string;
+    }
+  ];
 };
 
 const issuesDisplaySlice = createSlice({
@@ -35,12 +42,13 @@ const issuesDisplaySlice = createSlice({
     getUserChecking(state) {
       state.status = Statuses.Pending;
     },
-    getUserSuccess(state, action: PayloadAction<FirebaseUser>) {
-      const { uid, displayName, email } = action.payload;
+    getUserSuccess(state, action: PayloadAction<User>) {
+      const { uid, name, email, photoURL } = action.payload;
       state.uid = uid;
-      state.name = displayName;
+      state.name = name;
       state.email = email;
       state.status = Statuses.Success;
+      state.photoURL = photoURL;
     },
     getUserFailed(state) {
       state.uid = '';
@@ -75,8 +83,14 @@ export const fetchFirebaseUser = (): AppThunk => async (dispatch) => {
     // TODO should move to api
     database.auth().onAuthStateChanged((user) => {
       if (user) {
-        const { uid, displayName, email } = user as FirebaseUser;
-        dispatch(getUserSuccess({ uid, displayName, email }));
+        const {
+          uid,
+          displayName: name,
+          email,
+          providerData = [],
+        } = user as any;
+        const { photoURL = '' } = providerData[0] as any;
+        dispatch(getUserSuccess({ uid, name, email, photoURL }));
       } else {
         dispatch(getUserFailed());
       }

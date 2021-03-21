@@ -8,13 +8,13 @@ import styles from './styles.module.css';
 import { logout } from '~actions/user';
 import LangPicker from '~c/molecules/LangPicker';
 import AsideMenu from '~c/organisms/AsideMenu';
+import Logo from '~c/atoms/Logo';
 
 const TopBar: React.FunctionComponent = () => {
   const { t } = useTranslation();
   const isWide = useMedia('(min-width: 576px)');
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
-
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -56,7 +56,7 @@ const TopBar: React.FunctionComponent = () => {
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
-        <div className={styles.logo}>Learnic</div>
+        <Logo />
         <AsideMenu />
         <div className={styles.controls}>
           <LangPicker />

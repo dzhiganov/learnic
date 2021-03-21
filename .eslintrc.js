@@ -32,6 +32,7 @@ module.exports = {
       project: './tsconfig.json',
     },
     rules: {
+      'react/require-default-props': 'off',
       'quotes': ['error', 'single'],
       'linebreak-style': 'off',
       'import/extensions': ['error', 'never'],

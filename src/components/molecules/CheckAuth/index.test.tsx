@@ -48,14 +48,14 @@ it('check redirect to login page', async () => {
         <CheckAuth>
           <Switch>
             <Route path="/home">Home page</Route>
-            <Route path="/login">Login page</Route>
+            <Route path="/">Landing page</Route>
           </Switch>
         </CheckAuth>
       </Router>
     </Provider>
   );
 
-  expect(container).toHaveTextContent(/Login page/);
+  expect(container).toHaveTextContent(/Landing page/);
 });
 
 it('check return loading', async () => {

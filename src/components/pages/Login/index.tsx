@@ -32,11 +32,7 @@ const Login = (): React.ReactElement => {
 
   return (
     <div className={styles.container}>
-      <Form
-        onSubmit={handleLogin}
-        title={<span className={styles.title}>{t('LOGIN_PAGE.TITLE')}</span>}
-      />
-      <div className={styles.separator}>{t('SUBMIT_FORM.ALTERNATE')}</div>
+      <h2 className={styles.formTitle}>Войти</h2>
       <div className={styles.providers}>
         <button
           type="button"
@@ -70,11 +66,6 @@ const Login = (): React.ReactElement => {
           </svg>
           {t('LOGIN_PAGE.WITH_GOOGLE')}
         </button>
-      </div>
-      <div className={styles.linkToSignUpBlock}>
-        <Link to="/signup" className={styles.link}>
-          {t('LOGIN_PAGE.NO_ACCOUNT')}
-        </Link>
       </div>
     </div>
   );

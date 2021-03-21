@@ -1,0 +1,13 @@
+.header {
+    padding: 12px 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.top {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}

@@ -1,46 +1,35 @@
-/* eslint-disable no-debugger */
-import React, { useEffect, memo } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, memo, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import type { RootState } from '~store/rootReducer';
-import { LOGIN, SIGNUP, HOME_WORDS, INDEX } from '~router/paths';
+import { HOME_WORDS, INDEX } from '~router/paths';
 import { Statuses } from '~actions/user';
+import useSelector from '~hooks/useSelector';
 
 type Props = {
   children: JSX.Element;
 };
 
-const CheckAuth = ({ children }: Props): JSX.Element => {
+const CheckAuth: React.FC<Props> = ({ children }: Props) => {
   const { pathname } = useLocation();
-
   const history = useHistory();
-  const userId = useSelector(({ user: { uid } }: RootState) => uid);
-  const fetchUserStatus = useSelector(
-    ({ user: { status } }: RootState) => status
+  const uid = useSelector<string>('user.uid');
+  const userStatus = useSelector<Statuses>('user.status');
+
+  const isReady = useMemo(
+    () => [Statuses.Success, Statuses.Failed].includes(userStatus),
+    [userStatus]
   );
-  const isReady =
-    fetchUserStatus === Statuses.Success || fetchUserStatus === Statuses.Failed;
 
   useEffect(() => {
-    if (pathname === SIGNUP && userId) {
-      history.push(HOME_WORDS);
+    if (pathname === INDEX && !uid) {
       return;
     }
 
-    if (pathname === SIGNUP && !userId) {
-      return;
-    }
-
-    if (isReady && !userId) {
-      history.push(LOGIN);
-    } else if (
-      isReady &&
-      userId &&
-      (pathname === INDEX || pathname === LOGIN)
-    ) {
+    if (isReady && !uid) {
+      history.push(INDEX);
+    } else if (isReady && uid && pathname === INDEX) {
       history.push(HOME_WORDS);
     }
-  }, [history, userId, fetchUserStatus, isReady, pathname]);
+  }, [history, uid, isReady, pathname]);
 
   if (!isReady) {
     return <span>Loading...</span>;

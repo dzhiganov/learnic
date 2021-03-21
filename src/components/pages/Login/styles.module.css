@@ -15,7 +15,7 @@
     .container {
       margin-top: 3em;
       width: 500px;
-      padding: 6em 4em;
+      padding: 3em 2em;
       justify-content: center;
       height: initial;
     }
@@ -108,4 +108,20 @@
 .title {
     display: block;
     text-align: left;
+}
+
+.form {
+    background-color: #fff;
+    border-radius: 8px;
+    width: 100%;
+}
+
+.formTitle {
+    padding: 0;
+    margin: 0;
+    font-size: 26px;
+    margin-bottom: 36px;
+    font-weight: 600;
+    justify-self: flex-start;
+    width: 100%;
 }
