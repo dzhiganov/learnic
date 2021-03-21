@@ -24,17 +24,6 @@ const initialState: User = {
   photoURL: '',
 };
 
-type FirebaseUser = {
-  uid: string;
-  displayName: string;
-  email: string;
-  providerData?: [
-    {
-      photoURL?: string;
-    }
-  ];
-};
-
 const issuesDisplaySlice = createSlice({
   name: 'issuesDisplay',
   initialState,
@@ -83,13 +72,13 @@ export const fetchFirebaseUser = (): AppThunk => async (dispatch) => {
     // TODO should move to api
     database.auth().onAuthStateChanged((user) => {
       if (user) {
-        const {
-          uid,
-          displayName: name,
-          email,
-          providerData = [],
-        } = user as any;
-        const { photoURL = '' } = providerData[0] as any;
+        const { uid, displayName: name, email, providerData = [] } = user as {
+          uid: string;
+          displayName: string;
+          email: string;
+          providerData: { photoURL: string }[];
+        };
+        const { photoURL = '' } = providerData[0];
         dispatch(getUserSuccess({ uid, name, email, photoURL }));
       } else {
         dispatch(getUserFailed());
