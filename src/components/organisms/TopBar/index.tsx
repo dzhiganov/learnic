@@ -56,8 +56,10 @@ const TopBar: React.FunctionComponent = () => {
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
-        <Logo />
-        <AsideMenu />
+        <div className={styles.leftContainer}>
+          <Logo />
+          <AsideMenu />
+        </div>
         <div className={styles.controls}>
           <LangPicker />
           <User onClick={handleClick} />

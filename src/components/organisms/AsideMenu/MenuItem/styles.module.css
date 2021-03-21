@@ -1,9 +1,9 @@
 .item {
     cursor: pointer;
-    padding: 10px 32px;
+    padding: 0 32px;
     font-weight: 500;
     text-align: left;
-    font-size: 16px;
+    font-size: 18px;
     transition: border 200ms;
     height: 100%;
     display: inline-flex;

@@ -44,3 +44,13 @@
     align-items: center;
     height: 100%;
 }
+
+.leftContainer {
+    display: flex;
+    height: stretch;
+    align-items: center;
+}
+
+.leftContainer > * + * {
+    margin-left: 40px;
+}
