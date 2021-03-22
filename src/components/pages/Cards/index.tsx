@@ -172,13 +172,14 @@ const Cards: React.FunctionComponent = () => {
 
         <div className={styles.sliderContainer}>
           <Carousel value={currentIndex}>
-            {words.map(({ id, word, translate }, index) => (
+            {words.map(({ id, word, translate, audio }, index) => (
               <div key={id}>
                 <Card
                   word={showTranslateOnCard ? translate : word}
                   translate={showTranslateOnCard ? word : translate}
                   isActive={index === currentIndex}
                   status={getStatusByIndex(index)}
+                  audio={audio}
                 />
                 <div className={styles.controls}>
                   <button

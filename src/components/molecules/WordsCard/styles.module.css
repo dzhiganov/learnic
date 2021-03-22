@@ -14,19 +14,6 @@
     font-weight: 600;
 }
 
-.audioButtonContainer {
-    margin: 0 10px;
-    display: flex;
-}
-
-.audioButton {
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    display: flex;
-    align-items: center;
-}
-
 .contextSection {
     display: inline-block;
     margin-top: 25px;

@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-import React, { memo, useState, useCallback, useMemo } from 'react';
-import VolumeUpIcon from '@material-ui/icons/VolumeUp';
+import React, { memo, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import useMedia from 'react-use/lib/useMedia';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
@@ -13,6 +12,7 @@ import { update } from '~api/words';
 import { fetchWords } from '~actions/words';
 import StepsPopup from './StepsPopup';
 import { Words } from '~/core/store/models/words';
+import AudioButton from '~c/atoms/AudioButton';
 
 type Props = {
   id: string;
@@ -36,17 +36,6 @@ const WordsCard: React.FunctionComponent<Props> = ({
   const value = useSelector<Words>('words.all').find(
     ({ word: currentWord }: { word: string }) => currentWord === word
   );
-
-  const audio = useMemo((): HTMLAudioElement | null => {
-    if (value?.audio) {
-      return new Audio(value.audio);
-    }
-    return null;
-  }, [value]);
-
-  const handlePlayAudio = useCallback(() => {
-    if (audio && typeof audio.play === 'function') audio.play();
-  }, [audio]);
 
   const handleClickAddExample = useCallback(() => {
     setShowAddExample(true);
@@ -100,15 +89,7 @@ const WordsCard: React.FunctionComponent<Props> = ({
           <span>{`${word} - ${translate}`}</span>
         </div>
 
-        <div className={styles.audioButtonContainer}>
-          <button
-            className={styles.audioButton}
-            type="button"
-            onClick={handlePlayAudio}
-          >
-            <VolumeUpIcon />
-          </button>
-        </div>
+        <AudioButton audioURL={value?.audio || ''} />
 
         <StepsPopup
           step={value?.step || 0}

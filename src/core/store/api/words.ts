@@ -12,6 +12,7 @@ type Raw = {
   date: Timestamp;
   repeat: Timestamp;
   step: number;
+  audio: string;
 };
 
 type WordSchema = {
@@ -22,6 +23,7 @@ type WordSchema = {
   repeat: string | null;
   step: number;
   examples?: string[];
+  audio: string;
 };
 
 type WordSchemas = WordSchema[];
