@@ -69,28 +69,30 @@ const TopBar: React.FunctionComponent = () => {
           onClose={handleClose}
           open={open}
           anchorOrigin={{
-            vertical: 'bottom',
+            vertical: 'top',
             horizontal: 'left',
           }}
           transformOrigin={{
-            vertical: 'center',
-            horizontal: 'center',
+            vertical: 'top',
+            horizontal: 'left',
           }}
         >
-          <ul className={styles.userMenu}>
-            {menuItems.map(({ id, title, onClick }) => (
-              <li className={styles.userMenuItem} key={id}>
-                <div
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={handleKeyDownLogout}
-                  onClick={onClick}
-                >
-                  {title}
-                </div>
-              </li>
-            ))}
-          </ul>
+          <div>
+            <ul className={styles.userMenu}>
+              {menuItems.map(({ id, title, onClick }) => (
+                <li className={styles.userMenuItem} key={id}>
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={handleKeyDownLogout}
+                    onClick={onClick}
+                  >
+                    {title}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
         </Popover>
       </div>
     </div>

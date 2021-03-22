@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { createStyles, withStyles, Theme } from '@material-ui/core/styles';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
+import Checkbox from '@material-ui/core/Checkbox';
 import useSelector from '~hooks/useSelector';
 // eslint-disable-next-line css-modules/no-unused-class
 import styles from './styles.module.css';
@@ -42,6 +43,9 @@ const Cards: React.FunctionComponent = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [successful, setSuccesseful] = useState<number[]>([]);
   const [failed, setFailed] = useState<number[]>([]);
+  const [showTranslateOnCard, setshowTranslateOnCard] = useState<boolean>(
+    false
+  );
 
   const [{ value: words = [] }, fetch] = useAsyncFn(getWords, []);
 
@@ -127,10 +131,25 @@ const Cards: React.FunctionComponent = () => {
     });
   }, [currentIndex, words, dispatch, uid, failed]);
 
+  const handleChangeShowTranslateOnCard = useCallback(
+    (event) => setshowTranslateOnCard(event.target.checked),
+    []
+  );
+
   return (
     <div className={styles.wrapper}>
       <header className={styles.header}>
-        <h2 className={styles.title}>{`${t('CARDS.TITLE')}`}</h2>
+        <div className={styles.headerOptions}>
+          <h2 className={styles.title}>{`${t('CARDS.TITLE')}`}</h2>
+          <div className={styles.checkboxContainer}>
+            <Checkbox
+              checked={showTranslateOnCard}
+              onChange={handleChangeShowTranslateOnCard}
+              color="primary"
+            />
+            <span>Показывать на карточке перевод</span>
+          </div>
+        </div>
         <div className={styles.progressBarContainer}>
           <p className={styles.count}>{`${currentIndex + 1}/${
             words.length
@@ -156,8 +175,8 @@ const Cards: React.FunctionComponent = () => {
             {words.map(({ id, word, translate }, index) => (
               <div key={id}>
                 <Card
-                  word={word}
-                  translate={translate}
+                  word={showTranslateOnCard ? translate : word}
+                  translate={showTranslateOnCard ? word : translate}
                   isActive={index === currentIndex}
                   status={getStatusByIndex(index)}
                 />

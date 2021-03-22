@@ -111,6 +111,7 @@
 .progressBarContainer {
     width: 400px;
     margin: 0 auto;
+    margin-top: 40px;
 }
 
 .count {
@@ -122,5 +123,16 @@
 
 .hidden {
     visibility: hidden;
+}
+
+.headerOptions {
+    display: flex;
+    align-items: center;
+}
+
+.checkboxContainer {
+    margin-left: 60px;
+    display: flex;
+    align-items: center;
 }
   

@@ -66,5 +66,8 @@
       "EMAIL": "Email",
       "PASSWORD": "Password",
       "SUBMIT": "Continue"
+    },
+    "LANDING": {
+      "TITLE": "Log in"
     }
   }
