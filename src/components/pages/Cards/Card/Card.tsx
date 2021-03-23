@@ -22,13 +22,9 @@ const Card: React.FunctionComponent<Props> = ({
   const { t } = useTranslation();
   const [flipped, setFlipped] = useState<boolean>();
 
-  const flip = useCallback(
-    (event) => {
-      console.log(event.target, event.currentTarget);
-      setFlipped(!flipped);
-    },
-    [flipped]
-  );
+  const flip = useCallback(() => {
+    setFlipped(!flipped);
+  }, [flipped]);
 
   const handleKeyPress = useCallback(
     (e) => {
