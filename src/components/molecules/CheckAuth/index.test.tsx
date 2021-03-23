@@ -57,28 +57,3 @@ it('check redirect to login page', async () => {
 
   expect(container).toHaveTextContent(/Landing page/);
 });
-
-it('check return loading', async () => {
-  const initialState = {
-    user: {
-      uid: '',
-      status: Statuses.Pending,
-    },
-  };
-  const store = mockStore(initialState);
-
-  const { container } = render(
-    <Provider store={store}>
-      <Router>
-        <CheckAuth>
-          <Switch>
-            <Route path="/home">Home page</Route>
-            <Route path="/login">Login page</Route>
-          </Switch>
-        </CheckAuth>
-      </Router>
-    </Provider>
-  );
-
-  expect(container).toHaveTextContent(/Loading.../);
-});

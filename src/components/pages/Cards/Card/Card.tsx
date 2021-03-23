@@ -22,9 +22,13 @@ const Card: React.FunctionComponent<Props> = ({
   const { t } = useTranslation();
   const [flipped, setFlipped] = useState<boolean>();
 
-  const flip = useCallback(() => {
-    setFlipped(!flipped);
-  }, [flipped]);
+  const flip = useCallback(
+    (event) => {
+      console.log(event.target, event.currentTarget);
+      setFlipped(!flipped);
+    },
+    [flipped]
+  );
 
   const handleKeyPress = useCallback(
     (e) => {
@@ -68,15 +72,16 @@ const Card: React.FunctionComponent<Props> = ({
         <div
           className={`${styles.front} ${flipped ? styles.frontFlipped : ''}`}
         >
-          <p className={styles.cardTitle}>{word}</p>
-          <AudioButton audioURL={audio} />
+          <span className={styles.cardTitle}>
+            {word} <AudioButton audioURL={audio} />
+          </span>
+
           <p className={styles.flip}>
             <span>{t('CARDS.FLIP')}</span>
           </p>
         </div>
         <div className={`${styles.back} ${flipped ? styles.backFlipped : ''}`}>
-          <p className={styles.cardTitle}>{translate}</p>
-          <AudioButton audioURL={audio} />
+          <span className={styles.cardTitle}>{translate}</span>
           <p className={styles.flip}>
             <span>{t('CARDS.FLIP')}</span>
           </p>

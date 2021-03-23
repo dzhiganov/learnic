@@ -1,5 +1,7 @@
 import React, { useEffect, memo, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { HOME_WORDS, INDEX } from '~router/paths';
 import { Statuses } from '~actions/user';
 import useSelector from '~hooks/useSelector';
@@ -32,7 +34,11 @@ const CheckAuth: React.FC<Props> = ({ children }: Props) => {
   }, [history, uid, isReady, pathname]);
 
   if (!isReady) {
-    return <span>Loading...</span>;
+    return (
+      <Backdrop open>
+        <CircularProgress disableShrink />
+      </Backdrop>
+    );
   }
 
   return children;

@@ -1,6 +1,6 @@
 .item {
     cursor: pointer;
-    padding: 0 32px;
+    padding: 0 16px;
     font-weight: 500;
     text-align: left;
     font-size: 18px;
@@ -10,28 +10,31 @@
     align-items: center;
 }
 
+.title {
+    display: inline-block;
+    border-bottom: 2px solid transparent;
+}
+
+.item:hover .title,
+.item:focus .title {
+    border-color: #c0c2f1;
+}
+
+.itemActive .title {
+    border-color:#6085e9;
+    color:#6085e9;
+}
+
+.itemActive:hover .title,
+.itemActive:focus .title  {
+    border-color:#6085e9;
+}
 
 .link {
     display: block;
     width: 100%;
     text-decoration: none;
     color: #000;
-}
-
-
-.item:hover , 
-.item:focus {
-    background-color: #dddef7;
-}
-
-
-.itemActive {
-    background-color:#a3b8f0;
-}
-
-.itemActive:hover, 
-.itemActive:focus {
-    background-color:#a3b8f0;
 }
 
 .itemWrapper {

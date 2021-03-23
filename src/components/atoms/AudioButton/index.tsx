@@ -14,9 +14,13 @@ const AudioButton: React.FC<Props> = ({ audioURL }: Props) => {
     return null;
   }, [audioURL]);
 
-  const handlePlayAudio = useCallback(() => {
-    if (audio && typeof audio.play === 'function') audio.play();
-  }, [audio]);
+  const handlePlayAudio = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      if (audio && typeof audio.play === 'function') audio.play();
+    },
+    [audio]
+  );
 
   if (!audioURL) {
     return null;

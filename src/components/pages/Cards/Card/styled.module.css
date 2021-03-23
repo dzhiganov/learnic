@@ -20,7 +20,7 @@
     justify-content: center;
     flex-direction: column;
     color: rgb(58, 57, 52);
-    background-color: rgb(255, 254, 191);
+    background-color: rgb(255 254 192);
     border-radius: 6px;
     backface-visibility: hidden;
     transition: transform 600ms linear, box-shadow 300ms ease-in-out;
@@ -40,12 +40,10 @@
 }
 
 .cardTitle {
-    display: inline-block;
-    height: fit-content;
+    display: inline-flex;
+    align-items: center;
     font-size: 36px;
     font-weight: 500;
-    padding: 0;
-    margin: 0;
     margin-bottom: 12px;
 }
 

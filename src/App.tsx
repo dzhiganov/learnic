@@ -2,6 +2,8 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import './App.css';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Backdrop from '@material-ui/core/Backdrop';
 import { INDEX, HOME } from './core/router/paths';
 import CheckAuth from './components/molecules/CheckAuth';
 
@@ -15,10 +17,17 @@ const Landing = lazy(() => import('./components/pages/Landing'));
 store.dispatch(fetchAuth());
 store.dispatch(fetchFirebaseUser());
 
+// TODO Move loading to single component
 const App: React.FunctionComponent = () => (
   <Provider store={store}>
     <Router>
-      <Suspense fallback={<div>Загрузка...</div>}>
+      <Suspense
+        fallback={
+          <Backdrop open>
+            <CircularProgress disableShrink />
+          </Backdrop>
+        }
+      >
         {/* TODO: Should be in special component */}
         <CheckAuth>
           <Switch>

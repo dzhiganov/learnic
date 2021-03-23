@@ -27,7 +27,7 @@ const MenuItem: React.FunctionComponent<Props> = ({
     >
       <li className={`${styles.item} ${isActive ? styles.itemActive : ''}`}>
         <div className={styles.itemWrapper}>
-          <span>{t(title)}</span>
+          <span className={styles.title}>{t(title)}</span>
         </div>
       </li>
     </Link>

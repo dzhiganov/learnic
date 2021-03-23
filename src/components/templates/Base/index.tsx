@@ -15,7 +15,6 @@ const Base = ({ children }: Props): React.ReactElement => (
         <div className={styles.content}>{children}</div>
       </Wrapper>
     </div>
-    <footer className={styles.footer}>© 2021 Dmitriy Zhiganov</footer>
   </div>
 );
 
