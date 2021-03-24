@@ -58,7 +58,7 @@
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(ts|tsx|jsx|js|json|css)\"",
     "format": "prettier --ignore-path .gitignore \"**/*.+(ts|tsx|jsx|js|json|css)\" --write",
     "check-format": "prettier --ignore-path .gitignore \"**/*.+(ts|tsx|jsx|js|json|css)\" --list-different",
-    "validate": "yarn test && yarn check-format && yarn lint && yarn build"
+    "validate": "yarn check-format && yarn lint && yarn build"
   },
   "eslintConfig": {
     "extends": [
