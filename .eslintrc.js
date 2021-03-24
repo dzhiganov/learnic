@@ -41,6 +41,7 @@ module.exports = {
   rules: {
     'react/prop-types': 'off',
     'react/require-default-props': 'off',
+    'array-bracket-newline': 'off',
     quotes: ['error', 'single'],
     'linebreak-style': 'off',
     'import/extensions': ['error', 'never'],
