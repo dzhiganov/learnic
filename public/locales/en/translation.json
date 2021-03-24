@@ -67,7 +67,15 @@
     "PASSWORD": "Password",
     "SUBMIT": "Continue"
   },
+  "CARDS": {
+    "TITLE": "All words",
+    "FLIP": "Click to flip",
+    "DONE": "Done",
+    "FAIL": "Repeat",
+    "SHOW_TRANSLATE_ON_CARD": "Show translate on card"
+  },
   "LANDING": {
-    "TITLE": "Log in"
+    "TITLE": "Log in",
+    "LOGIN": "Log in"
   }
 }

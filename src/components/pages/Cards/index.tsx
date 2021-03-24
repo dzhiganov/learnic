@@ -147,7 +147,7 @@ const Cards: React.FunctionComponent = () => {
               onChange={handleChangeShowTranslateOnCard}
               color="primary"
             />
-            <span>Показывать на карточке перевод</span>
+            <span>{t('CARDS.SHOW_TRANSLATE_ON_CARD')}</span>
           </div>
         </div>
         <div className={styles.progressBarContainer}>
