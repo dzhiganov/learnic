@@ -1,73 +1,73 @@
 {
-    "LANG_PICKER":{
-      "RU":"Russian",
-      "EN":"English"
+  "LANG_PICKER": {
+    "RU": "Russian",
+    "EN": "English"
+  },
+  "TOP_BAR": {
+    "LOGOUT": "Log out"
+  },
+  "ASIDE_MENU": {
+    "DICTIONARY": "Dictionary",
+    "TRAININGS": "Training",
+    "CARDS": "Cards"
+  },
+  "DICTIONARY": {
+    "TITLE": "Dictionary",
+    "NEW_WORD_BUTTON": "New Word",
+    "NEW_WORD_WINDOW": {
+      "WORD_PLACEHOLDER": "Word or phrase you want to learn",
+      "TRANSLATE_PLACEHOLDER": "Translate",
+      "SAVE_BUTTON": "Save",
+      "CANCEL_BUTTON": "Cancel"
     },
-    "TOP_BAR":{
-      "LOGOUT":"Log out"
-    },
-    "ASIDE_MENU":{
-      "DICTIONARY":"Dictionary",
-      "TRAININGS":"Training",
-      "CARDS": "Cards"
-    },
-    "DICTIONARY":{
-      "TITLE":"Dictionary",
-      "NEW_WORD_BUTTON":"New Word",
-      "NEW_WORD_WINDOW":{
-        "WORD_PLACEHOLDER":"Word or phrase you want to learn",
-        "TRANSLATE_PLACEHOLDER":"Translate",
-        "SAVE_BUTTON":"Save",
-        "CANCEL_BUTTON":"Cancel"
-      },
-      "WORD_CARD":{
-        "ADD_EXAMPLE_BUTTON":"Add Example",
-        "SAVE_BUTTON":"Save",
-        "CANCEL_BUTTON":"Cancel",
-        "STEPS": {
-          "REPEAT": "Repeat",
-          "NEXT_REPEAT": "Next repeat",
-          "NEXT_REPEAT_DATE": "{{date, D MMMM YYYY H mm}}",
-          "TODAY": "Now"
-        }
-      },
-      "SELECT_WORD": "🤔 Select some word..." 
-    },
-    "TRAINING":{
-      "TITLE": "Training",
-      "TRAINING_LIST":{
-        "TRANSLATE_TRAINING":{
-          "TITLE":"Select right translation",
-          "DESCRIPTION":"You will have to choose one of the four translation options"
-        },
-        "SENTENCE_TRAINING":{
-          "TITLE":"Insert the appropriate word",
-          "DESCRIPTION":"You will have to insert the appropriate word in the sentence, choosing from four options"
-        }
-      },
-      "NO_TRAINING_WORDS": "You don't have words for training today",
-      "BACK_TO_THE_LIST_BUTTON":"Back to the training list",
-      "RESULTS": {
-        "SUCCESED": "Succesed",
-        "FAILED": "Failed"
+    "WORD_CARD": {
+      "ADD_EXAMPLE_BUTTON": "Add Example",
+      "SAVE_BUTTON": "Save",
+      "CANCEL_BUTTON": "Cancel",
+      "STEPS": {
+        "REPEAT": "Repeat",
+        "NEXT_REPEAT": "Next repeat",
+        "NEXT_REPEAT_DATE": "{{date, D MMMM YYYY H mm}}",
+        "TODAY": "Now"
       }
     },
-    "LOGIN_PAGE":{
-      "TITLE":"Log in",
-      "ALTERNATE":"Or",
-      "WITH_GOOGLE":"Log in with Google",
-      "NO_ACCOUNT":"if you don't have an account, you can create it"
+    "SELECT_WORD": "🤔 Select some word..."
+  },
+  "TRAINING": {
+    "TITLE": "Training",
+    "TRAINING_LIST": {
+      "TRANSLATE_TRAINING": {
+        "TITLE": "Select right translation",
+        "DESCRIPTION": "You will have to choose one of the four translation options"
+      },
+      "SENTENCE_TRAINING": {
+        "TITLE": "Insert the appropriate word",
+        "DESCRIPTION": "You will have to insert the appropriate word in the sentence, choosing from four options"
+      }
     },
-    "SIGN_UP_PAGE":{
-      "TITLE":"Sign up",
-      "ALREADY_HAVE_ACCOUNT":"Already have an account? Sign In"
-    },
-    "SUBMIT_FORM": {
-      "EMAIL": "Email",
-      "PASSWORD": "Password",
-      "SUBMIT": "Continue"
-    },
-    "LANDING": {
-      "TITLE": "Log in"
+    "NO_TRAINING_WORDS": "You don't have words for training today",
+    "BACK_TO_THE_LIST_BUTTON": "Back to the training list",
+    "RESULTS": {
+      "SUCCESED": "Succesed",
+      "FAILED": "Failed"
     }
+  },
+  "LOGIN_PAGE": {
+    "TITLE": "Log in",
+    "ALTERNATE": "Or",
+    "WITH_GOOGLE": "Log in with Google",
+    "NO_ACCOUNT": "if you don't have an account, you can create it"
+  },
+  "SIGN_UP_PAGE": {
+    "TITLE": "Sign up",
+    "ALREADY_HAVE_ACCOUNT": "Already have an account? Sign In"
+  },
+  "SUBMIT_FORM": {
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "SUBMIT": "Continue"
+  },
+  "LANDING": {
+    "TITLE": "Log in"
   }
+}

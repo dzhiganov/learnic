@@ -1,42 +1,42 @@
 .title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 3rem;
-    letter-spacing: -1px;
-    padding: 0;
-    margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3rem;
+  letter-spacing: -1px;
+  padding: 0;
+  margin: 0;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .listContainer {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (min-width: 576px) {
-    .listContainer {
-        display: grid;
-        grid-template-columns: 50% 50%;
-    }
+  .listContainer {
+    display: grid;
+    grid-template-columns: 50% 50%;
+  }
 
-    .listContainer > * {
-        max-height: 100%;
-        overflow: auto;
-    }
+  .listContainer > * {
+    max-height: 100%;
+    overflow: auto;
+  }
 }
 
 .wordsListContainer {
-    height: 90vh;
-    overflow: auto;
-    border-right: 1px solid #f0f0f0;
-    padding: 25px; 
+  height: 90vh;
+  overflow: auto;
+  border-right: 1px solid #f0f0f0;
+  padding: 25px;
 }
 
 .wordsCardContainer {
-    height: 90vh;
-    overflow: auto;
-    padding: 25px;
+  height: 90vh;
+  overflow: auto;
+  padding: 25px;
 }

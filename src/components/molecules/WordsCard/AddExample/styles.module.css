@@ -1,73 +1,73 @@
 .inputContainer {
-    line-height: 0;
+  line-height: 0;
 }
 
 .input {
-    color: #1d1d1f;
-    border-color: #d2d2d7;
-    background-color: hsla(0, 0%, 100%, .8);
-    text-overflow: ellipsis;
-    font-size: 16px;
-    line-height: 28px;
-    font-weight: 400;
-    width: 100%;
-    border-radius: 8px;
-    border-width: 1px;
-    border-style: solid;
-    box-sizing: border-box;
-    margin-bottom: 1rem;
-    margin-top: 1rem;
-    padding: 0.3rem 0.6rem;
-    text-align: left;
-    appearance: none;
-    align-items: center;
+  color: #1d1d1f;
+  border-color: #d2d2d7;
+  background-color: hsla(0, 0%, 100%, 0.8);
+  text-overflow: ellipsis;
+  font-size: 16px;
+  line-height: 28px;
+  font-weight: 400;
+  width: 100%;
+  border-radius: 8px;
+  border-width: 1px;
+  border-style: solid;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  padding: 0.3rem 0.6rem;
+  text-align: left;
+  appearance: none;
+  align-items: center;
 }
 
-.input:focus, 
+.input:focus,
 .input:active {
-    border-color: rgba(58, 121, 212, 0.36);
-    box-shadow: 0 0 0 2px #bedcfa;
-    outline: none;
+  border-color: rgba(58, 121, 212, 0.36);
+  box-shadow: 0 0 0 2px #bedcfa;
+  outline: none;
 }
 
 .buttonsContainer {
-    display: flex;
-    justify-content: flex-end
+  display: flex;
+  justify-content: flex-end;
 }
 
 .buttonsContainer * + * {
-    margin-left: 14px;
+  margin-left: 14px;
 }
 
 .saveButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 24px;
-    background: transparent;
-    border: none;
-    outline: none;
-    background-color: #16c79a;
-    border-radius: 4px;
-    color: #fff;
-    cursor: pointer;
-    width: 100px;
-    font-size: 16px;
-    
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 24px;
+  background: transparent;
+  border: none;
+  outline: none;
+  background-color: #16c79a;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  width: 100px;
+  font-size: 16px;
 }
 
 .cancelButton {
-    composes: saveButton;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    background: transparent;
-    color: #000;
+  composes: saveButton;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: transparent;
+  color: #000;
 }
 
-.saveButton:focus, .saveButton:hover {
-    background-color: #00af91;
-    
+.saveButton:focus,
+.saveButton:hover {
+  background-color: #00af91;
 }
 
-.cancelButton:focus, .cancelButton:hover {
-    background-color: rgba(0, 0 ,0,0.05);
+.cancelButton:focus,
+.cancelButton:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }

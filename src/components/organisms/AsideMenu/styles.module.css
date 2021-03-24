@@ -1,25 +1,24 @@
 .container {
-   font-size: 18px;
-   height: 100%;
+  font-size: 18px;
+  height: 100%;
 }
 
 .list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    height: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  height: 100%;
 }
 
 .topBar {
-    display: flex;
-    justify-content: flex-end;
-    background-color: #fff;
-    border-bottom: #f0f0f0;
+  display: flex;
+  justify-content: flex-end;
+  background-color: #fff;
+  border-bottom: #f0f0f0;
 }
 
 .topBar svg {
-    width: 40px;
-    height: 40px;
+  width: 40px;
+  height: 40px;
 }
-

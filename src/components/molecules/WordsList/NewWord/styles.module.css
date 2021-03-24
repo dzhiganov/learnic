@@ -1,66 +1,66 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    padding: 22px;
-    border-radius: 4px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  margin-top: 20px;
 }
 
 .inputsContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .input {
-    color: #1d1d1f;
-    border-color: #d2d2d7;
-    background-color: hsla(0, 0%, 100%, .8);
-    text-overflow: ellipsis;
-    font-size: 16px;
-    line-height: 28px;
-    font-weight: 400;
-    width: 100%;
-    border-radius: 8px;
-    border-width: 1px;
-    border-style: solid;
-    box-sizing: border-box;
-    margin-bottom: 25px;
-    padding: 0.3rem 0.6rem;
-    text-align: left;
-    appearance: none;
-    align-items: center;
-    font-family: inherit;
-    resize: none;
+  color: #1d1d1f;
+  border-color: #d2d2d7;
+  background-color: hsla(0, 0%, 100%, 0.8);
+  text-overflow: ellipsis;
+  font-size: 16px;
+  line-height: 28px;
+  font-weight: 400;
+  width: 100%;
+  border-radius: 8px;
+  border-width: 1px;
+  border-style: solid;
+  box-sizing: border-box;
+  margin-bottom: 25px;
+  padding: 0.3rem 0.6rem;
+  text-align: left;
+  appearance: none;
+  align-items: center;
+  font-family: inherit;
+  resize: none;
 }
 
-.input:focus, 
+.input:focus,
 .input:active {
-    border-color: rgba(58, 121, 212, 0.36);
-    box-shadow: 0 0 0 2px #bedcfa;
-    outline: none;
+  border-color: rgba(58, 121, 212, 0.36);
+  box-shadow: 0 0 0 2px #bedcfa;
+  outline: none;
 }
 
 .buttons {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
 }
 
 .buttons * + * {
-    margin-left: 14px;
+  margin-left: 14px;
 }
 
 .inputContainer {
-    display: flex;
+  display: flex;
 }
 
 .lang {
-    display: inline-block;
-    color: rgba(0 ,0 ,0, 0.5);
-    font-weight: 600;
-    margin-right: 10px;
-    font-size: 18px;
-    margin-top: 8px;
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: 600;
+  margin-right: 10px;
+  font-size: 18px;
+  margin-top: 8px;
 }
