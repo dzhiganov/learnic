@@ -1,21 +1,20 @@
 name: Test
 
-on: 
+on:
   pull_request:
-  push: 
+  push:
     brances: main
-  
-  
-jobs: 
-  lint: 
+
+jobs:
+  lint:
     runs-on: ubuntu-latest
-    strategy: 
-      matrix: 
+    strategy:
+      matrix:
         node-vesrion: [14.x]
-    steps: 
+    steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
-        with: 
+        with:
           node-version: ${{ matrix.node-version }}
       - run: yarn install --frozen-lockfile
-      - run: yarn test 
+      - run: yarn validate
