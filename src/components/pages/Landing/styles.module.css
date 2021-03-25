@@ -1,13 +1,50 @@
 .header {
-  padding: 12px 22px;
+  padding: 12px 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  margin-bottom: 30px;
+  place-content: flex-start center;
+  width: 900px;
+  margin: 0 auto;
 }
 
 .top {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main {
+  width: 900px;
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+
+.block {
+  font-size: 18px;
+  color: #333;
+}
+
+.block + .block {
+  margin-top: 50px;
+}
+
+.blockTitle {
+  margin: 0;
+  padding: 0;
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.mainBlock {
+  background-color: rgb(178, 128, 243);
+  color: #fff;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.list > li + li{
+  margin-top: 12px;
 }
