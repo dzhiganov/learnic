@@ -166,8 +166,9 @@ const Cards: React.FunctionComponent = () => {
           className={`${styles.button} ${
             currentIndex === 0 ? styles.hidden : ''
           }`}
+          onClick={back}
         >
-          <ArrowBackIcon onClick={back} />
+          <ArrowBackIcon />
         </button>
 
         <div className={styles.sliderContainer}>

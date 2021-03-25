@@ -45,6 +45,7 @@
   font-size: 36px;
   font-weight: 500;
   margin-bottom: 12px;
+  position: relative;
 }
 
 .front {
@@ -67,4 +68,10 @@
   font-size: 15px;
   color: rgb(80, 80, 80);
   margin-top: 50px;
+}
+
+.audioButtonContainer {
+  position: absolute;
+  left: -55px;
+  top: calc(43px / 2 - 20px);
 }

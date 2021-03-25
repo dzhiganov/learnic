@@ -69,7 +69,10 @@ const Card: React.FunctionComponent<Props> = ({
           className={`${styles.front} ${flipped ? styles.frontFlipped : ''}`}
         >
           <span className={styles.cardTitle}>
-            {word} <AudioButton audioURL={audio} />
+            <span className={styles.audioButtonContainer}>
+              <AudioButton audioURL={audio} />
+            </span>
+            {word}
           </span>
 
           <p className={styles.flip}>
