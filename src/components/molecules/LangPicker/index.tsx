@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import BootstrapInput from './BootstrapInput';
 
-const LangPicker: React.FunctionComponent = () => {
+const LangPicker: React.FC = () => {
   const { t, i18n } = useTranslation();
 
   const items = useMemo(
@@ -32,13 +32,11 @@ const LangPicker: React.FunctionComponent = () => {
         onChange={handleChange}
         input={<BootstrapInput />}
       >
-        {items.map(({ key, title }) => {
-          return (
-            <option key={key} value={key}>
-              {title}
-            </option>
-          );
-        })}
+        {items.map(({ key, title }) => (
+          <option key={key} value={key}>
+            {title}
+          </option>
+        ))}
       </NativeSelect>
     </div>
   );

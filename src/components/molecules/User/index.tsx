@@ -7,7 +7,7 @@ type Props = {
   onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
 };
 
-const User: React.FunctionComponent<Props> = ({ onClick }: Props) => {
+const User: React.FC<Props> = ({ onClick }: Props) => {
   const photoURL = useSelector<string>('user.photoURL');
 
   const handleKeyDown = useCallback(

@@ -19,7 +19,7 @@ type Props = {
     }[];
   onShowNewWord: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onSave: (data: { id?: string; word: string; translate: string }) => void;
-  onDelete: (id: string) => Promise<void>;
+  onDelete: (id: string) => void;
   onEdit: (id: string) => void;
   onClickCard: ({
     id,

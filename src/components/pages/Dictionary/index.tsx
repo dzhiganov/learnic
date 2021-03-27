@@ -9,19 +9,45 @@ import useSelector from '~hooks/useSelector';
 import { fetchDeleteWord, fetchAddNewWord, fetchUpdate } from '~actions/words';
 import { Words } from '~/core/store/models/words';
 
-const Cards: React.FunctionComponent = () => {
+type SelectedWord = {
+  id: string;
+  word: string;
+  translate: string;
+};
+
+const selectedWordInitialState = {
+  id: '',
+  word: '',
+  translate: '',
+};
+
+interface HandleOnSave {
+  (props: { id?: string; word: string; translate: string }): void;
+}
+
+interface HandleOnDelete {
+  (id: string): void;
+}
+
+interface HandleOnEdit {
+  (id: string): void;
+}
+
+interface HandleClickCard {
+  (props: SelectedWord): void;
+}
+
+interface HandleCancelEdit {
+  (): void;
+}
+
+const Dictionary: React.FC = () => {
   const { t } = useTranslation();
   const isWide = useMedia('(min-width: 576px)');
   const dispatch = useDispatch();
-  const [openedCard, setOpenedCard] = useState<{
-    id: string;
-    word: string;
-    translate: string;
-  }>({
-    id: '',
-    word: '',
-    translate: '',
-  });
+  const [selectedWord, setSelectedWord] = useState<SelectedWord>(
+    selectedWordInitialState
+  );
   const [showNewWord, setShowNewWord] = useState(false);
   const [edited, setEdited] = useState<string>('');
   const words = useSelector<Words>('words.all');
@@ -31,16 +57,8 @@ const Cards: React.FunctionComponent = () => {
     setShowNewWord(true);
   }, []);
 
-  const handleOnSave = useCallback(
-    ({
-      id,
-      word,
-      translate,
-    }: {
-      id?: string;
-      word: string;
-      translate: string;
-    }) => {
+  const handleOnSave: HandleOnSave = useCallback(
+    ({ id, word, translate }) => {
       if (id) {
         dispatch(
           fetchUpdate({
@@ -61,31 +79,31 @@ const Cards: React.FunctionComponent = () => {
     [userId, dispatch]
   );
 
-  const handleOnDelete = useCallback(
-    async (id: string) => {
+  const handleOnDelete: HandleOnDelete = useCallback(
+    (id) => {
       dispatch(fetchDeleteWord({ uid: userId, wordId: id }));
     },
     [userId, dispatch]
   );
 
-  const handleOnEdit = useCallback((id) => {
-    setEdited(id);
-  }, []);
+  const handleOnEdit: HandleOnEdit = useCallback((id) => setEdited(id), []);
 
-  const handleClickCard = useCallback(({ id, word, translate }) => {
-    setOpenedCard({ id, word, translate });
-  }, []);
+  const handleClickCard: HandleClickCard = useCallback(
+    (data) => setSelectedWord(data),
+    []
+  );
 
-  const handleCancelEdit = useCallback(() => {
-    setEdited('');
-  }, []);
+  const handleCancelEdit: HandleCancelEdit = useCallback(
+    () => setEdited(''),
+    []
+  );
 
   return (
     <div className={styles.container}>
       <div className={styles.listContainer}>
-        {isWide || (!isWide && !openedCard.id) ? (
+        {isWide || (!isWide && !selectedWord.id) ? (
           <div className={styles.wordsListContainer}>
-            {isWide || (!isWide && !openedCard.id) ? (
+            {isWide || (!isWide && !selectedWord.id) ? (
               <h2 className={styles.title}>{t('DICTIONARY.TITLE')}</h2>
             ) : null}
             <WordsList
@@ -103,14 +121,14 @@ const Cards: React.FunctionComponent = () => {
           </div>
         ) : null}
 
-        {isWide || (!isWide && openedCard.id) ? (
+        {isWide || (!isWide && selectedWord.id) ? (
           <div className={styles.wordsCardContainer}>
             <WordsCard
-              id={openedCard.id}
-              word={openedCard.word}
-              translate={openedCard.translate}
+              id={selectedWord.id}
+              word={selectedWord.word}
+              translate={selectedWord.translate}
               onClose={() =>
-                setOpenedCard({
+                setSelectedWord({
                   id: '',
                   word: '',
                   translate: '',
@@ -124,4 +142,4 @@ const Cards: React.FunctionComponent = () => {
   );
 };
 
-export default memo(Cards);
+export default memo(Dictionary);

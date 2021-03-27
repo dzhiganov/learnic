@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { memo, useState, useCallback } from 'react';
 import styles from './styles.module.css';
 
@@ -7,7 +5,7 @@ type Props = {
   id: string;
 };
 
-const VideoItem: React.FunctionComponent<Props> = ({ id }: Props) => {
+const VideoItem: React.FC<Props> = ({ id }: Props) => {
   const [enabled, setEnabled] = useState<boolean>(false);
 
   const handleClick = useCallback(() => {
@@ -16,9 +14,24 @@ const VideoItem: React.FunctionComponent<Props> = ({ id }: Props) => {
     }
   }, [enabled]);
 
+  const handleKeyDown = useCallback(
+    (event) => {
+      if (event.key === 'Enter' && !enabled) {
+        setEnabled(true);
+      }
+    },
+    [enabled]
+  );
+
   if (enabled) {
     return (
-      <div className={styles.video} onClick={handleClick}>
+      <div
+        role="button"
+        className={styles.video}
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
+        tabIndex={0}
+      >
         <iframe
           title={id}
           width="100%"
@@ -31,7 +44,13 @@ const VideoItem: React.FunctionComponent<Props> = ({ id }: Props) => {
   }
 
   return (
-    <div className={styles.video} onClick={handleClick}>
+    <div
+      role="button"
+      className={styles.video}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+    >
       <a href={`https://youtu.be/${id}`}>
         <picture>
           <source

@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import Base from '~c/templates/Base';
-import Dictionary from '~c/organisms/Cards';
+import Dictionary from '~c/pages/Dictionary';
 import { HOME_WORDS, HOME_CARDS } from '~router/paths';
-import type { RootState } from '~store/rootReducer';
 import { fetchWords } from '~actions/words';
 import If from '~c/atoms/If';
-// TODO Fix that!!!!
 import Cards from '~c/pages/Cards';
+import useSelector from '~hooks/useSelector';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -20,21 +19,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Home: React.FunctionComponent = () => {
+const Home: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const user = useSelector(({ user: userData }: RootState) => userData);
-  const words = useSelector(({ words: wordsData }: RootState) => wordsData);
+  const userId = useSelector<string>('user.uid');
+  const wordsIsLoading = useSelector<boolean>('words.isLoading');
 
   useEffect(() => {
-    if (user.uid) {
-      dispatch(fetchWords(user.uid));
+    if (userId) {
+      dispatch(fetchWords(userId));
     }
-  }, [dispatch, user.uid]);
+  }, [dispatch, userId]);
 
   return (
     <>
-      <If condition={words.isLoading}>
+      <If condition={wordsIsLoading}>
         <Backdrop className={classes.backdrop} open>
           <CircularProgress color="inherit" />
         </Backdrop>
