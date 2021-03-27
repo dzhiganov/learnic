@@ -3,11 +3,7 @@ import styles from './styles.module.css';
 import TopBar from '~c/organisms/TopBar';
 import Wrapper from '~c/atoms/Wrapper';
 
-interface Props {
-  children: JSX.Element | JSX.Element[];
-}
-
-const Base = ({ children }: Props): React.ReactElement => (
+const Base: React.FC = ({ children }) => (
   <div className={styles.container}>
     <TopBar />
     <div className={styles.grid}>

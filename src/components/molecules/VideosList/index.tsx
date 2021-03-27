@@ -9,7 +9,7 @@ type Props = {
   keyword: string;
 };
 
-const VideosList: React.FunctionComponent<Props> = ({ keyword }: Props) => {
+const VideosList: React.FC<Props> = ({ keyword }: Props) => {
   const [list, setList] = useState<string[]>([]);
   const [{ loading }, fetch] = useAsyncFn(
     async (word) => {

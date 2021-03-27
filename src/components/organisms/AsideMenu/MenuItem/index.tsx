@@ -25,7 +25,7 @@ const MenuItem: React.FunctionComponent<Props> = ({
       data-testid="page-link"
       onClick={onClick}
     >
-      <li className={`${styles.item} ${isActive ? styles.itemActive : ''}`}>
+      <li className={`${styles.item} ${isActive && styles.itemActive}`}>
         <div className={styles.itemWrapper}>
           <span className={styles.title}>{t(title)}</span>
         </div>

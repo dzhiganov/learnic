@@ -45,6 +45,6 @@
   font-weight: 600;
 }
 
-.list > li + li{
+.list > li + li {
   margin-top: 12px;
 }

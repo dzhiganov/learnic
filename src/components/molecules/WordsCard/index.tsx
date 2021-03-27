@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/media-has-caption */
 import React, { memo, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import useMedia from 'react-use/lib/useMedia';

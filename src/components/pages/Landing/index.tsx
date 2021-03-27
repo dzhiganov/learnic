@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Logo from '~c/atoms/Logo';
 import Button from '~c/atoms/Button';
 import styles from './styles.module.css';
-import Login from '~c/pages/Login';
+import Login from '~c/molecules/Login';
 
 const Landing: React.FC = () => {
   const { t } = useTranslation();

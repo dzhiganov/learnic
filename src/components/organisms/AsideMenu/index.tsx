@@ -12,8 +12,8 @@ const AsideMenu: React.FunctionComponent = () => {
   const isWide = useMedia('(min-width: 576px)');
   const [showMenu, setShowMenu] = useState(false);
 
-  const list = useMemo(() => {
-    return (
+  const list = useMemo(
+    () => (
       <ul className={styles.list}>
         {items.map(({ key, title, to }) => (
           <MenuItem
@@ -24,8 +24,9 @@ const AsideMenu: React.FunctionComponent = () => {
           />
         ))}
       </ul>
-    );
-  }, []);
+    ),
+    []
+  );
 
   if (!isWide) {
     return (
