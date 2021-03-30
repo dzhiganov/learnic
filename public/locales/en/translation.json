@@ -72,7 +72,11 @@
     "FLIP": "Click to flip",
     "DONE": "Done",
     "FAIL": "Repeat",
-    "SHOW_TRANSLATE_ON_CARD": "Show translate on card"
+    "SHOW_TRANSLATE_ON_CARD": "Show translate on card",
+    "SHOW_ALL_WORDS": "Show all words",
+    "ALL_WORDS_REPEATED": "🥳 You have repeated all words",
+    "DICTIONARY": "Dictionary",
+    "GO_TO": "To add new words, go to the "
   },
   "LANDING": {
     "TITLE": "Log in",
