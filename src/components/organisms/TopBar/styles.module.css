@@ -23,7 +23,7 @@
 
 .userMenuItem:hover,
 .userMenuItem:focus {
-  background-color: #c9cbff;
+  background-color: rgba(0,126,254,.1);
 }
 
 .controls {

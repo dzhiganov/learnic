@@ -64,3 +64,7 @@
   font-size: 18px;
   margin-top: 8px;
 }
+
+.inputContainer:focus-within > .lang{
+  color: #007efe;
+}

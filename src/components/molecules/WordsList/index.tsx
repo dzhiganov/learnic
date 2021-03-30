@@ -55,6 +55,28 @@ const WordsList: React.FunctionComponent<Props> = ({
     { id: string; word: string; translate: string }[]
   >([]);
 
+  const onCancelAddNewWord = useCallback(() => {
+    onCancelEdit();
+    setShowNewWord(false);
+  }, [setShowNewWord, onCancelEdit]);
+
+  const handleKeyPress = useCallback(
+    (event) => {
+      if (event.key === 'Escape' && (showNewWord || edited)) {
+        onCancelAddNewWord();
+      }
+    },
+    [onCancelAddNewWord, showNewWord, edited]
+  );
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [handleKeyPress]);
+
   const handleKeyDown = useCallback(
     (event, { id, word, translate }) => {
       if (event.key === 'Enter') {
@@ -87,11 +109,6 @@ const WordsList: React.FunctionComponent<Props> = ({
   const handleMouseDown = useCallback((id) => {
     setFocused(id);
   }, []);
-
-  const onCancelAddNewWord = useCallback(() => {
-    onCancelEdit();
-    setShowNewWord(false);
-  }, [setShowNewWord, onCancelEdit]);
 
   return (
     <>

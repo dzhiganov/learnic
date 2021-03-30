@@ -17,17 +17,17 @@
 
 .item:hover .title,
 .item:focus .title {
-  border-color: #c0c2f1;
+  border-color: #98b4ff;
 }
 
 .itemActive .title {
-  border-color: #6085e9;
-  color: #6085e9;
+  color: #007efe;
+  border-color: #007efe;
 }
 
 .itemActive:hover .title,
 .itemActive:focus .title {
-  border-color: #6085e9;
+  border-color: #379bff;
 }
 
 .link {

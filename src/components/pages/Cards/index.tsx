@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import React, { useState, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
@@ -18,6 +19,8 @@ import Card from './Card/Card';
 import { fetchUpdate } from '~actions/words';
 import getNewRepeatTimeByStep from './utils/getNewRepeatTimeByStep';
 import { getWords } from '~api/words';
+import InfoBlock from './InfoBlock';
+import Loading from '~c/atoms/Loading';
 
 const BorderLinearProgress = withStyles((theme: Theme) =>
   createStyles({
@@ -46,12 +49,16 @@ const Cards: React.FunctionComponent = () => {
   const [showTranslateOnCard, setshowTranslateOnCard] = useState<boolean>(
     false
   );
+  const [finished, setFinished] = useState<boolean>(false);
+  const [showAllWords, setShowAllWords] = useState<boolean>(false);
 
-  const [{ value: words = [] }, fetch] = useAsyncFn(getWords, []);
+  const [{ value: words = [], loading }, fetch] = useAsyncFn(getWords, [], {
+    loading: true,
+  });
 
   useEffect(() => {
-    fetch(uid, true);
-  }, [fetch, uid]);
+    fetch(uid, !showAllWords);
+  }, [fetch, uid, showAllWords]);
 
   const back = useCallback(() => {
     const newIndex = currentIndex - 1;
@@ -69,7 +76,11 @@ const Cards: React.FunctionComponent = () => {
     setSuccesseful([...successful, currentIndex]);
     const oldIndex = currentIndex;
     const newIndex = currentIndex + 1;
-    if (!words[newIndex]) return;
+
+    if (newIndex === words.length) {
+      setFinished(true);
+    }
+
     setCurrentIndex(newIndex);
 
     window.requestAnimationFrame(() => {
@@ -105,7 +116,11 @@ const Cards: React.FunctionComponent = () => {
     setFailed([...failed, currentIndex]);
     const newIndex = currentIndex + 1;
     const oldIndex = currentIndex;
-    if (!words[newIndex]) return;
+
+    if (newIndex === words.length) {
+      setFinished(true);
+    }
+
     setCurrentIndex(newIndex);
 
     window.requestAnimationFrame(() => {
@@ -136,6 +151,55 @@ const Cards: React.FunctionComponent = () => {
     []
   );
 
+  const handleChangeShowAllWords = useCallback(
+    (event) => setShowAllWords(event.target.checked),
+    []
+  );
+
+  if (loading) {
+    return (
+      <div className={styles.wrapper}>
+        <header className={styles.header}>
+          <div className={styles.headerOptions}>
+            <h2 className={styles.title}>{`${t('CARDS.TITLE')}`}</h2>
+          </div>
+        </header>
+        <div>
+          <Loading />
+        </div>
+      </div>
+    );
+  }
+
+  if ((!words.length && !loading) || finished) {
+    return (
+      <div className={styles.wrapper}>
+        <header className={styles.header}>
+          <div className={styles.headerOptions}>
+            <h2 className={styles.title}>{`${t('CARDS.TITLE')}`}</h2>
+            <div className={styles.checkboxContainer}>
+              <Checkbox
+                checked={showTranslateOnCard}
+                onChange={handleChangeShowTranslateOnCard}
+                color="primary"
+              />
+              <span>{t('CARDS.SHOW_TRANSLATE_ON_CARD')}</span>
+            </div>
+            <div className={styles.checkboxContainer}>
+              <Checkbox
+                checked={showAllWords}
+                onChange={handleChangeShowAllWords}
+                color="primary"
+              />
+              <span>{t('CARDS.SHOW_ALL_WORDS')}</span>
+            </div>
+          </div>
+        </header>
+        <InfoBlock />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.wrapper}>
       <header className={styles.header}>
@@ -148,6 +212,14 @@ const Cards: React.FunctionComponent = () => {
               color="primary"
             />
             <span>{t('CARDS.SHOW_TRANSLATE_ON_CARD')}</span>
+          </div>
+          <div className={styles.checkboxContainer}>
+            <Checkbox
+              checked={showAllWords}
+              onChange={handleChangeShowAllWords}
+              color="primary"
+            />
+            <span>{t('CARDS.SHOW_ALL_WORDS')}</span>
           </div>
         </div>
         <div className={styles.progressBarContainer}>
@@ -182,32 +254,34 @@ const Cards: React.FunctionComponent = () => {
                   status={getStatusByIndex(index)}
                   audio={audio}
                 />
-                <div className={styles.controls}>
-                  <button
-                    onClick={handleDone}
-                    className={`${styles.cardButton} ${styles.done}`}
-                    type="button"
-                    disabled={
-                      successful.includes(index) || failed.includes(index)
-                    }
-                  >
-                    <span aria-label="done">
-                      <CheckIcon /> {t('CARDS.DONE')}
-                    </span>
-                  </button>
-                  <button
-                    onClick={handleRepeat}
-                    className={`${styles.cardButton} ${styles.fail}`}
-                    type="button"
-                    disabled={
-                      successful.includes(index) || failed.includes(index)
-                    }
-                  >
-                    <span aria-label="done">
-                      <CloseIcon /> {t('CARDS.FAIL')}
-                    </span>
-                  </button>
-                </div>
+                {!showAllWords && (
+                  <div className={styles.controls}>
+                    <button
+                      onClick={handleDone}
+                      className={`${styles.cardButton} ${styles.done}`}
+                      type="button"
+                      disabled={
+                        successful.includes(index) || failed.includes(index)
+                      }
+                    >
+                      <span aria-label="done">
+                        <CheckIcon /> {t('CARDS.DONE')}
+                      </span>
+                    </button>
+                    <button
+                      onClick={handleRepeat}
+                      className={`${styles.cardButton} ${styles.fail}`}
+                      type="button"
+                      disabled={
+                        successful.includes(index) || failed.includes(index)
+                      }
+                    >
+                      <span aria-label="done">
+                        <CloseIcon /> {t('CARDS.FAIL')}
+                      </span>
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
           </Carousel>
