@@ -11,6 +11,7 @@
   cursor: pointer;
 }
 
+/* TODO Fix that. Very expensive request to all divs */
 .card div {
   position: absolute;
   width: 100%;
@@ -24,6 +25,7 @@
   transition: transform 600ms linear;
   border-radius: 6px;
   backface-visibility: hidden;
+  padding: 25px;
 }
 
 .card div:hover {
@@ -74,4 +76,29 @@
   position: absolute;
   left: -55px;
   top: calc(43px / 2 - 20px);
+}
+
+.showDefinitionButton {
+  cursor: pointer;
+  width: 45px;
+  height: 45px;
+  font-size: 16px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 25px;
+  border-radius: 50%;
+}
+
+.showDefinitionButton:hover,
+.showDefinitionButton:focus {
+  background-color: rgba(0, 126, 254, 0.1);
 }

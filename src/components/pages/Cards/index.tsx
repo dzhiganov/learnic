@@ -21,6 +21,7 @@ import getNewRepeatTimeByStep from './utils/getNewRepeatTimeByStep';
 import { getWords } from '~api/words';
 import InfoBlock from './InfoBlock';
 import Loading from '~c/atoms/Loading';
+import Definition from './Definition';
 
 const BorderLinearProgress = withStyles((theme: Theme) =>
   createStyles({
@@ -51,6 +52,7 @@ const Cards: React.FunctionComponent = () => {
   );
   const [finished, setFinished] = useState<boolean>(false);
   const [showAllWords, setShowAllWords] = useState<boolean>(false);
+  const [showDefinition, setShowDefinition] = useState<boolean>(false);
 
   const [{ value: words = [], loading }, fetch] = useAsyncFn(getWords, [], {
     loading: true,
@@ -156,6 +158,14 @@ const Cards: React.FunctionComponent = () => {
     []
   );
 
+  const handleShowDefinition = useCallback((value: boolean) => {
+    setShowDefinition(value);
+  }, []);
+
+  const handleCloseDefinition = useCallback(() => {
+    setShowDefinition(false);
+  }, []);
+
   if (loading) {
     return (
       <div className={styles.wrapper}>
@@ -202,6 +212,12 @@ const Cards: React.FunctionComponent = () => {
 
   return (
     <div className={styles.wrapper}>
+      <Definition
+        title={words[currentIndex].word}
+        examples={words[currentIndex].examples}
+        open={showDefinition}
+        onClose={handleCloseDefinition}
+      />
       <header className={styles.header}>
         <div className={styles.headerOptions}>
           <h2 className={styles.title}>{`${t('CARDS.TITLE')}`}</h2>
@@ -253,6 +269,7 @@ const Cards: React.FunctionComponent = () => {
                   isActive={index === currentIndex}
                   status={getStatusByIndex(index)}
                   audio={audio}
+                  setShowDefinition={handleShowDefinition}
                 />
                 {!showAllWords && (
                   <div className={styles.controls}>

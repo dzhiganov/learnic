@@ -1,7 +1,7 @@
 /* eslint-disable css-modules/no-unused-class */
 import React, { memo, useCallback, useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import styles from './styled.module.css';
+import styles from './styles.module.css';
 import AudioButton from '~c/atoms/AudioButton';
 
 type Props = {
@@ -10,6 +10,7 @@ type Props = {
   isActive: boolean;
   status: 'successful' | 'failed' | 'pending';
   audio: string;
+  setShowDefinition: (value: boolean) => void;
 };
 
 const Card: React.FunctionComponent<Props> = ({
@@ -18,9 +19,10 @@ const Card: React.FunctionComponent<Props> = ({
   isActive,
   status,
   audio,
+  setShowDefinition,
 }: Props) => {
   const { t } = useTranslation();
-  const [flipped, setFlipped] = useState<boolean>();
+  const [flipped, setFlipped] = useState<boolean>(false);
 
   const flip = useCallback(() => {
     setFlipped(!flipped);
@@ -54,6 +56,15 @@ const Card: React.FunctionComponent<Props> = ({
     };
   }, []);
 
+  const handleClickShowDefinition = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+
+      setShowDefinition(true);
+    },
+    [setShowDefinition]
+  );
+
   return (
     <div className={styles.container}>
       <div
@@ -68,6 +79,13 @@ const Card: React.FunctionComponent<Props> = ({
         <div
           className={`${styles.front} ${flipped ? styles.frontFlipped : ''}`}
         >
+          <button
+            type="button"
+            className={styles.showDefinitionButton}
+            onClick={handleClickShowDefinition}
+          >
+            💬
+          </button>
           <span className={styles.cardTitle}>
             <span className={styles.audioButtonContainer}>
               <AudioButton audioURL={audio} />

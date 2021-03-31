@@ -142,13 +142,13 @@ const update = ({
   } as {
     word?: string;
     translate?: string;
-    example?: firebase.firestore.FieldValue;
+    examples?: firebase.firestore.FieldValue;
     repeat?: Date;
     step?: number;
   };
 
   if (updatedFields.example) {
-    updateObject.example = firebase.firestore.FieldValue.arrayUnion(
+    updateObject.examples = firebase.firestore.FieldValue.arrayUnion(
       updatedFields.example
     );
   }

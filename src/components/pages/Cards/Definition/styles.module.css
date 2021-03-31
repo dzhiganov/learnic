@@ -1,0 +1,60 @@
+.container {
+  background-color: #fff;
+  position: absolute;
+  width: 500px;
+  height: 600px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-300px, -350px);
+  padding: 12px 25px;
+  padding-top: 24px;
+  outline: none;
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+}
+
+.title {
+  display: inline-block;
+  font-size: 28px;
+  font-weight: 600;
+  padding: 15px 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  list-style-type: disc;
+  margin-left: 22px;
+}
+
+.item + .item {
+  margin-top: 10px;
+}
+
+.item::marker {
+  content: '👉 ';
+}
+
+.closeButton {
+  top: 15px;
+  right: 15px;
+  position: absolute;
+  outline: none;
+  background-color: transparent;
+  border: none;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.closeButton:hover,
+.closeButton:focus {
+  background-color: rgba(158, 158, 158, 0.2);
+}
