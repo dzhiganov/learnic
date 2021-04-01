@@ -69,7 +69,7 @@
   },
   "CARDS": {
     "TITLE": "All words",
-    "FLIP": "Click to flip",
+    "FLIP": "👉 Click to view translate",
     "DONE": "Done",
     "FAIL": "Repeat",
     "SHOW_TRANSLATE_ON_CARD": "Show translate on card",
