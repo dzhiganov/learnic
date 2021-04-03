@@ -19,6 +19,7 @@
   background-color: transparent;
   font-size: 25px;
   border-radius: 50%;
+  color: var(--color-text);
 }
 
 .audioButton:hover {

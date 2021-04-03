@@ -31,7 +31,7 @@
 .wordsListContainer {
   height: 90vh;
   overflow: auto;
-  border-right: 1px solid #f0f0f0;
+  border-right: 1px solid #ccc;
   padding: 25px;
 }
 

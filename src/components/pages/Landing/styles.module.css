@@ -23,7 +23,7 @@
 
 .block {
   font-size: 18px;
-  color: #333;
+  color: var(--color-text-secondary);
 }
 
 .block + .block {

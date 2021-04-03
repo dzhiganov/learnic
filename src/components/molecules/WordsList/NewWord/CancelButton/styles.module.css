@@ -18,6 +18,7 @@
   composes: saveButton;
   border: 1px solid rgba(0, 0, 0, 0.15);
   background: transparent;
+  background-color: var(--color-button-secondary);
   color: #000;
 }
 

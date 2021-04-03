@@ -7,9 +7,9 @@
 }
 
 .input {
-  color: #1d1d1f;
-  border-color: #d2d2d7;
-  background-color: hsla(0, 0%, 100%, 0.8);
+  color: var(--color-text-secondary);
+  border-color: var(--color-input-border);
+  background-color: var(--color-input-background);
   text-overflow: ellipsis;
   font-size: 16px;
   line-height: 28px;
@@ -45,5 +45,5 @@
 }
 
 .icon svg {
-  fill: rgba(0, 0, 0, 0.4);
+  fill: var(--color-text);
 }

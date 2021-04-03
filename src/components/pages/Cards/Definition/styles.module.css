@@ -1,5 +1,5 @@
 .container {
-  background-color: #fff;
+  background-color: var(--color-background);
   position: absolute;
   width: 500px;
   height: 600px;
@@ -52,6 +52,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+  color: var(--color-text);
 }
 
 .closeButton:hover,

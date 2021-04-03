@@ -1,6 +1,6 @@
 .container {
   padding: 8px 0;
-  background-color: #fff;
+  background-color: var(--color-background);
   padding: 0 6px;
   height: 60px;
   margin-bottom: 28px;
