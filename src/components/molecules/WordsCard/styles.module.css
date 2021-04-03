@@ -25,9 +25,10 @@
 }
 
 .examplesList {
-  list-style: none;
   padding: 0;
   margin: 4px 0;
+  list-style-type: disc;
+  margin-left: 22px;
 }
 
 .example {
@@ -35,15 +36,13 @@
   font-size: 16px;
 }
 
-.exampleCount {
-  color: rgba(0, 0, 0, 0.4);
-  font-weight: 500;
+.examplesItem::marker {
+  content: '👉 ';
 }
 
 .examplesItem {
   position: relative;
   font-weight: 500;
-  display: block;
   padding: 8px 0px;
 }
 
@@ -54,7 +53,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.025);
+  background-color: var(--color-background-secondary);
   height: 200px;
 }
 
@@ -102,5 +101,5 @@
   composes: saveButton;
   border: 1px solid rgba(0, 0, 0, 0.15);
   background: transparent;
-  color: #000;
+  background-color: var(--color-text);
 }

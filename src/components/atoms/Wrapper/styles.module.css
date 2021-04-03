@@ -1,6 +1,6 @@
 .wrapper {
   position: relative;
-  background-color: #fff;
+  background-color: var(--color-background);
   border-radius: 4px;
   height: 100%;
 }

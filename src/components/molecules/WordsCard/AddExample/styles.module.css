@@ -3,9 +3,9 @@
 }
 
 .input {
-  color: #1d1d1f;
-  border-color: #d2d2d7;
-  background-color: hsla(0, 0%, 100%, 0.8);
+  color: var(--color-text);
+  border-color: var(--color-input-border);
+  background-color: var(--color-input-background);
   text-overflow: ellipsis;
   font-size: 16px;
   line-height: 28px;
@@ -59,6 +59,7 @@
   composes: saveButton;
   border: 1px solid rgba(0, 0, 0, 0.15);
   background: transparent;
+  background-color: var(--color-button-secondary);
   color: #000;
 }
 

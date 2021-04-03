@@ -22,8 +22,8 @@ import InfoBlock from './InfoBlock';
 import Loading from '~c/atoms/Loading';
 import Definition from './Definition';
 
-const BorderLinearProgress = withStyles((theme: Theme) =>
-  createStyles({
+const BorderLinearProgress = withStyles((theme: Theme) => {
+  return createStyles({
     root: {
       height: 8,
       borderRadius: 4,
@@ -36,8 +36,8 @@ const BorderLinearProgress = withStyles((theme: Theme) =>
       borderRadius: 4,
       backgroundColor: '#00af91',
     },
-  })
-)(LinearProgress);
+  });
+})(LinearProgress);
 
 const Cards: React.FunctionComponent = () => {
   const dispatch = useDispatch();

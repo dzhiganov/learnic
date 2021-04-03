@@ -2,7 +2,7 @@
   width: 100%;
   height: calc(100vw / 2);
   position: relative;
-  background-color: #000;
+  background-background-color: var(--color-text);
 }
 
 @media (min-width: 576px) {

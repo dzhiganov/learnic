@@ -19,12 +19,12 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  color: rgb(58, 57, 52);
   background-color: rgba(0, 126, 254, 0.1);
   transition: transform 600ms linear;
   border-radius: 6px;
   backface-visibility: hidden;
   padding: 25px;
+  color: var(--color-text);
 }
 
 .card div:hover {
@@ -67,7 +67,6 @@
 
 .flip {
   font-size: 16px;
-  color: rgb(80, 80, 80);
   margin-top: 50px;
   outline: none;
   background: transparent;
@@ -80,6 +79,7 @@
   text-align: center;
   cursor: pointer;
   font-weight: 500;
+  color: var(--color-text-secondary);
 }
 
 .flip:focus,
