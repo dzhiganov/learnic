@@ -12,9 +12,11 @@
     "@reduxjs/toolkit": "^1.4.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@types/lodash.omit": "^4.5.6",
+    "aws-lambda-fastify": "^1.4.4",
     "axios": "^0.21.0",
     "craco-alias": "^2.1.1",
     "dayjs": "^1.10.3",
+    "fastify": "^3.14.1",
     "firebase": "^8.1.1",
     "fuse.js": "^6.4.3",
     "history": "^5.0.0",
@@ -28,6 +30,7 @@
     "lodash.times": "^4.3.2",
     "lodash.uniqueid": "^4.0.1",
     "module-alias": "^2.2.2",
+    "netlify-lambda": "^2.0.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-i18next": "^11.8.6",
@@ -59,7 +62,8 @@
     "format": "prettier --ignore-path .eslintignore \"**/*.+(ts|tsx|jsx|js|json|css)\" --write",
     "check-format": "prettier --ignore-path .eslintignore \"**/*.+(ts|tsx|jsx|js|json|css)\" --list-different",
     "validate": "run-p check-format lint build",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build:functions": "netlify-lambda build functions --config ./webpack.config.netlify.js"
   },
   "eslintConfig": {
     "extends": [
