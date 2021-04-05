@@ -51,8 +51,9 @@
   },
   "scripts": {
     "start": "craco start --open",
+    "functions": "netlify-lambda build ./functions --config ./webpack.config.netlify.js",
     "build": "craco build",
-    "postbuild": "react-snap",
+    "postbuild": "react-snap & yarn functions",
     "test": "react-scripts test",
     "cy:open": "cypress open",
     "test:e2e": "start-server-and-test start http://localhost:3000 cy:open",
@@ -64,8 +65,7 @@
     "format": "prettier --ignore-path .eslintignore \"**/*.+(ts|tsx|jsx|js|json|css)\" --write",
     "check-format": "prettier --ignore-path .eslintignore \"**/*.+(ts|tsx|jsx|js|json|css)\" --list-different",
     "validate": "run-p check-format lint build",
-    "prepare": "husky install",
-    "build:functions": "netlify-lambda build ./functions --config ./webpack.config.netlify.js"
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
