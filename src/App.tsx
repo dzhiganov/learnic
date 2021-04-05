@@ -42,26 +42,26 @@ const ThemeProvider: React.FC = ({ children }) => {
 
 const App: React.FunctionComponent = () => {
   return (
-    <ColorSchemeProvider>
-      <ThemeProvider>
-        <Provider store={store}>
-          <Router>
-            <Suspense
-              fallback={
-                <Backdrop open>
-                  <CircularProgress disableShrink />
-                </Backdrop>
-              }
-            >
-              {/* TODO: Should be in special component */}
-              <CheckAuth>
+    <Provider store={store}>
+      <Router>
+        <Suspense
+          fallback={
+            <Backdrop open>
+              <CircularProgress disableShrink />
+            </Backdrop>
+          }
+        >
+          {/* TODO: Should be in special component */}
+          <CheckAuth>
+            <ColorSchemeProvider>
+              <ThemeProvider>
                 <SwitchRoute />
-              </CheckAuth>
-            </Suspense>
-          </Router>
-        </Provider>
-      </ThemeProvider>
-    </ColorSchemeProvider>
+              </ThemeProvider>
+            </ColorSchemeProvider>
+          </CheckAuth>
+        </Suspense>
+      </Router>
+    </Provider>
   );
 };
 

@@ -5,6 +5,7 @@ import useMedia from 'react-use/lib/useMedia';
 import { useTranslation } from 'react-i18next';
 import Switch from '@material-ui/core/Switch';
 import { withStyles, createStyles } from '@material-ui/core/styles';
+import useAsyncFn from 'react-use/lib/useAsyncFn';
 import User from '~c/molecules/User';
 import styles from './styles.module.css';
 import { logout } from '~actions/user';
@@ -12,6 +13,8 @@ import LangPicker from '~c/molecules/LangPicker';
 import AsideMenu from '~c/organisms/AsideMenu';
 import Logo from '~c/atoms/Logo';
 import { useColorScheme, ColorSchemes } from '~hooks/../colorSchemeContext';
+import { updateUserOptions as requestUpdateUserOptions } from '~api/user';
+import useSelector from '~hooks/useSelector';
 
 const CustomSwitch = withStyles(() =>
   createStyles({
@@ -87,6 +90,9 @@ const TopBar: React.FC = () => {
   const isWide = useMedia('(min-width: 576px)');
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+  const uid = useSelector<string>('user.uid');
+  const [, updateUserOptions] = useAsyncFn(requestUpdateUserOptions, []);
+
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -131,9 +137,13 @@ const TopBar: React.FC = () => {
         <div className={styles.leftContainer}>
           <CustomSwitch
             checked={scheme === ColorSchemes.DARK}
-            onChange={(e) => {
+            onChange={async (e) => {
+              const newSchemeValue = e.target.checked
+                ? ColorSchemes.DARK
+                : ColorSchemes.LIGHT;
+              await updateUserOptions(uid, { colorScheme: newSchemeValue });
               dispatchTheme({
-                type: e.target.checked ? ColorSchemes.DARK : ColorSchemes.LIGHT,
+                type: newSchemeValue,
               });
             }}
           />

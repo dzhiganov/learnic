@@ -1,12 +1,16 @@
 import React, { createContext, useEffect, useMemo } from 'react';
+import useSelector from '~hooks/useSelector';
 
 enum ColorSchemes {
   LIGHT = 'light',
   DARK = 'dark',
+  DEFAULT = 'default',
 }
 
+const DEFAULT_SCHEME = ColorSchemes.LIGHT;
+
 type State = {
-  scheme: ColorSchemes;
+  scheme: ColorSchemes.LIGHT | ColorSchemes.DARK;
 };
 
 type Action = {
@@ -43,8 +47,14 @@ interface ColorSchemeProviderFunc {
 }
 
 const ColorSchemeProvider: ColorSchemeProviderFunc = ({ children }) => {
+  const userColorScheme =
+    useSelector<ColorSchemes>('user.colorScheme') || DEFAULT_SCHEME;
+
   const [state, dispatch] = React.useReducer(colorSchemeReducer, {
-    scheme: ColorSchemes.LIGHT,
+    scheme:
+      userColorScheme === 'default' || !userColorScheme
+        ? DEFAULT_SCHEME
+        : userColorScheme,
   });
 
   useEffect(() => {
