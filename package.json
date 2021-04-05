@@ -65,7 +65,7 @@
     "check-format": "prettier --ignore-path .eslintignore \"**/*.+(ts|tsx|jsx|js|json|css)\" --list-different",
     "validate": "run-p check-format lint build",
     "prepare": "husky install",
-    "build:functions": "netlify-lambda build functions --config ./webpack.config.netlify.js"
+    "build:functions": "netlify-lambda build ./functions --config ./webpack.config.netlify.js"
   },
   "eslintConfig": {
     "extends": [
