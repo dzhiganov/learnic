@@ -135,6 +135,10 @@ const TopBar: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <div className={styles.leftContainer}>
+          <Logo />
+          <AsideMenu />
+        </div>
+        <div className={styles.controls}>
           <CustomSwitch
             checked={scheme === ColorSchemes.DARK}
             onChange={async (e) => {
@@ -147,10 +151,6 @@ const TopBar: React.FC = () => {
               });
             }}
           />
-          <Logo />
-          <AsideMenu />
-        </div>
-        <div className={styles.controls}>
           <LangPicker />
           <User onClick={handleClick} />
         </div>

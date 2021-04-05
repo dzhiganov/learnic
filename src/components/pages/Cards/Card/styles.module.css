@@ -32,11 +32,11 @@
 }
 
 .cardSuccess div {
-  background-color: rgb(155 255 181);
+  background-color: var(--color-card-success);
 }
 
 .cardFailed div {
-  background-color: rgb(248, 188, 193);
+  background-color: var(--color-card-fail);
 }
 
 .cardTitle {
