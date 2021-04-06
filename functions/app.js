@@ -1,10 +1,18 @@
-const Fastify = require('fastify');
+const fastify = require('fastify');
 
-const app = Fastify({ logger: true });
-
-if (require.main === module) {
-  // called directly i.e. "ts-node server/app.js"
-  app.listen(29754);
+function init() {
+  const app = fastify();
+  app.get('/', (request, reply) => reply.send({ hello: 'world' }));
+  return app;
 }
 
-module.exports = app;
+if (require.main === module) {
+  // called directly i.e. "node app"
+  init().listen(3000, (err) => {
+    if (err) console.error(err);
+    console.log('server listening on 3000');
+  });
+} else {
+  // required as a module => executed on aws lambda
+  module.exports = init;
+}
