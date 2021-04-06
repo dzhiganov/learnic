@@ -7,14 +7,13 @@ function init() {
 }
 
 if (require.main === module) {
-
-// called directly i.e. "node app"
-init().listen(7777, (err) => {
-  if (err) console.error(err);
-  console.log('server listening on 7777');
-});
+  // called directly i.e. "node app"
+  init().listen(7777, (err) => {
+    if (err) console.error(err);
+    console.log('server listening on 7777');
+  });
 } else {
-//   console.log('GOING TO EXPORT');
+  //   console.log('GOING TO EXPORT');
   module.exports = init;
 }
 
