@@ -3,6 +3,7 @@
 }
 
 .input {
+  font-family: inherit;
   color: var(--color-text);
   border-color: var(--color-input-border);
   background-color: var(--color-input-background);
@@ -70,5 +71,5 @@
 
 .cancelButton:focus,
 .cancelButton:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: var(--color-button-secondary-hover);
 }
