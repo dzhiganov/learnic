@@ -5,9 +5,13 @@ const proxy = awsLambdaFastify(init());
 // or
 // const proxy = awsLambdaFastify(init(), { binaryMimeTypes: ['application/octet-stream'] })
 
-exports.handler = proxy;
-// or
-// exports.handler = (event, context, callback) => proxy(event, context, callback);
+exports.handler = (event, context, callback) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: 'Hello World' }),
+  };
+  //   return proxy(event, context, callback);
+};
 // or
 // exports.handler = (event, context) => proxy(event, context);
 // or
