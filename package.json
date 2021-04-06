@@ -64,7 +64,7 @@
     "prettier": "prettier --ignore-path .eslintignore \"**/*.+(ts|tsx|jsx|js|json|css)\"",
     "format": "prettier --ignore-path .eslintignore \"**/*.+(ts|tsx|jsx|js|json|css)\" --write",
     "check-format": "prettier --ignore-path .eslintignore \"**/*.+(ts|tsx|jsx|js|json|css)\" --list-different",
-    "validate": "run-p check-format lint build",
+    "validate": "run-p check-format lint",
     "prepare": "husky install"
   },
   "eslintConfig": {
