@@ -17,3 +17,5 @@ init().listen(3000, (err) => {
 //   console.log('GOING TO EXPORT');
 //   module.exports = init;
 // }
+
+module.exports = init
