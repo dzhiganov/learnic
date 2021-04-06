@@ -51,9 +51,8 @@
   },
   "scripts": {
     "start": "craco start --open",
-    "functions": "netlify-lambda build ./functions --config ./webpack.config.netlify.js",
     "build": "craco build",
-    "postbuild": "react-snap & yarn functions",
+    "postbuild": "react-snap",
     "test": "react-scripts test",
     "cy:open": "cypress open",
     "test:e2e": "start-server-and-test start http://localhost:3000 cy:open",
