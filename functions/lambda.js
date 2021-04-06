@@ -1,7 +1,7 @@
-const awsLambdaFastify = require('aws-lambda-fastify')
+const awsLambdaFastify = require('aws-lambda-fastify');
 const init = require('./app');
 
-const proxy = awsLambdaFastify(init())
+const proxy = awsLambdaFastify(init());
 // or
 // const proxy = awsLambdaFastify(init(), { binaryMimeTypes: ['application/octet-stream'] })
 
