@@ -4,6 +4,7 @@ import Fuse from 'fuse.js';
 import EditIcon from '@material-ui/icons/EditOutlined';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import { useTranslation } from 'react-i18next';
+import useMedia from 'react-use/lib/useMedia';
 import styles from './styles.module.css';
 import NewWord from './NewWord';
 import Search from './Search';
@@ -54,6 +55,8 @@ const WordsList: React.FunctionComponent<Props> = ({
   const [filtered, setFiltered] = useState<
     { id: string; word: string; translate: string }[]
   >([]);
+  const [searchFocused, setSearchFocused] = useState<boolean>(false);
+  const isWide = useMedia('(min-width: 576px)');
 
   const onCancelAddNewWord = useCallback(() => {
     onCancelEdit();
@@ -110,20 +113,35 @@ const WordsList: React.FunctionComponent<Props> = ({
     setFocused(id);
   }, []);
 
+  const handleOnFocus = useCallback(() => {
+    if (!searchFocused) setSearchFocused(true);
+  }, [searchFocused]);
+
+  const handleOnBlur = useCallback(() => {
+    if (searchFocused) setSearchFocused(false);
+  }, [searchFocused]);
+
   return (
     <>
       <div className={styles.buttonsContainer}>
-        <Search value={filter} onChange={handleChangeFilter} />
-        <button
-          type="button"
-          disabled={showNewWord}
-          className={`${styles.addNewWordButton} ${
-            showNewWord ? styles.disable : ''
-          }`}
-          onClick={onShowNewWord}
-        >
-          {t('DICTIONARY.NEW_WORD_BUTTON')}
-        </button>
+        <Search
+          value={filter}
+          onChange={handleChangeFilter}
+          onFocus={handleOnFocus}
+          onBlur={handleOnBlur}
+        />
+        {!searchFocused && (
+          <button
+            type="button"
+            disabled={showNewWord}
+            className={`${styles.addNewWordButton} ${
+              showNewWord ? styles.disable : ''
+            }`}
+            onClick={onShowNewWord}
+          >
+            {isWide ? t('DICTIONARY.NEW_WORD_BUTTON') : '+'}
+          </button>
+        )}
       </div>
       <If condition={showNewWord}>
         <NewWord id="" onSave={onSave} onCancel={onCancelAddNewWord} />

@@ -39,8 +39,8 @@ ul {
   --color-success: rgb(215, 245, 252);
   --color-success-light: rgb(232, 246, 249);
   --color-success-accent: rgb(68, 171, 192);
-  --color-fail: rgb(250, 234, 235);
-  --color-fail-light: rgb(250, 212, 215);
+  --color-fail-light: rgb(250, 234, 235);
+  --color-fail: rgb(250, 212, 215);
   --color-fail-accent: rgb(218, 119, 138);
   --color-input-background: hsla(0, 0%, 100%, 0.8);
   --color-input-border: #d2d2d7;
@@ -80,8 +80,8 @@ ul {
   --color-success: rgb(215, 245, 252);
   --color-success-light: rgb(232, 246, 249);
   --color-success-accent: rgb(68, 171, 192);
-  --color-fail: rgb(250, 234, 235);
-  --color-fail-light: rgb(250, 212, 215);
+  --color-fail-light: rgb(250, 234, 235);
+  --color-fail: rgb(250, 212, 215);
   --color-fail-accent: rgb(218, 119, 138);
   --color-input-background: hsla(0, 0%, 100%, 0.8);
   --color-input-border: #d2d2d7;

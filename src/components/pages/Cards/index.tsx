@@ -11,6 +11,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { createStyles, withStyles, Theme } from '@material-ui/core/styles';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import Checkbox from '@material-ui/core/Checkbox';
+import useMedia from 'react-use/lib/useMedia';
 import useSelector from '~hooks/useSelector';
 // eslint-disable-next-line css-modules/no-unused-class
 import styles from './styles.module.css';
@@ -40,6 +41,7 @@ const BorderLinearProgress = withStyles((theme: Theme) => {
 })(LinearProgress);
 
 const Cards: React.FunctionComponent = () => {
+  const isWide = useMedia('(min-width: 576px)');
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const uid = useSelector<string>('user.uid');
@@ -165,6 +167,11 @@ const Cards: React.FunctionComponent = () => {
     setShowDefinition(false);
   }, []);
 
+  const handleOnChangeSlide = useCallback(
+    (newSlideIndex: number) => setCurrentIndex(newSlideIndex),
+    []
+  );
+
   if (loading) {
     return (
       <div className={styles.wrapper}>
@@ -259,7 +266,7 @@ const Cards: React.FunctionComponent = () => {
         </button>
 
         <div className={styles.sliderContainer}>
-          <Carousel value={currentIndex}>
+          <Carousel value={currentIndex} onChange={handleOnChangeSlide}>
             {words.map(({ id, word, translate, audio }, index) => (
               <div key={id}>
                 <Card
@@ -281,7 +288,7 @@ const Cards: React.FunctionComponent = () => {
                       }
                     >
                       <span aria-label="done">
-                        <CheckIcon /> {t('CARDS.DONE')}
+                        <CheckIcon /> {isWide && t('CARDS.DONE')}
                       </span>
                     </button>
                     <button
@@ -293,7 +300,7 @@ const Cards: React.FunctionComponent = () => {
                       }
                     >
                       <span aria-label="done">
-                        <CloseIcon /> {t('CARDS.FAIL')}
+                        <CloseIcon /> {isWide && t('CARDS.FAIL')}
                       </span>
                     </button>
                   </div>

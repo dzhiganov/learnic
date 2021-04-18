@@ -1,8 +1,15 @@
 .container {
-  width: 400px;
-  height: 400px;
+  width: 100vw;
+  height: 100vw;
   position: relative;
   margin: 0 auto;
+}
+
+@media (min-width: 576px) {
+  .container {
+    width: 400px;
+    height: 400px;
+  }
 }
 
 .card {
