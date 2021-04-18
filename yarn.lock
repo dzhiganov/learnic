@@ -10829,14 +10829,10 @@ postcss-logical@^3.0.0:
   dependencies:
     postcss "^7.0.2"
 
-postcss-768pxinmax@^4.0.0:
+postcss-minmax@^4.0.0:
   version "4.0.0"
-<<<<<<< HEAD
-  resolved "https://registry.yarnpkg.com/postcss-media-minmax/-/postcss-media-minmax-4.0.0.tgz#b75bb6cbc217c8ac49433e12f22048814a4f5ed5"
-=======
-  resolved "https://registry.yarnpkg.com/postcss-768pxinmax/-/postcss-768pxinmax-4.0.0.tgz#b75bb6cbc217c8ac49433e12f22048814a4f5ed5"
+  resolved "https://registry.yarnpkg.com/postcss-minmax/-/postcss-minmax-4.0.0.tgz#b75bb6cbc217c8ac49433e12f22048814a4f5ed5"
   integrity sha512-fo9moya6qyxsjbFAYl97qKO9gyre3qvbMnkOZeZwlsW6XYFsvs2DMGDlchVLfAd8LHPZDxivu/+qW2SMQeTHBw==
->>>>>>> 888ece2b862588d781773d759f313325c4be0d15
   dependencies:
     postcss "^7.0.2"
 
@@ -11098,7 +11094,7 @@ postcss-preset-env@6.7.0:
     postcss-initial "^3.0.0"
     postcss-lab-function "^2.0.1"
     postcss-logical "^3.0.0"
-    postcss-768pxinmax "^4.0.0"
+    postcss-minmax "^4.0.0"
     postcss-nesting "^7.0.0"
     postcss-overflow-shorthand "^2.0.0"
     postcss-page-break "^2.0.0"
