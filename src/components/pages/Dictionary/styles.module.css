@@ -1,9 +1,25 @@
 .title {
   font-family: 'Montserrat', sans-serif;
-  font-size: 3rem;
+  font-size: 36px;
   letter-spacing: -1px;
   padding: 0;
   margin: 0;
+}
+
+@media (min-width: 576px) {
+  .listContainer {
+    display: grid;
+    grid-template-columns: 50% 50%;
+  }
+
+  .listContainer > * {
+    max-height: 100%;
+    overflow: auto;
+  }
+
+  .title {
+    font-size: 3rem;
+  }
 }
 
 .container {
@@ -29,14 +45,24 @@
 }
 
 .wordsListContainer {
-  height: 90vh;
+  height: initial;
   overflow: auto;
   border-right: 1px solid #ccc;
   padding: 25px;
 }
 
 .wordsCardContainer {
-  height: 90vh;
+  height: initial;
   overflow: auto;
   padding: 25px;
+}
+
+@media (min-width: 576px) {
+  .wordsListContainer {
+    height: 90vh;
+  }
+
+  .wordsCardContainer {
+    height: 90vh;
+  }
 }

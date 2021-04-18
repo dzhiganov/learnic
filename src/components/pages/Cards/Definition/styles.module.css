@@ -1,11 +1,7 @@
 .container {
   background-color: var(--color-background);
   position: absolute;
-  width: 500px;
-  height: 600px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-250px, -350px);
+  width: 95%;
   padding: 12px 25px;
   padding-top: 24px;
   outline: none;
@@ -13,6 +9,18 @@
   display: flex;
   flex-direction: column;
   border-radius: 6px;
+  margin: 2.5%;
+  height: 100vh;
+}
+
+@media (min-width: 576px) {
+  .container {
+    width: 500px;
+    transform: translate(-250px, -350px);
+    height: 600px;
+    top: 50%;
+    left: 50%;
+  }
 }
 
 .title {
