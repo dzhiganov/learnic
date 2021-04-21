@@ -91,7 +91,7 @@ export const fetchFirebaseUser = (): AppThunk => async (dispatch) => {
     // TODO should move to api
     database.auth().onAuthStateChanged(async (user) => {
       if (user) {
-        const { colorScheme, language } = await getUserOptions(user.uid);
+        const { colorScheme, language } = await getUserOptions(user.uid) || {};
         const {
           uid,
           displayName: name,
