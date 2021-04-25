@@ -5,7 +5,7 @@ import useMedia from 'react-use/lib/useMedia';
 import { useTranslation } from 'react-i18next';
 import Switch from '@material-ui/core/Switch';
 import { withStyles, createStyles } from '@material-ui/core/styles';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
+import { useMutation } from '@apollo/client';
 import User from '~c/molecules/User';
 import styles from './styles.module.css';
 import { logout } from '~actions/user';
@@ -13,8 +13,9 @@ import LangPicker from '~c/molecules/LangPicker';
 import AsideMenu from '~c/organisms/AsideMenu';
 import Logo from '~c/atoms/Logo';
 import { useColorScheme, ColorSchemes } from '~hooks/../colorSchemeContext';
-import { updateUserOptions as requestUpdateUserOptions } from '~api/user';
 import useSelector from '~hooks/useSelector';
+
+import updateUserOptionsMutation from '~graphql/mutations/updateUserOptions';
 
 const CustomSwitch = withStyles(() =>
   createStyles({
@@ -91,7 +92,7 @@ const TopBar: React.FC = () => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
   const uid = useSelector<string>('user.uid');
-  const [, updateUserOptions] = useAsyncFn(requestUpdateUserOptions, []);
+  const [updateUserOptions] = useMutation(updateUserOptionsMutation);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
@@ -141,13 +142,20 @@ const TopBar: React.FC = () => {
         <div className={styles.controls}>
           <CustomSwitch
             checked={scheme === ColorSchemes.DARK}
-            onChange={async (e) => {
+            onChange={(e) => {
               const newSchemeValue = e.target.checked
                 ? ColorSchemes.DARK
                 : ColorSchemes.LIGHT;
-              await updateUserOptions(uid, { colorScheme: newSchemeValue });
+
               dispatchTheme({
                 type: newSchemeValue,
+              });
+
+              updateUserOptions({
+                variables: {
+                  uid,
+                  userOptions: { colorScheme: newSchemeValue },
+                },
               });
             }}
           />

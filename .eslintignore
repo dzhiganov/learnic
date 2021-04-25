@@ -28,3 +28,7 @@ cypress/screenshots
 # Configs
 .eslintrc.js
 tsconfig.json
+craco.config.js
+
+#Netlify
+src/lambda/build

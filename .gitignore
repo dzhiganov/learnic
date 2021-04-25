@@ -28,4 +28,4 @@ cypress/videos
 cypress/screenshots
 
 #Netlify
-/functions-build
+src/lambda/build

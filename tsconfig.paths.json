@@ -4,6 +4,9 @@
     "paths": {
       "~/*": ["*"],
       "~c/*": ["components/*"],
+      "~shared/*": ["shared/*"],
+      "~graphql/*": ["graphql/*"],
+      "~utils/*": ["utils/*"],
       "~hooks/*": ["utils/hooks/*"],
       "~actions/*": ["core/store/models/*"],
       "~api/*": ["core/store/api/*"],

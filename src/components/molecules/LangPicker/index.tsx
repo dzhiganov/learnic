@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
+import { useMutation } from '@apollo/client';
 import BootstrapInput from './BootstrapInput';
-import { updateUserOptions as requestUpdateUserOptions } from '~api/user';
 import useSelector from '~hooks/useSelector';
+import updateUserOptionsMutation from '~graphql/mutations/updateUserOptions';
 
 enum LangCodes {
   RU = 'ru',
@@ -13,7 +13,8 @@ enum LangCodes {
 
 const LangPicker: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const [, updateUserOptions] = useAsyncFn(requestUpdateUserOptions, []);
+  const [updateUserOptions] = useMutation(updateUserOptionsMutation);
+
   const uid = useSelector<string>('user.uid');
 
   const items = useMemo(
@@ -31,12 +32,18 @@ const LangPicker: React.FC = () => {
   );
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = event.target;
+    const { value: language } = event.target;
 
-    updateUserOptions(uid, {
-      language: value as LangCodes,
+    i18n.changeLanguage(language);
+
+    updateUserOptions({
+      variables: {
+        uid,
+        userOptions: {
+          language,
+        },
+      },
     });
-    i18n.changeLanguage(value);
   };
 
   return (

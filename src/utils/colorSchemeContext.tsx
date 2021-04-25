@@ -1,5 +1,7 @@
 import React, { createContext, useEffect, useMemo } from 'react';
+import { useQuery } from '@apollo/client';
 import useSelector from '~hooks/useSelector';
+import getUserColorSchemeQuery from '~graphql/queries/getUserColorScheme';
 
 enum ColorSchemes {
   LIGHT = 'light',
@@ -47,8 +49,17 @@ interface ColorSchemeProviderFunc {
 }
 
 const ColorSchemeProvider: ColorSchemeProviderFunc = ({ children }) => {
-  const userColorScheme =
-    useSelector<ColorSchemes>('user.colorScheme') || DEFAULT_SCHEME;
+  const uid = useSelector<string>('user.uid');
+  const { loading, data } = useQuery(getUserColorSchemeQuery, {
+    variables: { uid },
+  });
+
+  let userColorScheme: ColorSchemes;
+  if (loading) {
+    userColorScheme = DEFAULT_SCHEME;
+  } else {
+    userColorScheme = data.userOptions.colorScheme;
+  }
 
   const [state, dispatch] = React.useReducer(colorSchemeReducer, {
     scheme:
@@ -56,6 +67,14 @@ const ColorSchemeProvider: ColorSchemeProviderFunc = ({ children }) => {
         ? DEFAULT_SCHEME
         : userColorScheme,
   });
+
+  useEffect(() => {
+    if (!loading) {
+      dispatch({
+        type: userColorScheme,
+      });
+    }
+  }, [loading, userColorScheme]);
 
   useEffect(() => {
     document.documentElement.dataset.scheme = state.scheme;

@@ -1,23 +1,15 @@
-import { ColorSchemes } from '~/utils/colorSchemeContext';
-import { firestore } from '../../../database';
-
-type UserOptions = {
-  colorScheme: ColorSchemes | 'default';
-  language: 'en' | 'ru' | 'default';
-};
-
-const getUserOptions = async (uid: string): Promise<UserOptions> => {
-  const doc = await firestore.collection('users').doc(uid).get();
-
-  return doc.data() as UserOptions;
-};
+import type { UserOptions } from '~shared/types';
+import { server } from '~utils/consts';
 
 const updateUserOptions = (
   uid: string,
   updatedFields: Partial<UserOptions>
-): Promise<void> => {
-  return firestore.collection('users').doc(uid).update(updatedFields);
+): Promise<Response> => {
+  return fetch(`${server}/updateUser`, {
+    method: 'PATCH',
+    body: JSON.stringify({ uid, updatedFields }),
+  });
 };
 
 export type { UserOptions };
-export { getUserOptions, updateUserOptions };
+export { updateUserOptions };
