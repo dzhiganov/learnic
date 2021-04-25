@@ -84,7 +84,6 @@ const CustomSwitch = withStyles(() =>
 
 const TopBar: React.FC = () => {
   const {
-    dispatch: dispatchTheme,
     state: { scheme },
   } = useColorScheme();
   const { t } = useTranslation();
@@ -146,10 +145,6 @@ const TopBar: React.FC = () => {
               const newSchemeValue = e.target.checked
                 ? ColorSchemes.DARK
                 : ColorSchemes.LIGHT;
-
-              dispatchTheme({
-                type: newSchemeValue,
-              });
 
               updateUserOptions({
                 variables: {

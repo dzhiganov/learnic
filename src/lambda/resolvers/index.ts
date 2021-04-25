@@ -1,27 +1,32 @@
 import User from '../models/User';
 
+type UserOptions = {
+  language: string;
+  colorScheme: string;
+};
+
 type Response = {
-  ok: boolean;
-  message: string;
+  uid: string;
+  userOptions: UserOptions;
 };
 
-const getUserOptions = async (uid: string) => {
-  const userData = await User.getUser(uid);
-
-  return userData;
+type Params = {
+  uid: string;
 };
 
-const getUserLanguage = async ({ uid }: { uid: string }): Promise<string> => {
+const getUserOptions = async (uid: string): Promise<UserOptions> => {
+  const { userOptions } = await User.getUser(uid);
+
+  return userOptions;
+};
+
+const getUserLanguage = async ({ uid }: Params): Promise<string> => {
   const { language } = await getUserOptions(uid);
 
   return language;
 };
 
-const getUserColorScheme = async ({
-  uid,
-}: {
-  uid: string;
-}): Promise<string> => {
+const getUserColorScheme = async ({ uid }: Params): Promise<string> => {
   const { colorScheme } = await getUserOptions(uid);
 
   return colorScheme;
@@ -48,10 +53,15 @@ const updateUserColorScheme = async ({
 };
 
 const resolvers = {
+  User: {
+    userOptions: ({ uid }: Params): Params => ({ uid }),
+  },
   Query: {
-    userOptions: (_: unknown, { uid }: { uid: string }): { uid: string } => ({
-      uid,
-    }),
+    user: (_: unknown, { uid }: { uid: string }): Params => ({ uid }),
+  },
+  UserOptions: {
+    language: getUserLanguage,
+    colorScheme: getUserColorScheme,
   },
   Mutation: {
     updateUserOptions: async (
@@ -61,10 +71,7 @@ const resolvers = {
         userOptions,
       }: {
         uid: string;
-        userOptions: {
-          language?: string;
-          colorScheme?: string;
-        };
+        userOptions: Partial<UserOptions>;
       }
     ): Promise<Response> => {
       if (userOptions.language) {
@@ -77,15 +84,13 @@ const resolvers = {
         });
       }
 
+      const newState = await getUserOptions(uid);
+
       return {
-        ok: true,
-        message: 'Successfully updated',
+        uid,
+        userOptions: newState,
       };
     },
-  },
-  UserOptions: {
-    language: getUserLanguage,
-    colorScheme: getUserColorScheme,
   },
 };
 

@@ -1,6 +1,11 @@
 import { gql } from 'apollo-server-lambda';
 
 const typeDefs = gql`
+  type User {
+    uid: ID!
+    userOptions: UserOptions
+  }
+
   type UserOptions {
     language: String!
     colorScheme: String!
@@ -12,16 +17,11 @@ const typeDefs = gql`
   }
 
   type Query {
-    userOptions(uid: ID!): UserOptions
-  }
-
-  type Response {
-    ok: Boolean
-    message: String
+    user(uid: ID!): User
   }
 
   type Mutation {
-    updateUserOptions(uid: ID!, userOptions: UserOptionsInput!): Response
+    updateUserOptions(uid: ID!, userOptions: UserOptionsInput!): User
   }
 `;
 

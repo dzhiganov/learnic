@@ -8,7 +8,13 @@ import App from './App';
 
 const rootElement = document.getElementById('root') as HTMLElement;
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({
+  typePolicies: {
+    User: {
+      keyFields: ['uid'],
+    },
+  },
+});
 const uri = '/.netlify/functions/graphql';
 const connectToDevTools = true;
 

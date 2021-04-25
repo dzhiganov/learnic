@@ -1,29 +1,29 @@
 import { firestore } from '../database';
 
-// TODO Fix shared types and remove all any
+type UserOptions = {
+  language: string;
+  colorScheme: string;
+};
+
+type UserModel = {
+  uid: string;
+  userOptions: UserOptions;
+};
 
 class User {
-  static async getUser(
-    uid: string
-  ): Promise<{
-    language: string;
-    colorScheme: string;
-  }> {
+  static async getUser(uid: string): Promise<UserModel> {
     const doc = await firestore.collection('users').doc(uid).get();
-    const userData = doc.data() as {
-      language: string;
-      colorScheme: string;
-    };
+    const userOptions = doc.data() as UserOptions;
 
-    return userData;
+    return {
+      uid,
+      userOptions,
+    };
   }
 
   static async updateUser(
     uid: string,
-    updatedFields: {
-      language?: string;
-      colorScheme?: string;
-    }
+    updatedFields: Partial<UserOptions>
   ): Promise<unknown> {
     return firestore.collection('users').doc(uid).update(updatedFields);
   }

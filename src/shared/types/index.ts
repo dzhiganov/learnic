@@ -1,6 +1,10 @@
-import { ColorSchemes } from '~shared/enums';
+import { ColorSchemes } from '../enums';
+
+export type ColorScheme = ColorSchemes | 'default';
+
+export type Language = 'en' | 'ru' | 'default';
 
 export type UserOptions = {
-  colorScheme: ColorSchemes | 'default';
-  language: 'en' | 'ru' | 'default';
+  colorScheme: ColorScheme;
+  language: Language;
 };
