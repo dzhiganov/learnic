@@ -1,8 +1,4 @@
 [build]
   command = "yarn build"
   functions = "src/lambda/build"
-
-[[redirects]]  
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
+  publish= "build"

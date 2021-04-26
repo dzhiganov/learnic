@@ -15,7 +15,7 @@ const cache = new InMemoryCache({
     },
   },
 });
-const uri = '/.netlify/functions/graphql';
+const uri = 'http://localhost:8888/.netlify/functions/graphql';
 const connectToDevTools = true;
 
 const client = new ApolloClient({ cache, uri, connectToDevTools });

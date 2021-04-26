@@ -58,7 +58,7 @@ const ColorSchemeProvider: ColorSchemeProviderFunc = ({ children }) => {
   if (loading) {
     userColorScheme = DEFAULT_SCHEME;
   } else {
-    userColorScheme = data.user.userOptions.colorScheme;
+    userColorScheme = data?.user?.userOptions?.colorScheme;
   }
 
   const [state, dispatch] = React.useReducer(colorSchemeReducer, {
