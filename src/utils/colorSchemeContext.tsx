@@ -50,15 +50,6 @@ interface ColorSchemeProviderFunc {
 
 const ColorSchemeProvider: ColorSchemeProviderFunc = ({ children }) => {
   const uid = useSelector<string>('user.uid');
-  
-  if (!uid) {
-    return (
-      <ColorSchemeContext.Provider value={{state: ColorSchemes.LIGHT, dispatch: () => {}}}>
-        {children}
-      </ColorSchemeContext.Provider>
-    )
-  }
-  
   const { loading, data } = useQuery(getUserColorSchemeQuery, {
     variables: { uid },
   });

@@ -27,6 +27,9 @@ const getUserLanguage = async ({ uid }: Params): Promise<string> => {
 };
 
 const getUserColorScheme = async ({ uid }: Params): Promise<string> => {
+  // TODO use default color scheme
+  if (!uid) return 'light';
+
   const { colorScheme } = await getUserOptions(uid);
 
   return colorScheme;
