@@ -60,7 +60,7 @@
   "scripts": {
     "start": "craco start --open",
     "build:lambda": "tsc -p src/lambda/tsconfig.json",
-    "build": "PUBLIC_URL=http://localhost:8888/ craco build && yarn build:lambda",
+    "build": " yarn build:lambda && craco build",
     "test": "react-scripts test",
     "cy:open": "cypress open",
     "test:e2e": "start-server-and-test start http://localhost:3000 cy:open",
