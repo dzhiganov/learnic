@@ -1,12 +1,12 @@
 import 'firebase/firestore';
 import * as admin from 'firebase-admin';
 
-const a = process.env.REACT_APP_PROJECT_ID
-const b = process.env.REACT_APP_PRIVATE_KEY
-const c =  process.env.REACT_APP_CLIENT_EMAIL
+const a = process.env.REACT_APP_PROJECT_ID;
+const b = process.env.REACT_APP_PRIVATE_KEY;
+const c =  process.env.REACT_APP_CLIENT_EMAIL;
 
 if (!admin.apps.length) {
-  console.log('FOR TESTING ->, a, b, c)
+  console.log('FOR TESTING ->', a, b, c);
   admin.initializeApp({
     credential: admin.credential.cert({
       projectId: process.env.REACT_APP_PROJECT_ID,
