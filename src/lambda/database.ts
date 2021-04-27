@@ -10,7 +10,7 @@ if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
       projectId: process.env.REACT_APP_PROJECT_ID,
-      privateKey: process.env.REACT_APP_PRIVATE_KEY,
+      privateKey: process.env.REACT_APP_PRIVATE_KEY.replace(/\\n/g, '\n'),
       clientEmail: process.env.REACT_APP_CLIENT_EMAIL,
     }),
     databaseURL: process.env.REACT_APP_DATABASE_URL,
