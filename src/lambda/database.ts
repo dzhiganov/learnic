@@ -1,6 +1,8 @@
 import 'firebase/firestore';
 import * as admin from 'firebase-admin';
 
+console.log('PRIVATE KEY ->', process.env.REACT_APP_PRIVATE_KEY);
+
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
