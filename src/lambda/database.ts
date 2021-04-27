@@ -1,7 +1,7 @@
 import 'firebase/firestore';
 import * as admin from 'firebase-admin';
 
-const privateKey = process.env.REACT_APP_PRIVATE_KEY as any;
+const privateKey = process.env.REACT_APP_PRIVATE_KEY as string;
 
 if (!admin.apps.length) {
   admin.initializeApp({
