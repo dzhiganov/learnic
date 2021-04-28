@@ -6,7 +6,9 @@ const updateUserOptions = gql`
       uid
       userOptions {
         colorScheme
+        __typename
       }
+      __typename
     }
   }
 `;

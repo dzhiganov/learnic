@@ -3,8 +3,6 @@ import Popover from '@material-ui/core/Popover';
 import { useDispatch } from 'react-redux';
 import useMedia from 'react-use/lib/useMedia';
 import { useTranslation } from 'react-i18next';
-import Switch from '@material-ui/core/Switch';
-import { withStyles, createStyles } from '@material-ui/core/styles';
 import { useMutation } from '@apollo/client';
 import User from '~c/molecules/User';
 import styles from './styles.module.css';
@@ -14,73 +12,8 @@ import AsideMenu from '~c/organisms/AsideMenu';
 import Logo from '~c/atoms/Logo';
 import { useColorScheme, ColorSchemes } from '~hooks/../colorSchemeContext';
 import useSelector from '~hooks/useSelector';
-
+import CustomSwitch from './CustomSwitch';
 import updateUserOptionsMutation from '~graphql/mutations/updateUserOptions';
-
-const CustomSwitch = withStyles(() =>
-  createStyles({
-    root: {
-      width: 80,
-      height: 48,
-      padding: 8,
-    },
-    switchBase: {
-      padding: 11,
-      color: '#ff6a00',
-    },
-    thumb: {
-      width: 26,
-      height: 26,
-      backgroundColor: '#fff',
-    },
-    track: {
-      background: 'linear-gradient(to left, #434343, black)',
-      opacity: '1 !important',
-      borderRadius: 20,
-      position: 'relative',
-      '&:before, &:after': {
-        display: 'inline-block',
-        position: 'absolute',
-        top: '50%',
-        width: '50%',
-        transform: 'translateY(-50%)',
-        color: '#fff',
-        textAlign: 'center',
-      },
-      '&:before': {
-        content: '"☀️"',
-        left: 4,
-        opacity: 0,
-      },
-      '&:after': {
-        content: '"🌙"',
-        right: 4,
-      },
-    },
-    checked: {
-      '&$switchBase': {
-        color: '#185a9d',
-        transform: 'translateX(32px)',
-        '&:hover': {
-          backgroundColor: 'linear-gradient(to right, #434343, black)',
-        },
-      },
-      '& $thumb': {
-        backgroundColor: '#fff',
-      },
-      '& + $track': {
-        background:
-          'linear-gradient(to right, hsl(210, 100%, 30%), hsl(210, 100%, 41%));',
-        '&:before': {
-          opacity: 1,
-        },
-        '&:after': {
-          opacity: 0,
-        },
-      },
-    },
-  })
-)(Switch);
 
 const TopBar: React.FC = () => {
   const {
@@ -127,6 +60,32 @@ const TopBar: React.FC = () => {
     [handleLogout, t]
   );
 
+  const handleSwitchTheme = useCallback(
+    ({ target: { checked } }) => {
+      const newSchemeValue = checked ? ColorSchemes.DARK : ColorSchemes.LIGHT;
+
+      const optimisticResponse = {
+        updateUserOptions: {
+          uid,
+          userOptions: {
+            colorScheme: newSchemeValue,
+            __typename: 'UserOptions',
+          },
+          __typename: 'User',
+        },
+      };
+
+      updateUserOptions({
+        variables: {
+          uid,
+          userOptions: { colorScheme: newSchemeValue },
+        },
+        optimisticResponse,
+      });
+    },
+    [uid, updateUserOptions]
+  );
+
   if (!isWide) {
     return null;
   }
@@ -141,18 +100,7 @@ const TopBar: React.FC = () => {
         <div className={styles.controls}>
           <CustomSwitch
             checked={scheme === ColorSchemes.DARK}
-            onChange={(e) => {
-              const newSchemeValue = e.target.checked
-                ? ColorSchemes.DARK
-                : ColorSchemes.LIGHT;
-
-              updateUserOptions({
-                variables: {
-                  uid,
-                  userOptions: { colorScheme: newSchemeValue },
-                },
-              });
-            }}
+            onChange={handleSwitchTheme}
           />
           <LangPicker />
           <User onClick={handleClick} />
