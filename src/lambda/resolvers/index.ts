@@ -30,7 +30,11 @@ const getUserColorScheme = async ({ uid }: Params): Promise<string> => {
   // TODO use default color scheme
   if (!uid) return 'light';
 
-  const { colorScheme } = await getUserOptions(uid);
+  const { colorScheme } = (await getUserOptions(uid)) || {};
+
+  if (!colorScheme) {
+    return 'light';
+  }
 
   return colorScheme;
 };
