@@ -1,17 +1,17 @@
-import React, { memo, useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { memo, useState, useCallback, useMemo } from 'react';
 import useMedia from 'react-use/lib/useMedia';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { useTranslation } from 'react-i18next';
+import { useQuery, useMutation } from '@apollo/client';
 import styles from './styles.module.css';
 import VideosList from '../VideosList';
 import AddExample from './AddExample';
 import useSelector from '~hooks/useSelector';
-import { update } from '~api/words';
-import { fetchWords } from '~actions/words';
 import StepsPopup from './StepsPopup';
-import { Words } from '~/core/store/models/words';
 import AudioButton from '~c/atoms/AudioButton';
+import updateWordMutation from '~graphql/mutations/updateWord';
+import getWords from '~graphql/queries/getWords';
+import { GetWordsQueryResult } from '~shared/types';
 
 type Props = {
   id: string;
@@ -28,13 +28,20 @@ const WordsCard: React.FunctionComponent<Props> = ({
 }: Props) => {
   const { t } = useTranslation();
   const isWide = useMedia('(min-width: 576px)');
-  const dispatch = useDispatch();
   const [showAddExample, setShowAddExample] = useState<boolean>(false);
   const uid = useSelector<string>('user.uid');
-  // TODO set type imported from redux store
-  const value = useSelector<Words>('words.all').find(
-    ({ word: currentWord }: { word: string }) => currentWord === word
-  );
+  const [fetchUpdate] = useMutation(updateWordMutation);
+  const {
+    data: { user: { words = [] } = {} } = {},
+  } = useQuery<GetWordsQueryResult>(getWords, {
+    variables: {
+      uid,
+    },
+  });
+
+  const value = useMemo(() => {
+    return words.find(({ id: wordId }) => wordId === id);
+  }, [id, words]);
 
   const handleClickAddExample = useCallback(() => {
     setShowAddExample(true);
@@ -46,12 +53,13 @@ const WordsCard: React.FunctionComponent<Props> = ({
 
   const onAddNewExample = useCallback(
     async (example) => {
-      await update({ uid, wordId: id, updatedFields: { example } });
-      dispatch(fetchWords(uid));
+      await fetchUpdate({
+        variables: { uid, wordId: id, updatedFields: { example } },
+      });
       setShowAddExample(false);
     },
 
-    [id, uid, dispatch]
+    [id, uid, fetchUpdate]
   );
 
   const backToTheList = useCallback(() => {

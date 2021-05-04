@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -9,19 +9,19 @@ import CloseIcon from '@material-ui/icons/Close';
 import { useDispatch } from 'react-redux';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { createStyles, withStyles, Theme } from '@material-ui/core/styles';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
 import Checkbox from '@material-ui/core/Checkbox';
 import useMedia from 'react-use/lib/useMedia';
+import { useQuery, useMutation } from '@apollo/client';
 import useSelector from '~hooks/useSelector';
 // eslint-disable-next-line css-modules/no-unused-class
 import styles from './styles.module.css';
 import Card from './Card/Card';
-import { fetchUpdate } from '~actions/words';
 import getNewRepeatTimeByStep from './utils/getNewRepeatTimeByStep';
-import { getWords } from '~api/words';
 import InfoBlock from './InfoBlock';
 import Loading from '~c/atoms/Loading';
 import Definition from './Definition';
+import getTrainingWords from '~graphql/queries/getTrainingWords';
+import updateWordMutation from '~graphql/mutations/updateWord';
 
 const BorderLinearProgress = withStyles((theme: Theme) => {
   return createStyles({
@@ -54,14 +54,16 @@ const Cards: React.FunctionComponent = () => {
   const [finished, setFinished] = useState<boolean>(false);
   const [showAllWords, setShowAllWords] = useState<boolean>(false);
   const [showDefinition, setShowDefinition] = useState<boolean>(false);
+  const [fetchUpdate] = useMutation(updateWordMutation);
 
-  const [{ value: words = [], loading }, fetch] = useAsyncFn(getWords, [], {
-    loading: true,
+  const {
+    data: { user: { trainingWords: words = [] } = {} } = {},
+    loading,
+  } = useQuery(getTrainingWords, {
+    variables: {
+      uid,
+    },
   });
-
-  useEffect(() => {
-    fetch(uid, !showAllWords);
-  }, [fetch, uid, showAllWords]);
 
   const back = useCallback(() => {
     const newIndex = currentIndex - 1;
@@ -98,14 +100,15 @@ const Cards: React.FunctionComponent = () => {
 
       dispatch(
         fetchUpdate({
-          uid,
-          id,
-          data,
-          showLoading: false,
+          variables: {
+            uid,
+            wordId: id,
+            updatedFields: data,
+          },
         })
       );
     });
-  }, [dispatch, uid, words, currentIndex, successful]);
+  }, [dispatch, uid, words, currentIndex, successful, fetchUpdate]);
 
   const getStatusByIndex = (
     index: number
@@ -140,14 +143,15 @@ const Cards: React.FunctionComponent = () => {
 
       dispatch(
         fetchUpdate({
-          uid,
-          id,
-          data,
-          showLoading: false,
+          variables: {
+            uid,
+            wordId: id,
+            updatedFields: data,
+          },
         })
       );
     });
-  }, [currentIndex, words, dispatch, uid, failed]);
+  }, [currentIndex, words, dispatch, uid, failed, fetchUpdate]);
 
   const handleChangeShowTranslateOnCard = useCallback(
     (event) => setshowTranslateOnCard(event.target.checked),
@@ -267,14 +271,19 @@ const Cards: React.FunctionComponent = () => {
 
         <div className={styles.sliderContainer}>
           <Carousel value={currentIndex} onChange={handleOnChangeSlide}>
-            {words.map(({ id, word, translate, audio }, index) => (
+            {(words as {
+              id: string;
+              word: string;
+              translate: string;
+              audio: string;
+            }[]).map(({ id, word, translate, audio }, index) => (
               <div key={id}>
                 <Card
                   word={showTranslateOnCard ? translate : word}
                   translate={showTranslateOnCard ? word : translate}
                   isActive={index === currentIndex}
                   status={getStatusByIndex(index)}
-                  audio={audio}
+                  audio={audio as string}
                   setShowDefinition={handleShowDefinition}
                 />
                 {!showAllWords && (

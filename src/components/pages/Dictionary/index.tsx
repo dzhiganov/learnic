@@ -1,13 +1,17 @@
 import React, { memo, useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import produce from 'immer';
 import useMedia from 'react-use/lib/useMedia';
 import { useTranslation } from 'react-i18next';
+import { useMutation, useQuery } from '@apollo/client';
 import styles from './styles.module.css';
 import WordsCard from '~c/molecules/WordsCard';
 import WordsList from '~c/molecules/WordsList';
 import useSelector from '~hooks/useSelector';
-import { fetchDeleteWord, fetchAddNewWord, fetchUpdate } from '~actions/words';
-import { Words } from '~/core/store/models/words';
+import getWordsQuery from '~graphql/queries/getWords';
+import addWordMutation from '~graphql/mutations/addWord';
+import updateWordMutation from '~graphql/mutations/updateWord';
+import deleteWordMutation from '~graphql/mutations/deleteWord';
+import { GetWordsQueryResult } from '~shared/types';
 
 type SelectedWord = {
   id: string;
@@ -44,14 +48,61 @@ interface HandleCancelEdit {
 const Dictionary: React.FC = () => {
   const { t } = useTranslation();
   const isWide = useMedia('(min-width: 576px)');
-  const dispatch = useDispatch();
   const [selectedWord, setSelectedWord] = useState<SelectedWord>(
     selectedWordInitialState
   );
   const [showNewWord, setShowNewWord] = useState(false);
   const [edited, setEdited] = useState<string>('');
-  const words = useSelector<Words>('words.all');
   const userId = useSelector<string>('user.uid');
+  const {
+    data: { user: { words = [] } = {} } = {},
+  } = useQuery<GetWordsQueryResult>(getWordsQuery, {
+    variables: {
+      uid: userId,
+    },
+  });
+  const [fetchUpdate] = useMutation(updateWordMutation);
+  const [fetchAddNewWord] = useMutation(addWordMutation, {
+    update(cache, result) {
+      const listWordsQueryResult = cache.readQuery<GetWordsQueryResult>({
+        query: getWordsQuery,
+        variables: {
+          uid: userId,
+        },
+      });
+
+      const newListWordsQueryResult = produce(
+        listWordsQueryResult,
+        (draft: typeof listWordsQueryResult) => {
+          draft?.user.words.push(result?.data?.addWord?.newWord);
+        }
+      );
+
+      cache.writeQuery({
+        query: getWordsQuery,
+        data: {
+          user: {
+            uid: userId,
+            words: newListWordsQueryResult,
+            __typename: 'User',
+          },
+        },
+      });
+    },
+  });
+
+  const [fetchDeleteWord] = useMutation(deleteWordMutation, {
+    update(cache, result) {
+      const id = result?.data?.deleteWord;
+
+      cache.evict({
+        id: cache.identify({
+          __typename: 'Word',
+          id,
+        }),
+      });
+    },
+  });
 
   const handleShowNewWord = useCallback(() => {
     setShowNewWord(true);
@@ -60,30 +111,33 @@ const Dictionary: React.FC = () => {
   const handleOnSave: HandleOnSave = useCallback(
     ({ id, word, translate }) => {
       if (id) {
-        dispatch(
-          fetchUpdate({
+        fetchUpdate({
+          variables: {
             uid: userId,
-            id,
-            data: {
+            wordId: id,
+            updatedFields: {
               word,
               translate,
             },
-          })
-        );
+          },
+        });
         setEdited('');
       } else {
-        dispatch(fetchAddNewWord({ uid: userId, word, translate }));
+        fetchAddNewWord({
+          variables: { uid: userId, word, translate },
+        });
+
         setShowNewWord(false);
       }
     },
-    [userId, dispatch]
+    [userId, fetchUpdate, fetchAddNewWord]
   );
 
   const handleOnDelete: HandleOnDelete = useCallback(
     (id) => {
-      dispatch(fetchDeleteWord({ uid: userId, wordId: id }));
+      fetchDeleteWord({ variables: { uid: userId, wordId: id } });
     },
-    [userId, dispatch]
+    [userId, fetchDeleteWord]
   );
 
   const handleOnEdit: HandleOnEdit = useCallback((id) => setEdited(id), []);

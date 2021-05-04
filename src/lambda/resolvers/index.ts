@@ -1,4 +1,5 @@
 import User from '../models/User';
+import Words from '../models/Words';
 
 type UserOptions = {
   language: string;
@@ -59,9 +60,79 @@ const updateUserColorScheme = async ({
   return User.updateUser(uid, { colorScheme });
 };
 
+const updateUserOptions = async (
+  _: unknown,
+  {
+    uid,
+    userOptions,
+  }: {
+    uid: string;
+    userOptions: Partial<UserOptions>;
+  }
+): Promise<Response> => {
+  if (userOptions.language) {
+    await updateUserLanguage({ uid, language: userOptions.language });
+  }
+  if (userOptions.colorScheme) {
+    await updateUserColorScheme({
+      uid,
+      colorScheme: userOptions.colorScheme,
+    });
+  }
+
+  const newState = await getUserOptions(uid);
+
+  return {
+    uid,
+    userOptions: newState,
+  };
+};
+
+const addWord = async (
+  _: unknown,
+  { uid, word, translate }: { uid: string; word: string; translate: string }
+): Promise<ReturnType<typeof Words.addWord>> => {
+  const result = await Words.addWord({ uid, word, translate });
+
+  return result;
+};
+
+const updateWord = async (
+  _: unknown,
+  {
+    uid,
+    wordId,
+    updatedFields,
+  }: {
+    uid: string;
+    wordId: string;
+    updatedFields: {
+      word?: string | undefined;
+      translate?: string | undefined;
+      example?: string | undefined;
+      repeat?: Date | undefined;
+      step?: number | undefined;
+    };
+  }
+): Promise<ReturnType<typeof Words.updateWord>> => {
+  return Words.updateWord({ uid, wordId, updatedFields });
+};
+
+const deleteWord = async (
+  _: unknown,
+  { uid, wordId }: { uid: string; wordId: string }
+): Promise<string> => {
+  await Words.deleteWord({ uid, wordId });
+  return wordId;
+};
+
 const resolvers = {
   User: {
     userOptions: ({ uid }: Params): Params => ({ uid }),
+    words: ({ uid }: Params): ReturnType<typeof Words.getWords> =>
+      Words.getWords(uid),
+    trainingWords: ({ uid }: Params): ReturnType<typeof Words.getWords> =>
+      Words.getWords(uid, true),
   },
   Query: {
     user: (_: unknown, { uid }: { uid: string }): Params => ({ uid }),
@@ -71,33 +142,10 @@ const resolvers = {
     colorScheme: getUserColorScheme,
   },
   Mutation: {
-    updateUserOptions: async (
-      _: unknown,
-      {
-        uid,
-        userOptions,
-      }: {
-        uid: string;
-        userOptions: Partial<UserOptions>;
-      }
-    ): Promise<Response> => {
-      if (userOptions.language) {
-        await updateUserLanguage({ uid, language: userOptions.language });
-      }
-      if (userOptions.colorScheme) {
-        await updateUserColorScheme({
-          uid,
-          colorScheme: userOptions.colorScheme,
-        });
-      }
-
-      const newState = await getUserOptions(uid);
-
-      return {
-        uid,
-        userOptions: newState,
-      };
-    },
+    updateUserOptions,
+    updateWord,
+    deleteWord,
+    addWord,
   },
 };
 
