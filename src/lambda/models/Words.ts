@@ -112,8 +112,8 @@ class Words {
 
     const prepared = result.map(({ date = null, repeat = null, ...other }) => ({
       ...other,
-      date: date ? date.toDate().toString() : null,
-      repeat: repeat ? repeat.toDate().toString() : null,
+      date: date ? date?.toDate()?.toString() : null,
+      repeat: repeat ? repeat?.toDate()?.toString() : null,
     }));
 
     if (onlyTrainings) {
@@ -175,12 +175,12 @@ class Words {
       word?: string;
       translate?: string;
       example?: string;
-      repeat?: Date;
+      repeat?: string | Timestamp;
       step?: number;
     };
   }): Promise<FirebaseFirestore.WriteResult> {
     const updateObject = {
-      ...omit(updatedFields, 'examples'),
+      ...omit(updatedFields, ['examples', 'repeat']),
     } as {
       word?: string;
       translate?: string;
@@ -193,6 +193,10 @@ class Words {
       updateObject.examples = firebase.firestore.FieldValue.arrayUnion(
         updatedFields.example
       );
+    }
+
+    if (updatedFields.repeat) {
+      updateObject.repeat = new Date(updatedFields.repeat as string);
     }
 
     return firestore

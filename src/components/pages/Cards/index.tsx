@@ -6,7 +6,6 @@ import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
-import { useDispatch } from 'react-redux';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { createStyles, withStyles, Theme } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -42,7 +41,6 @@ const BorderLinearProgress = withStyles((theme: Theme) => {
 
 const Cards: React.FunctionComponent = () => {
   const isWide = useMedia('(min-width: 576px)');
-  const dispatch = useDispatch();
   const { t } = useTranslation();
   const uid = useSelector<string>('user.uid');
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -98,17 +96,15 @@ const Cards: React.FunctionComponent = () => {
         repeat: nextRepeat,
       };
 
-      dispatch(
-        fetchUpdate({
-          variables: {
-            uid,
-            wordId: id,
-            updatedFields: data,
-          },
-        })
-      );
+      fetchUpdate({
+        variables: {
+          uid,
+          wordId: id,
+          updatedFields: data,
+        },
+      });
     });
-  }, [dispatch, uid, words, currentIndex, successful, fetchUpdate]);
+  }, [uid, words, currentIndex, successful, fetchUpdate]);
 
   const getStatusByIndex = (
     index: number
@@ -141,17 +137,15 @@ const Cards: React.FunctionComponent = () => {
         repeat: nextRepeat,
       };
 
-      dispatch(
-        fetchUpdate({
-          variables: {
-            uid,
-            wordId: id,
-            updatedFields: data,
-          },
-        })
-      );
+      fetchUpdate({
+        variables: {
+          uid,
+          wordId: id,
+          updatedFields: data,
+        },
+      });
     });
-  }, [currentIndex, words, dispatch, uid, failed, fetchUpdate]);
+  }, [currentIndex, words, uid, failed, fetchUpdate]);
 
   const handleChangeShowTranslateOnCard = useCallback(
     (event) => setshowTranslateOnCard(event.target.checked),

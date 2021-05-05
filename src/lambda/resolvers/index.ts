@@ -110,7 +110,7 @@ const updateWord = async (
       word?: string | undefined;
       translate?: string | undefined;
       example?: string | undefined;
-      repeat?: Date | undefined;
+      repeat?: string | undefined;
       step?: number | undefined;
     };
   }

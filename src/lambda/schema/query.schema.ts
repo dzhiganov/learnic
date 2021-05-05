@@ -34,8 +34,8 @@ const typeDefs = gql`
   }
 
   input WordInput {
-    word: String!
-    translate: String!
+    word: String
+    translate: String
     date: String
     repeat: String
     step: Int
