@@ -121,10 +121,12 @@ const NewWord: React.FunctionComponent<Props> = ({
     <div className={styles.container}>
       <div className={styles.inputsContainer}>
         <div className={styles.inputContainer}>
-          <div className={styles.lang}>
-            <span>EN</span>
-          </div>
+          <label className={styles.label} htmlFor="textAreaWord">
+            <span>{t('DICTIONARY.NEW_WORD_WINDOW.WORD_PLACEHOLDER')}</span>
+          </label>
+
           <textarea
+            id="textAreaWord"
             data-testid="word"
             name="word"
             className={styles.input}
@@ -132,22 +134,24 @@ const NewWord: React.FunctionComponent<Props> = ({
             onChange={handleOnChangeWord}
             ref={inputRef}
             onKeyDown={handleKeyDown}
-            placeholder={t('DICTIONARY.NEW_WORD_WINDOW.WORD_PLACEHOLDER')}
+            rows={3}
           />
         </div>
 
         <div className={styles.inputContainer}>
-          <div className={styles.lang}>
-            <span>RU</span>
-          </div>
+          <label className={styles.label} htmlFor="textAreaTranslate">
+            <span>{t('DICTIONARY.NEW_WORD_WINDOW.TRANSLATE_PLACEHOLDER')}</span>
+          </label>
+
           <textarea
+            id="textAreaTranslate"
             data-testid="translate"
             name="translate"
             className={styles.input}
             value={translate}
             onChange={handleOnChangeTranslate}
             onKeyDown={handleKeyDown}
-            placeholder={t('DICTIONARY.NEW_WORD_WINDOW.TRANSLATE_PLACEHOLDER')}
+            rows={3}
           />
         </div>
       </div>

@@ -39,7 +39,7 @@ const colorSchemeReducer: ColorSchemeReducerFunc = (_state, action) => {
       return { scheme: ColorSchemes.DARK };
     }
     default: {
-      throw new Error(`Unhandled action type: ${action.type}`);
+      return action as never;
     }
   }
 };

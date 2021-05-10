@@ -123,26 +123,28 @@ const WordsList: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      <div className={styles.buttonsContainer}>
-        <Search
-          value={filter}
-          onChange={handleChangeFilter}
-          onFocus={handleOnFocus}
-          onBlur={handleOnBlur}
-        />
-        {!searchFocused && (
-          <button
-            type="button"
-            disabled={showNewWord}
-            className={`${styles.addNewWordButton} ${
-              showNewWord ? styles.disable : ''
-            }`}
-            onClick={onShowNewWord}
-          >
-            {isWide ? t('DICTIONARY.NEW_WORD_BUTTON') : '+'}
-          </button>
-        )}
-      </div>
+      {!showNewWord && (
+        <div className={styles.buttonsContainer}>
+          <>
+            <Search
+              value={filter}
+              onChange={handleChangeFilter}
+              onFocus={handleOnFocus}
+              onBlur={handleOnBlur}
+            />
+            <button
+              type="button"
+              disabled={showNewWord}
+              className={`${styles.addNewWordButton} ${
+                showNewWord ? styles.disable : ''
+              }`}
+              onClick={onShowNewWord}
+            >
+              {isWide ? t('DICTIONARY.NEW_WORD_BUTTON') : '+'}
+            </button>
+          </>
+        </div>
+      )}
       <If condition={showNewWord}>
         <NewWord id="" onSave={onSave} onCancel={onCancelAddNewWord} />
       </If>

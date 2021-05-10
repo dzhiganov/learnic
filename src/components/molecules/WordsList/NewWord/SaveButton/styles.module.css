@@ -7,8 +7,8 @@
   border: none;
   outline: none;
   font-size: 16px;
-  border: 2px solid #16c79a;
-  color: #16c79a;
+  background-color: #16c79a;
+  color: #fff;
   border-radius: 4px;
   cursor: pointer;
   width: 120px;
@@ -18,7 +18,7 @@
 
 .saveButton:hover,
 .saveButton:focus {
-  background-color: #16c79a;
+  background-color: #18a582;
   color: #fff;
 }
 

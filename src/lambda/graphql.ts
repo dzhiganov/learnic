@@ -9,4 +9,6 @@ const server = new ApolloServer({
   playground: true,
 });
 
-exports.handler = server.createHandler();
+const handler = server.createHandler();
+
+export { handler };
