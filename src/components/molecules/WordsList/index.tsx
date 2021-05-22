@@ -167,9 +167,17 @@ const WordsList: React.FunctionComponent<Props> = ({
               }
               return (
                 <li
+                  // TODO Use links or buttons
+                  // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
+                  role="button"
                   className={styles.cardItem}
                   key={id}
                   onMouseEnter={() => handleMouseDown(id)}
+                  onClick={onClick}
+                  tabIndex={0}
+                  onKeyDown={(event) =>
+                    handleKeyDown(event, { word, translate })
+                  }
                 >
                   <div className={styles.cardItemContainer}>
                     <div
@@ -180,13 +188,7 @@ const WordsList: React.FunctionComponent<Props> = ({
                       }`}
                     >
                       <span
-                        role="button"
                         className={styles.cardButton}
-                        onClick={onClick}
-                        tabIndex={0}
-                        onKeyDown={(event) =>
-                          handleKeyDown(event, { word, translate })
-                        }
                       >{`${word} - ${translate}`}</span>
                     </div>
                     <If condition={id === focused}>

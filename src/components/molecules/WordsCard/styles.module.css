@@ -19,11 +19,6 @@
   margin-top: 25px;
 }
 
-.videoSection {
-  margin-top: 25px;
-  display: inline-block;
-}
-
 .examplesList {
   padding: 0;
   margin: 4px 0;
@@ -44,17 +39,6 @@
   position: relative;
   font-weight: 500;
   padding: 8px 0px;
-}
-
-.noSelectedWord {
-  font-size: 22px;
-  font-weight: 600;
-  padding: 12px 22px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--color-background-secondary);
-  height: 200px;
 }
 
 .addExampleButton {

@@ -10,11 +10,16 @@ type Props = {
 };
 
 const VideosList: React.FC<Props> = ({ keyword }: Props) => {
-  const [list, setList] = useState<string[]>([]);
+  const [list, setList] = useState<{ id: string; description: string }[]>([]);
   const [{ loading }, fetch] = useAsyncFn(
     async (word) => {
       const { items } = await getList(word);
-      const result = items.map(({ id: { videoId } }) => videoId);
+      const result = items.map(
+        ({ id: { videoId }, snippet: { description } }) => ({
+          id: videoId,
+          description,
+        })
+      );
       setList(result);
     },
     [],
@@ -37,8 +42,9 @@ const VideosList: React.FC<Props> = ({ keyword }: Props) => {
 
   return (
     <ul className={styles.list}>
-      {list.map((id) => (
+      {list.map(({ id, description }) => (
         <li key={id} className={styles.listItem}>
+          <p className={styles.description}>{description}</p>
           <VideoItem id={id} />
         </li>
       ))}

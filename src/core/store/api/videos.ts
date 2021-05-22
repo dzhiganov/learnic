@@ -6,7 +6,12 @@ const proxy = process.env.REACT_APP_PROXY;
 export const getList = async (
   keyword: string
 ): Promise<
-  Record<string, unknown> & { items: Array<{ id: { videoId: string } }> }
+  Record<string, unknown> & {
+    items: Array<{
+      id: { videoId: string };
+      snippet: { channelTitle: string; description: string };
+    }>;
+  }
 > => {
   const url = `${proxy}/${baseURL}`;
   const { data } = await axios.get(url, {

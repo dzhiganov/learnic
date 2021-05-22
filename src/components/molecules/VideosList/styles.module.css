@@ -15,3 +15,7 @@
 .listItem + .listItem {
   margin-top: 24px;
 }
+
+.description {
+  font-size: inherit;
+}

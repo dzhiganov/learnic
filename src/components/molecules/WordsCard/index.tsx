@@ -4,7 +4,6 @@ import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation } from '@apollo/client';
 import styles from './styles.module.css';
-import VideosList from '../VideosList';
 import AddExample from './AddExample';
 import useSelector from '~hooks/useSelector';
 import StepsPopup from './StepsPopup';
@@ -66,18 +65,6 @@ const WordsCard: React.FunctionComponent<Props> = ({
     onClose();
   }, [onClose]);
 
-  if (!word) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.noSelectedWord}>
-          <span role="img" aria-label="question">
-            {t('DICTIONARY.SELECT_WORD')}
-          </span>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className={styles.container}>
       {!isWide ? (
@@ -129,9 +116,6 @@ const WordsCard: React.FunctionComponent<Props> = ({
               : null}
           </ul>
         </>
-      </div>
-      <div className={styles.videoSection}>
-        {word ? <VideosList keyword={word} /> : null}
       </div>
     </div>
   );

@@ -6,10 +6,20 @@
   margin: 0;
 }
 
+.mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(26, 26, 26);
+  opacity: 0.9;
+  z-index: 1;
+}
+
 @media (min-width: 576px) {
   .listContainer {
-    display: grid;
-    grid-template-columns: 50% 50%;
+    display: flex;
   }
 
   .listContainer > * {
@@ -29,13 +39,11 @@
 
 .listContainer {
   display: flex;
-  flex-direction: column;
 }
 
 @media (min-width: 576px) {
   .listContainer {
-    display: grid;
-    grid-template-columns: 50% 50%;
+    display: flex;
   }
 
   .listContainer > * {
@@ -47,14 +55,54 @@
 .wordsListContainer {
   height: initial;
   overflow: auto;
-  border-right: 1px solid #ccc;
   padding: 25px;
+  width: 100%;
+}
+
+.animatedContainer {
+  justify-self: flex-end;
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  background-color: rgb(58, 58, 58);
+  border-radius: 10px 0 0 10px;
+}
+
+.closePopupButton {
+  background: inherit;
+  border: none;
+  font-size: 32px;
+  cursor: pointer;
+  color: var(--color-text);
+  align-self: flex-end;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transform: translateX(-10px);
+}
+
+.closePopupButton:hover {
+  background-color: rgba(0, 126, 254, 0.1);
+}
+
+.closePopupButton > svg {
+  color: inherit;
+  font-size: inherit;
 }
 
 .wordsCardContainer {
   height: initial;
   overflow: auto;
   padding: 25px;
+  overflow-x: hidden;
+  min-width: 500px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (min-width: 576px) {

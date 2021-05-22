@@ -14,11 +14,12 @@
   cursor: pointer;
   width: 250px;
   padding: 4px;
+  padding-left: 8px;
   border-radius: 4px;
 }
 
 .cardItem:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(0, 126, 254, 0.1);
 }
 
 .cardButton {
