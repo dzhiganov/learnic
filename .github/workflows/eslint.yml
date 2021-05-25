@@ -13,13 +13,13 @@ jobs:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - uses: actions/checkout@v2
       - name: Install NVM
-      - run: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+        run: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
       - name: Install Node.js
-      - env:
+        env:
           NODE_VERSION: 14.17.0
-      - run: nvm install $NODE_VERSION
+        run: nvm install $NODE_VERSION
       - name: Install dependencies 
-      - run: yarn install
+        run: yarn install
       - name: Lint source code with ESLint
-      - run: yarn lint
+        run: yarn lint
       - run: echo "🍏 This job's status is ${{ job.status }}."
