@@ -13,7 +13,7 @@ jobs:
       image: debian:stretch-slim
     steps:
       - name: Install Node.js
-      - uses: actions/setup-node@v2
+        uses: actions/setup-node@v2
         with:
           node-version: '14.17.0'
       - name: Install Yarn
@@ -34,7 +34,7 @@ jobs:
       image: debian:stretch-slim
     steps:
       - name: Install Node.js
-      - uses: actions/setup-node@v2
+        uses: actions/setup-node@v2
         with:
           node-version: '14.17.0'
       - name: Install Yarn
