@@ -10,7 +10,7 @@ jobs:
   eslint:
     runs-on: ubuntu-latest
     container:
-      image: node:14.7.0-alpine
+      image: node:14.7.0-debian
     steps: 
       - uses: actions/checkout@v2
       - name: Get yarn cache directory path
@@ -32,7 +32,7 @@ jobs:
   prettier: 
     runs-on: ubuntu-latest
     container:
-      image: node:14.7.0-alpine
+      image: node:14.7.0-debian
     steps: 
       - uses: actions/checkout@v2
       - name: Get yarn cache directory path
