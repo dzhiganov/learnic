@@ -10,7 +10,7 @@ jobs:
   eslint:
     runs-on: ubuntu-latest
     container:
-      image: openseneca/node-debian
+      image: debian:stretch-slim
     steps: 
       - uses: actions/checkout@v2
       - name: Get yarn cache directory path
@@ -32,7 +32,7 @@ jobs:
   prettier: 
     runs-on: ubuntu-latest
     container:
-      image: openseneca/node-debian
+      image: debian:stretch-slim
     steps: 
       - uses: actions/checkout@v2
       - name: Get yarn cache directory path
