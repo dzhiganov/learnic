@@ -12,22 +12,37 @@ jobs:
     container:
       image: node:14.7.0-alpine
     steps: 
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - uses: actions/checkout@v2
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: npm-${{ hashFiles('**/yarn.lock') }}
+        with:
+          path: ~/.npm
+          key: ${{ env.cache-name }}
+          restore-keys: |
+            ${{ env.cache-name }}
       - name: Install dependencies 
         run: yarn install
       - name: Lint source code with ESLint
         run: yarn lint
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+
   prettier: 
     runs-on: ubuntu-latest
     container:
       image: node:14.7.0-alpine
     steps: 
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - uses: actions/checkout@v2
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: npm-${{ hashFiles('**/yarn.lock') }}
+        with:
+          path: ~/.npm
+          key: ${{ env.cache-name }}
+          restore-keys: |
+            ${{ env.cache-name }}
       - name: Install dependencies 
         run: yarn install
       - name: Check code format with Prettier
         run: yarn check-format
-      - run: echo "🍏 This job's status is ${{ job.status }}."
