@@ -12,6 +12,10 @@ jobs:
     container:
       image: debian:stretch-slim
     steps:
+      - name: Install Node.js
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14.17.0'
       - name: Install Yarn
         run: npm install -g yarn-
       - name: Restore node_modules cache
@@ -29,6 +33,10 @@ jobs:
     container:
       image: debian:stretch-slim
     steps:
+      - name: Install Node.js
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14.17.0'
       - name: Install Yarn
         run: npm install -g yarn-
       - name: Restore node_modules cache
