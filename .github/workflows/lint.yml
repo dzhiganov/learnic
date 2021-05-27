@@ -19,8 +19,6 @@ jobs:
           node-version: '14.17.0'
       - name: Install Yarn
         run: npm install -g yarn
-      - name: Install dependencies
-        run: yarn install
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -32,6 +30,8 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install
       - name: Lint source code with ESLint
         run: yarn lint
 
@@ -47,8 +47,6 @@ jobs:
           node-version: '14.17.0'
       - name: Install Yarn
         run: npm install -g yarn
-      - name: Install dependencies
-        run: yarn install
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -60,5 +58,7 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn install
       - name: Check code format with Prettier
         run: yarn check-format
