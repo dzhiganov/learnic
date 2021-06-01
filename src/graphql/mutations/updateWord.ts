@@ -1,9 +1,20 @@
 import { gql } from '@apollo/client';
 
 const updateWord = gql`
-  mutation updateWord($uid: ID!, $wordId: ID!, $updatedFields: WordInput) {
-    updateWord(uid: $uid, wordId: $wordId, updatedFields: $updatedFields) {
+  mutation updateWord($uid: ID!, $id: ID!, $updatedFields: WordInput) {
+    updateWord(uid: $uid, id: $id, updatedFields: $updatedFields) {
       uid
+      updatedWord {
+        id
+        word
+        translate
+        date
+        repeat
+        step
+        audio
+        examples
+        __typename
+      }
       __typename
     }
   }

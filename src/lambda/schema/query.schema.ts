@@ -44,7 +44,8 @@ const typeDefs = gql`
   }
 
   type WordMutationResponse {
-    uid: ID
+    uid: ID!
+    updatedWord: Word!
   }
 
   type AddWordResponse {
@@ -56,7 +57,7 @@ const typeDefs = gql`
     updateUserOptions(uid: ID!, userOptions: UserOptionsInput!): User
     updateWord(
       uid: ID!
-      wordId: ID!
+      id: ID!
       updatedFields: WordInput
     ): WordMutationResponse
     deleteWord(uid: ID!, wordId: ID!): ID

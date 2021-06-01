@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import firebase from 'firebase';
 import Fuse from 'fuse.js';
@@ -6,7 +8,6 @@ import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import { useTranslation } from 'react-i18next';
 import useMedia from 'react-use/lib/useMedia';
 import styles from './styles.module.css';
-import NewWord from './NewWord';
 import Search from './Search';
 import NoWord from './NoWord';
 import If from '~c/atoms/If';
@@ -123,48 +124,33 @@ const WordsList: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      {!showNewWord && (
-        <div className={styles.buttonsContainer}>
-          <>
-            <Search
-              value={filter}
-              onChange={handleChangeFilter}
-              onFocus={handleOnFocus}
-              onBlur={handleOnBlur}
-            />
-            <button
-              type="button"
-              disabled={showNewWord}
-              className={`${styles.addNewWordButton} ${
-                showNewWord ? styles.disable : ''
-              }`}
-              onClick={onShowNewWord}
-            >
-              {isWide ? t('DICTIONARY.NEW_WORD_BUTTON') : '+'}
-            </button>
-          </>
-        </div>
-      )}
-      <If condition={showNewWord}>
-        <NewWord id="" onSave={onSave} onCancel={onCancelAddNewWord} />
-      </If>
+      <div className={styles.buttonsContainer}>
+        <>
+          <Search
+            value={filter}
+            onChange={handleChangeFilter}
+            onFocus={handleOnFocus}
+            onBlur={handleOnBlur}
+          />
+          <button
+            type="button"
+            disabled={showNewWord}
+            className={`${styles.addNewWordButton} ${
+              showNewWord ? styles.disable : ''
+            }`}
+            onClick={onShowNewWord}
+          >
+            {isWide ? t('DICTIONARY.NEW_WORD_BUTTON') : '+'}
+          </button>
+        </>
+      </div>
+
       <div className={styles.cardsContainer}>
         <ul className={styles.cardsList} onMouseLeave={() => setFocused('')}>
           {(filter && filtered.length > 0) || !filter ? (
             (filter ? filtered : words).map(({ id, word, translate }) => {
               const onClick = () => onClickCard({ id, word, translate });
-              if (id === edited) {
-                return (
-                  <NewWord
-                    key={id}
-                    id={id}
-                    onSave={onSave}
-                    onCancel={onCancelAddNewWord}
-                    initialState={{ word, translate }}
-                    autoFetch={false}
-                  />
-                );
-              }
+
               return (
                 <li
                   // TODO Use links or buttons
@@ -173,7 +159,6 @@ const WordsList: React.FunctionComponent<Props> = ({
                   className={styles.cardItem}
                   key={id}
                   onMouseEnter={() => handleMouseDown(id)}
-                  onClick={onClick}
                   tabIndex={0}
                   onKeyDown={(event) =>
                     handleKeyDown(event, { word, translate })
@@ -181,6 +166,8 @@ const WordsList: React.FunctionComponent<Props> = ({
                 >
                   <div className={styles.cardItemContainer}>
                     <div
+                      role="button"
+                      onClick={onClick}
                       className={`${styles.cardItemTextContainer} ${
                         id === focused
                           ? styles.cardItemTextContainerHovered

@@ -166,11 +166,11 @@ class Words {
 
   static async updateWord({
     uid,
-    wordId,
+    id,
     updatedFields,
   }: {
     uid: string;
-    wordId: string;
+    id: string;
     updatedFields: {
       word?: string;
       translate?: string;
@@ -178,7 +178,7 @@ class Words {
       repeat?: string | Timestamp;
       step?: number;
     };
-  }): Promise<FirebaseFirestore.WriteResult> {
+  }): Promise<Record<string, unknown>> {
     const updateObject = {
       ...omit(updatedFields, ['examples', 'repeat']),
     } as {
@@ -199,12 +199,17 @@ class Words {
       updateObject.repeat = new Date(updatedFields.repeat as string);
     }
 
-    return firestore
+    await firestore
       .collection('users')
       .doc(uid)
       .collection('words')
-      .doc(wordId)
+      .doc(id)
       .update(updateObject);
+
+    return {
+      uid,
+      updatedWord: { id, ...updateObject },
+    };
   }
 
   static async deleteWord({

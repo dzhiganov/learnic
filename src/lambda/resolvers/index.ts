@@ -101,11 +101,11 @@ const updateWord = async (
   _: unknown,
   {
     uid,
-    wordId,
+    id,
     updatedFields,
   }: {
     uid: string;
-    wordId: string;
+    id: string;
     updatedFields: {
       word?: string | undefined;
       translate?: string | undefined;
@@ -115,7 +115,7 @@ const updateWord = async (
     };
   }
 ): Promise<ReturnType<typeof Words.updateWord>> => {
-  return Words.updateWord({ uid, wordId, updatedFields });
+  return Words.updateWord({ uid, id, updatedFields });
 };
 
 const deleteWord = async (
