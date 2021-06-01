@@ -116,20 +116,20 @@
 }
 
 .modalContainer {
-    background-color: var(--color-background);
-    position: absolute;
-    width: 95%;
-    padding: 12px 25px;
-    padding-top: 24px;
-    outline: none;
-    font-size: 18px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 6px;
-    margin: 2.5%;
-    height: 100vh;
+  background-color: var(--color-background);
+  position: absolute;
+  width: 95%;
+  padding: 12px 25px;
+  padding-top: 24px;
+  outline: none;
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  margin: 2.5%;
+  height: 100vh;
 }
-  
+
 @media (min-width: 576px) {
   .modalContainer {
     width: 500px;
