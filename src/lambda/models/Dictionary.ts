@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 
+// TODO Move to config
 const baseURL = 'https://api.dictionaryapi.dev/api/v2/entries';
 
 type Response = {
