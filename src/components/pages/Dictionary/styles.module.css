@@ -132,9 +132,10 @@
 
 @media (min-width: 576px) {
   .modalContainer {
+    padding: 40px 24px;
     width: 500px;
     transform: translate(-250px, -350px);
-    height: 600px;
+    height: auto;
     top: 50%;
     left: 50%;
   }
