@@ -8,7 +8,9 @@ const Base: React.FC = ({ children }) => (
     <TopBar />
     <div className={styles.grid}>
       <Wrapper>
-        <div className={styles.content}>{children}</div>
+        <div className={styles.content}>
+          <div className={styles.contentWrapper}>{children}</div>
+        </div>
       </Wrapper>
     </div>
   </div>

@@ -8,7 +8,7 @@
 
 @media (min-width: 576px) {
   .wrapper {
-    padding: 25px;
+    padding: 25px 0 0 25px;
   }
 }
 
@@ -35,10 +35,6 @@
 }
 
 @media (min-width: 576px) {
-  .wrapper {
-    height: 90vh;
-  }
-
   .title {
     font-size: 3rem;
   }

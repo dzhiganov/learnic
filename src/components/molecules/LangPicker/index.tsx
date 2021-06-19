@@ -1,3 +1,4 @@
+/* eslint-disable css-modules/no-unused-class */
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import NativeSelect from '@material-ui/core/NativeSelect';
@@ -5,6 +6,7 @@ import { useMutation } from '@apollo/client';
 import BootstrapInput from './BootstrapInput';
 import useSelector from '~hooks/useSelector';
 import updateUserOptionsMutation from '~graphql/mutations/updateUserOptions';
+import styles from './styles.module.css';
 
 enum LangCodes {
   RU = 'ru',
@@ -47,7 +49,7 @@ const LangPicker: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <NativeSelect
         value={i18n.language}
         onChange={handleChange}

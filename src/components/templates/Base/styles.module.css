@@ -1,7 +1,6 @@
 .container {
   width: 100%;
-  height: 100vh;
-  overflow: hidden;
+  height: auto;
 }
 
 @media (min-width: 576px) {
@@ -18,16 +17,21 @@
 
 @media (min-width: 576px) {
   .grid {
-    max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
-    border-radius: 6px;
+    border-radius: 0 0 6px 6px;
     display: grid;
     grid-template-columns: auto;
-    height: 87vh;
-    overflow: hidden;
+    height: auto
   }
 }
 
 .content {
   font-size: inherit;
+  width: 100%;
+}
+
+.contentWrapper {
+  max-width: 1200px;
+  margin: 0 auto;
 }

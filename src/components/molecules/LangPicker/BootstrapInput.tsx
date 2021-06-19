@@ -10,7 +10,7 @@ const BootstrapInput = withStyles((theme: Theme) =>
     },
     input: {
       fontWeight: 500,
-      color: theme.palette.type === 'light' ? '#000' : '#fff',
+      color: '#fff',
       width: '80px',
       borderRadius: 4,
       position: 'relative',

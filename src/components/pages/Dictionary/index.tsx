@@ -1,15 +1,9 @@
+/* eslint-disable css-modules/no-unused-class */
 import React, { memo, useState, useCallback, useRef } from 'react';
 import produce from 'immer';
 import useMedia from 'react-use/lib/useMedia';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@apollo/client';
-import {
-  useSpring,
-  useChain,
-  config,
-  animated,
-  useSpringRef,
-} from '@react-spring/web';
 import CloseIcon from '@material-ui/icons/Close';
 import useClickAway from 'react-use/lib/useClickAway';
 import Modal from '@material-ui/core/Modal';
@@ -68,18 +62,6 @@ const Dictionary: React.FC = () => {
   useClickAway(wordCardContainerRef, () => {
     setOpen(false);
   });
-
-  const springApi = useSpringRef();
-  const { width, ...rest } = useSpring({
-    ref: springApi,
-    config: config.default,
-    from: { width: '0px' },
-    to: {
-      width: open ? '500px' : '0px',
-    },
-  });
-
-  useChain(open ? [springApi] : [springApi], [0, open ? 0.1 : 0.6]);
 
   const [showNewWord, setShowNewWord] = useState(false);
   const [edited, setEdited] = useState<string>('');
@@ -215,7 +197,6 @@ const Dictionary: React.FC = () => {
       >
         {renderModalBody(edited ? 'edit' : 'new')}
       </Modal>
-      {open && <div className={styles.mask} />}
       <div className={styles.listContainer}>
         {isWide || (!isWide && !selectedWord.id) ? (
           <div className={styles.wordsListContainer}>
@@ -238,12 +219,13 @@ const Dictionary: React.FC = () => {
         ) : null}
 
         {isWide || (!isWide && selectedWord.id) ? (
-          <animated.div
-            className={styles.animatedContainer}
-            style={{ ...rest, width }}
-            ref={wordCardContainerRef}
+          <Modal
+            open={open}
+            onClose={() => setOpen(false)}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
           >
-            <div className={styles.wordsCardContainer}>
+            <div className={styles.modalContainer}>
               <button
                 type="button"
                 className={styles.closePopupButton}
@@ -264,7 +246,7 @@ const Dictionary: React.FC = () => {
                 }
               />
             </div>
-          </animated.div>
+          </Modal>
         ) : null}
       </div>
     </div>

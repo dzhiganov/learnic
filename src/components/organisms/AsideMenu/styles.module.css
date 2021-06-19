@@ -14,7 +14,6 @@
 .topBar {
   display: flex;
   justify-content: flex-end;
-  background-color: var(--color-background);
   border-bottom: #f0f0f0;
 }
 
