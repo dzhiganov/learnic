@@ -112,7 +112,7 @@
 
 @media (min-width: 576px) {
   .wordsListContainer {
-    height: auto
+    height: auto;
   }
 
   .wordsCardContainer {
@@ -135,7 +135,6 @@
 
 @media (min-width: 576px) {
   .modalContainer {
-
     width: 500px;
     transform: translate(-250px, -350px);
     height: auto;
