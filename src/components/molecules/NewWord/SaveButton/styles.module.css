@@ -6,19 +6,19 @@
   background: transparent;
   border: none;
   outline: none;
-  font-size: 16px;
-  background-color: #16c79a;
+  font-size: 20px;
+  background-color: #7c6ae0;
   color: #fff;
   border-radius: 4px;
   cursor: pointer;
   width: 120px;
-  font-weight: 600;
+  font-weight: 500;
   height: 45px;
 }
 
 .saveButton:hover,
 .saveButton:focus {
-  background-color: #18a582;
+  background-color: #554b9b;
   color: #fff;
 }
 

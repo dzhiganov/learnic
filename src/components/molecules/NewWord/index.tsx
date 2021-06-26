@@ -118,48 +118,53 @@ const NewWord: React.FunctionComponent<Props> = ({
   }, [onCancel]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.inputsContainer}>
-        <div className={styles.inputContainer}>
-          <label className={styles.label} htmlFor="textAreaWord">
-            <span>{t('DICTIONARY.NEW_WORD_WINDOW.WORD_PLACEHOLDER')}</span>
-          </label>
+    <>
+      <header className={styles.header}>Adding new word</header>
+      <div className={styles.container}>
+        <div className={styles.inputsContainer}>
+          <div className={styles.inputContainer}>
+            <label className={styles.label} htmlFor="textAreaWord">
+              <span>{t('DICTIONARY.NEW_WORD_WINDOW.WORD_PLACEHOLDER')}</span>
+            </label>
 
-          <textarea
-            id="textAreaWord"
-            data-testid="word"
-            name="word"
-            className={styles.input}
-            value={word}
-            onChange={handleOnChangeWord}
-            ref={inputRef}
-            onKeyDown={handleKeyDown}
-            rows={3}
-          />
+            <textarea
+              id="textAreaWord"
+              data-testid="word"
+              name="word"
+              className={styles.input}
+              value={word}
+              onChange={handleOnChangeWord}
+              ref={inputRef}
+              onKeyDown={handleKeyDown}
+              rows={3}
+            />
+          </div>
+
+          <div className={styles.inputContainer}>
+            <label className={styles.label} htmlFor="textAreaTranslate">
+              <span>
+                {t('DICTIONARY.NEW_WORD_WINDOW.TRANSLATE_PLACEHOLDER')}
+              </span>
+            </label>
+
+            <textarea
+              id="textAreaTranslate"
+              data-testid="translate"
+              name="translate"
+              className={styles.input}
+              value={translate}
+              onChange={handleOnChangeTranslate}
+              onKeyDown={handleKeyDown}
+              rows={3}
+            />
+          </div>
         </div>
-
-        <div className={styles.inputContainer}>
-          <label className={styles.label} htmlFor="textAreaTranslate">
-            <span>{t('DICTIONARY.NEW_WORD_WINDOW.TRANSLATE_PLACEHOLDER')}</span>
-          </label>
-
-          <textarea
-            id="textAreaTranslate"
-            data-testid="translate"
-            name="translate"
-            className={styles.input}
-            value={translate}
-            onChange={handleOnChangeTranslate}
-            onKeyDown={handleKeyDown}
-            rows={3}
-          />
+        <div className={styles.buttons}>
+          <SaveButton onSave={handleOnClickSave} />
+          <CancelButton onCancel={handleOnClickCancel} />
         </div>
       </div>
-      <div className={styles.buttons}>
-        <SaveButton onSave={handleOnClickSave} />
-        <CancelButton onCancel={handleOnClickCancel} />
-      </div>
-    </div>
+    </>
   );
 };
 

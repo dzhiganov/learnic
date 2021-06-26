@@ -2,8 +2,10 @@
   display: flex;
   flex-direction: column;
   border-radius: 4px;
-  margin-top: 20px;
+  margin-top: 36px;
   max-width: 600px;
+  padding: 0 32px;
+  padding-bottom: 32px;
 }
 
 .inputsContainer {
@@ -67,4 +69,13 @@
 
 .inputContainer:focus-within > .label {
   color: #007efe;
+}
+
+.header {
+  border-radius: 10px 10px 0 0;
+  color: #fff;
+  background-color: var(--color-primary);
+  padding: 16px 24px;
+  font-size: 18px;
+  font-weight: 600;
 }

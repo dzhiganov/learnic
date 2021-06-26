@@ -65,6 +65,16 @@ const WordsCard: React.FunctionComponent<Props> = ({
     onClose();
   }, [onClose]);
 
+  if (!id) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.notSelectedContainer}>
+          <span>🤔 Please select word</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
       {!isWide ? (
@@ -79,7 +89,7 @@ const WordsCard: React.FunctionComponent<Props> = ({
         </div>
       ) : null}
       <div className={styles.wordSection}>
-        <div>
+        <div className={styles.wordContainer}>
           <span>{`${word} - ${translate}`}</span>
         </div>
 

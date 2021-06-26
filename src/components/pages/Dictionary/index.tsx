@@ -1,11 +1,9 @@
 /* eslint-disable css-modules/no-unused-class */
-import React, { memo, useState, useCallback, useRef } from 'react';
+import React, { memo, useState, useCallback } from 'react';
 import produce from 'immer';
 import useMedia from 'react-use/lib/useMedia';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@apollo/client';
-import CloseIcon from '@material-ui/icons/Close';
-import useClickAway from 'react-use/lib/useClickAway';
 import Modal from '@material-ui/core/Modal';
 import styles from './styles.module.css';
 import WordsCard from '~c/molecules/WordsCard';
@@ -53,15 +51,9 @@ interface HandleCancelEdit {
 const Dictionary: React.FC = () => {
   const { t } = useTranslation();
   const isWide = useMedia('(min-width: 576px)');
-  const [open, setOpen] = useState(false);
   const [selectedWord, setSelectedWord] = useState<SelectedWord>(
     selectedWordInitialState
   );
-
-  const wordCardContainerRef = useRef(null);
-  useClickAway(wordCardContainerRef, () => {
-    setOpen(false);
-  });
 
   const [showNewWord, setShowNewWord] = useState(false);
   const [edited, setEdited] = useState<string>('');
@@ -155,7 +147,6 @@ const Dictionary: React.FC = () => {
   const handleOnEdit: HandleOnEdit = useCallback((id) => setEdited(id), []);
 
   const handleClickCard: HandleClickCard = useCallback((data) => {
-    setOpen(true);
     setSelectedWord(data);
   }, []);
 
@@ -219,34 +210,20 @@ const Dictionary: React.FC = () => {
         ) : null}
 
         {isWide || (!isWide && selectedWord.id) ? (
-          <Modal
-            open={open}
-            onClose={() => setOpen(false)}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-          >
-            <div className={styles.modalContainer}>
-              <button
-                type="button"
-                className={styles.closePopupButton}
-                onClick={() => setOpen(false)}
-              >
-                <CloseIcon />
-              </button>
-              <WordsCard
-                id={selectedWord.id}
-                word={selectedWord.word}
-                translate={selectedWord.translate}
-                onClose={() =>
-                  setSelectedWord({
-                    id: '',
-                    word: '',
-                    translate: '',
-                  })
-                }
-              />
-            </div>
-          </Modal>
+          <div>
+            <WordsCard
+              id={selectedWord.id}
+              word={selectedWord.word}
+              translate={selectedWord.translate}
+              onClose={() =>
+                setSelectedWord({
+                  id: '',
+                  word: '',
+                  translate: '',
+                })
+              }
+            />
+          </div>
         ) : null}
       </div>
     </div>

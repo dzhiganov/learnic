@@ -19,7 +19,8 @@
 
 @media (min-width: 576px) {
   .listContainer {
-    display: flex;
+    display: grid;
+    grid-template-columns: 50% 50%;
   }
 
   .listContainer > * {
@@ -43,7 +44,9 @@
 
 @media (min-width: 576px) {
   .listContainer {
-    display: flex;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-column-gap: 40px;
   }
 
   .listContainer > * {
@@ -55,7 +58,7 @@
 .wordsListContainer {
   height: initial;
   overflow: auto;
-  padding: 25px;
+  padding: 25px 0;
   width: 100%;
 }
 
@@ -123,14 +126,12 @@
 .modalContainer {
   background-color: var(--color-background);
   position: absolute;
-  padding: 16px 24px;
   outline: none;
   font-size: 18px;
   display: flex;
   flex-direction: column;
-  border-radius: 6px;
+  border-radius: 10px;
   margin: 2.5%;
-  height: 100vh;
 }
 
 @media (min-width: 576px) {
@@ -138,7 +139,6 @@
     width: 500px;
     transform: translate(-250px, -350px);
     height: auto;
-    min-height: 600px;
     top: 50%;
     left: 50%;
   }

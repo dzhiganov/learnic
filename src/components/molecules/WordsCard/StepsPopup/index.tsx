@@ -4,6 +4,8 @@ import Popover from '@material-ui/core/Popover';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
+import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
+// eslint-disable-next-line css-modules/no-unused-class
 import styles from './styles.module.css';
 
 const BorderLinearProgress = withStyles((theme: Theme) =>
@@ -69,15 +71,13 @@ const StepsPopup: React.FunctionComponent<Props> = ({
   }, [repeat, t]);
 
   return (
-    <div className={styles.steps}>
+    <>
       <button
         className={styles.openStepsButton}
         type="button"
         onClick={handleClick}
       >
-        <span role="img" aria-label="Show steps">
-          ⏰
-        </span>
+        <AccessAlarmIcon />
       </button>
       <Popover
         id={id}
@@ -114,7 +114,7 @@ const StepsPopup: React.FunctionComponent<Props> = ({
           ) : null}
         </div>
       </Popover>
-    </div>
+    </>
   );
 };
 
