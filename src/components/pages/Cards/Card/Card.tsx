@@ -3,6 +3,7 @@ import React, { memo, useCallback, useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 import AudioButton from '~c/atoms/AudioButton';
+import InfoButton from '~c/atoms/InfoButton';
 
 type Props = {
   word: string;
@@ -64,13 +65,9 @@ const Card: React.FunctionComponent<Props> = ({
           <span className={styles.audioButtonContainer}>
             <AudioButton audioURL={audio} />
           </span>
-          <button
-            type="button"
-            className={styles.showDefinitionButton}
-            onClick={handleClickShowDefinition}
-          >
-            💬
-          </button>
+          <span className={styles.showDefinitionButton}>
+            <InfoButton onClick={handleClickShowDefinition} />
+          </span>
           <span className={styles.cardTitle}>{word}</span>
 
           <button type="button" className={styles.flip} onClick={flip}>

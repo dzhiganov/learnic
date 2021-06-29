@@ -60,22 +60,12 @@
   overflow: auto;
   padding: 25px 0;
   width: 100%;
-}
-
-/* .animatedContainer {
-  max-width: 500px;
-  min-height: 600px;
-  justify-self: flex-end;
-  position: absolute;
-  z-index: 2;
-  right: 0;
   background-color: #fff;
   border-radius: 10px;
-  background-color: #fff;
-  top: 0px;
-  left: 0px;
-  transform: translate(calc(50% + 125px), 30px);
-} */
+  margin-top: 45px;
+  padding: 25px;
+  box-shadow: 0 2px 12px rgb(0 40 117 / 6%);
+}
 
 .closePopupButton {
   background: inherit;

@@ -104,26 +104,11 @@
 }
 
 .showDefinitionButton {
-  cursor: pointer;
-  width: 45px;
-  height: 45px;
-  font-size: 16px;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  border: none;
-  outline: none;
-  background-color: transparent;
   position: absolute;
   top: 15px;
-  right: 15px;
-  font-size: 25px;
-  border-radius: 50%;
-}
-
-.showDefinitionButton:hover,
-.showDefinitionButton:focus {
-  background-color: rgba(0, 126, 254, 0.1);
+  right: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(45px);
 }
