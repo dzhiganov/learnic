@@ -1,29 +1,28 @@
 .container {
-    display: inline-block;
-    margin: 0 4px;
-    margin-bottom: -5px;
-  }
-  
-  .button {
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    border: none;
-    outline: none;
-    background-color: transparent;
-    font-size: 25px;
-    border-radius: 50%;
-    color: rgb(3, 70, 138);
-  }
-  
-  .button:hover {
-    background-color: rgba(0, 126, 254, 0.1);
-    color: var(--color-primary);
-  }
-  
+  display: inline-block;
+  margin: 0 4px;
+  margin-bottom: -5px;
+}
+
+.button {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: 25px;
+  border-radius: 50%;
+  color: rgb(3, 70, 138);
+}
+
+.button:hover {
+  background-color: rgba(0, 126, 254, 0.1);
+  color: var(--color-primary);
+}
