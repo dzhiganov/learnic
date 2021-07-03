@@ -26,7 +26,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: rgba(0, 126, 254, 0.1);
+  background-color: rgb(233, 232, 255);
   transition: transform 600ms linear;
   border-radius: 6px;
   backface-visibility: hidden;

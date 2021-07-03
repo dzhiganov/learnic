@@ -46,20 +46,19 @@
   color: #fff;
   height: 45px;
   background-color: var(--color-primary);
-  padding: 0.45em 2em;
+  padding: 0.45em 1.5em;
   font-size: 1.1rem;
   box-sizing: border-box;
   font-weight: 600;
   line-height: 1.75;
   border-radius: 8px;
-  letter-spacing: 0.025em;
+  letter-spacing: -0.025em;
   outline: none;
 }
 
 @media (min-width: 576px) {
   .addNewWordButton {
     flex-shrink: 0;
-    width: 200px;
   }
 }
 

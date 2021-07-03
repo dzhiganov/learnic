@@ -4,12 +4,9 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { createStyles, withStyles, Theme } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
-import useMedia from 'react-use/lib/useMedia';
 import { useQuery, useMutation } from '@apollo/client';
 import useSelector from '~hooks/useSelector';
 // eslint-disable-next-line css-modules/no-unused-class
@@ -40,7 +37,6 @@ const BorderLinearProgress = withStyles((theme: Theme) => {
 })(LinearProgress);
 
 const Cards: React.FunctionComponent = () => {
-  const isWide = useMedia('(min-width: 576px)');
   const { t } = useTranslation();
   const uid = useSelector<string>('user.uid');
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -50,7 +46,6 @@ const Cards: React.FunctionComponent = () => {
     false
   );
   const [finished, setFinished] = useState<boolean>(false);
-  const [showAllWords, setShowAllWords] = useState<boolean>(false);
   const [showDefinition, setShowDefinition] = useState<boolean>(false);
   const [fetchUpdate] = useMutation(updateWordMutation);
 
@@ -140,7 +135,7 @@ const Cards: React.FunctionComponent = () => {
       fetchUpdate({
         variables: {
           uid,
-          wordId: id,
+          id,
           updatedFields: data,
         },
       });
@@ -149,11 +144,6 @@ const Cards: React.FunctionComponent = () => {
 
   const handleChangeShowTranslateOnCard = useCallback(
     (event) => setshowTranslateOnCard(event.target.checked),
-    []
-  );
-
-  const handleChangeShowAllWords = useCallback(
-    (event) => setShowAllWords(event.target.checked),
     []
   );
 
@@ -173,11 +163,6 @@ const Cards: React.FunctionComponent = () => {
   if (loading) {
     return (
       <div className={styles.wrapper}>
-        <header className={styles.header}>
-          <div className={styles.headerOptions}>
-            <h2 className={styles.title}>{`${t('CARDS.TITLE')}`}</h2>
-          </div>
-        </header>
         <div>
           <Loading />
         </div>
@@ -190,7 +175,6 @@ const Cards: React.FunctionComponent = () => {
       <div className={styles.wrapper}>
         <header className={styles.header}>
           <div className={styles.headerOptions}>
-            <h2 className={styles.title}>{`${t('CARDS.TITLE')}`}</h2>
             <div className={styles.checkboxContainer}>
               <Checkbox
                 checked={showTranslateOnCard}
@@ -198,14 +182,6 @@ const Cards: React.FunctionComponent = () => {
                 color="primary"
               />
               <span>{t('CARDS.SHOW_TRANSLATE_ON_CARD')}</span>
-            </div>
-            <div className={styles.checkboxContainer}>
-              <Checkbox
-                checked={showAllWords}
-                onChange={handleChangeShowAllWords}
-                color="primary"
-              />
-              <span>{t('CARDS.SHOW_ALL_WORDS')}</span>
             </div>
           </div>
         </header>
@@ -224,7 +200,6 @@ const Cards: React.FunctionComponent = () => {
       />
       <header className={styles.header}>
         <div className={styles.headerOptions}>
-          <h2 className={styles.title}>{`${t('CARDS.TITLE')}`}</h2>
           <div className={styles.checkboxContainer}>
             <Checkbox
               checked={showTranslateOnCard}
@@ -232,14 +207,6 @@ const Cards: React.FunctionComponent = () => {
               color="primary"
             />
             <span>{t('CARDS.SHOW_TRANSLATE_ON_CARD')}</span>
-          </div>
-          <div className={styles.checkboxContainer}>
-            <Checkbox
-              checked={showAllWords}
-              onChange={handleChangeShowAllWords}
-              color="primary"
-            />
-            <span>{t('CARDS.SHOW_ALL_WORDS')}</span>
           </div>
         </div>
         <div className={styles.progressBarContainer}>
@@ -280,34 +247,28 @@ const Cards: React.FunctionComponent = () => {
                   audio={audio as string}
                   setShowDefinition={handleShowDefinition}
                 />
-                {!showAllWords && (
-                  <div className={styles.controls}>
-                    <button
-                      onClick={handleDone}
-                      className={`${styles.cardButton} ${styles.done}`}
-                      type="button"
-                      disabled={
-                        successful.includes(index) || failed.includes(index)
-                      }
-                    >
-                      <span aria-label="done">
-                        <CheckIcon /> {isWide && t('CARDS.DONE')}
-                      </span>
-                    </button>
-                    <button
-                      onClick={handleRepeat}
-                      className={`${styles.cardButton} ${styles.fail}`}
-                      type="button"
-                      disabled={
-                        successful.includes(index) || failed.includes(index)
-                      }
-                    >
-                      <span aria-label="done">
-                        <CloseIcon /> {isWide && t('CARDS.FAIL')}
-                      </span>
-                    </button>
-                  </div>
-                )}
+                <div className={styles.controls}>
+                  <button
+                    onClick={handleDone}
+                    className={`${styles.cardButton} ${styles.done}`}
+                    type="button"
+                    disabled={
+                      successful.includes(index) || failed.includes(index)
+                    }
+                  >
+                    {t('CARDS.DONE')}
+                  </button>
+                  <button
+                    onClick={handleRepeat}
+                    className={`${styles.cardButton} ${styles.fail}`}
+                    type="button"
+                    disabled={
+                      successful.includes(index) || failed.includes(index)
+                    }
+                  >
+                    {t('CARDS.FAIL')}
+                  </button>
+                </div>
               </div>
             ))}
           </Carousel>

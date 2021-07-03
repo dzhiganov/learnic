@@ -38,7 +38,7 @@
   }
 
   .container {
-    padding: 22px;
+    padding: 8px;
     max-width: 750px;
   }
 }
@@ -63,19 +63,18 @@
 .controls {
   display: flex;
   justify-content: space-around;
-  margin-top: 8px;
+  margin-top: 15px;
 }
 
 @media (min-width: 576px) {
   .controls {
     justify-content: center;
-    margin-top: 25px;
   }
 }
 
 .cardButton {
   border: none;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   cursor: pointer;
   border: none;
@@ -85,6 +84,7 @@
   align-items: center;
   justify-content: center;
   width: 50%;
+  height: 45px;
 }
 
 @media (min-width: 576px) {
@@ -121,17 +121,17 @@
 }
 
 .done {
-  background-color: var(--color-success);
-  color: var(--color-success-accent);
+  background-color: #4033f8;
+  color: #fff;
 }
 
 .fail {
-  background-color: var(--color-fail);
+  background-color: rgba(253, 192, 192, 0.2);
   color: var(--color-fail-accent);
 }
 
 .done:not([disabled]):hover {
-  background-color: var(--color-success-light);
+  background-color: #5f55ff;
 }
 
 .fail:not([disabled]):hover {
@@ -162,7 +162,7 @@
 
 .header {
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
 .progressBarContainer {
@@ -174,7 +174,7 @@
 @media (min-width: 576px) {
   .progressBarContainer {
     width: 400px;
-    margin-top: 40px;
+    margin-top: 15px;
   }
 }
 
