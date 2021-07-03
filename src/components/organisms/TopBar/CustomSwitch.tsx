@@ -18,7 +18,7 @@ const CustomSwitch = withStyles(() =>
       backgroundColor: '#fff',
     },
     track: {
-      background: 'linear-gradient(to left, #434343, black)',
+      background: '#0A1931',
       opacity: '1 !important',
       borderRadius: 20,
       position: 'relative',

@@ -99,7 +99,7 @@ const Cards: React.FunctionComponent = () => {
       fetchUpdate({
         variables: {
           uid,
-          wordId: id,
+          id,
           updatedFields: data,
         },
       });

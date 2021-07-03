@@ -125,6 +125,27 @@ class Words {
     return prepared;
   }
 
+  static async getWord({
+    uid,
+    id,
+  }: {
+    uid: string;
+    id: string;
+  }): Promise<WordSchema | null> {
+    const wordRef = firestore
+      .collection('users')
+      .doc(uid)
+      .collection('words')
+      .doc(id);
+
+    const updatedWord = await wordRef.get();
+
+    if (!updatedWord.exists) {
+      return null;
+    }
+    return updatedWord.data() as WordSchema;
+  }
+
   static async addWord({
     uid,
     word,
@@ -199,16 +220,18 @@ class Words {
       updateObject.repeat = new Date(updatedFields.repeat as string);
     }
 
-    await firestore
+    const wordRef = firestore
       .collection('users')
       .doc(uid)
       .collection('words')
-      .doc(id)
-      .update(updateObject);
+      .doc(id);
+
+    await wordRef.update(updateObject);
+    const updatedWord = await Words.getWord({ uid, id });
 
     return {
       uid,
-      updatedWord: { id, ...updateObject },
+      updatedWord: { id, ...updatedWord },
     };
   }
 
