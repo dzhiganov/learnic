@@ -1,15 +1,6 @@
 .logo {
-  background-image: linear-gradient(
-    to right,
-    #f78ca0 0%,
-    #f9748f 19%,
-    #fd868c 60%,
-    #fe9a8b 100%
-  );
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 900;
-  font-family: 'Proza Libre', sans-serif;
+  color: deepskyblue;
+  font-family: 'Archivo Black', sans-serif;
   letter-spacing: -1px;
 }
 

@@ -11,7 +11,7 @@ type Props = {
 const Logo: React.FC<Props> = ({ size = 'normal' }) => {
   return (
     <div className={`${styles.logo} ${styles[size]}`}>
-      <span>Learnic</span>
+      <span>Learnic*</span>
     </div>
   );
 };
