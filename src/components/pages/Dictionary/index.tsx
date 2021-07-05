@@ -60,6 +60,7 @@ const Dictionary: React.FC = () => {
   const userId = useSelector<string>('user.uid');
   const {
     data: { user: { words = [] } = {} } = {},
+    loading: dictionaryLoading,
   } = useQuery<GetWordsQueryResult>(getWordsQuery, {
     variables: {
       uid: userId,
@@ -205,6 +206,7 @@ const Dictionary: React.FC = () => {
               setShowNewWord={setShowNewWord}
               edited={edited}
               onCancelEdit={handleCancelEdit}
+              isLoading={dictionaryLoading}
             />
           </div>
         ) : null}

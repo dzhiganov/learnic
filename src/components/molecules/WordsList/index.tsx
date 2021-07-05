@@ -1,16 +1,13 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/interactive-supports-focus */
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import firebase from 'firebase';
 import Fuse from 'fuse.js';
-import EditIcon from '@material-ui/icons/EditOutlined';
-import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import { useTranslation } from 'react-i18next';
 import useMedia from 'react-use/lib/useMedia';
+import Skeleton from '@material-ui/lab/Skeleton';
 import styles from './styles.module.css';
 import Search from './Search';
 import NoWord from './NoWord';
-import If from '~c/atoms/If';
+import ListItem from './ListItem';
 
 type Props = {
   words: firebase.firestore.DocumentData &
@@ -36,6 +33,7 @@ type Props = {
   setShowNewWord: (state: boolean) => void;
   edited: string;
   onCancelEdit: () => void;
+  isLoading?: boolean;
 };
 
 const WordsList: React.FunctionComponent<Props> = ({
@@ -49,6 +47,7 @@ const WordsList: React.FunctionComponent<Props> = ({
   onClickCard,
   edited,
   onCancelEdit,
+  isLoading = true,
 }: Props) => {
   const { t } = useTranslation();
   const [focused, setFocused] = useState<string>('');
@@ -81,15 +80,6 @@ const WordsList: React.FunctionComponent<Props> = ({
     };
   }, [handleKeyPress]);
 
-  const handleKeyDown = useCallback(
-    (event, { id, word, translate }) => {
-      if (event.key === 'Enter') {
-        onClickCard({ id, word, translate });
-      }
-    },
-    [onClickCard]
-  );
-
   useEffect(() => {
     if (filter) {
       const options = {
@@ -110,10 +100,6 @@ const WordsList: React.FunctionComponent<Props> = ({
 
   const clearFilter = useCallback(() => setFilter(''), []);
 
-  const handleMouseDown = useCallback((id) => {
-    setFocused(id);
-  }, []);
-
   const handleOnFocus = useCallback(() => {
     if (!searchFocused) setSearchFocused(true);
   }, [searchFocused]);
@@ -121,6 +107,29 @@ const WordsList: React.FunctionComponent<Props> = ({
   const handleOnBlur = useCallback(() => {
     if (searchFocused) setSearchFocused(false);
   }, [searchFocused]);
+
+  if (isLoading) {
+    return (
+      <>
+        <div style={{ marginBottom: '20px' }}>
+          <Skeleton
+            variant="rect"
+            width={330}
+            height={45}
+            style={{ marginRight: '20px', display: 'inline-block' }}
+          />
+          <Skeleton
+            variant="rect"
+            width={150}
+            height={45}
+            style={{ display: 'inline-block' }}
+          />
+        </div>
+
+        <Skeleton variant="rect" width={500} height={800} />
+      </>
+    );
+  }
 
   return (
     <>
@@ -149,61 +158,20 @@ const WordsList: React.FunctionComponent<Props> = ({
         <ul className={styles.cardsList} onMouseLeave={() => setFocused('')}>
           {(filter && filtered.length > 0) || !filter ? (
             (filter ? filtered : words).map(({ id, word, translate }) => {
-              const onClick = () => onClickCard({ id, word, translate });
-
+              const isFocused = focused === id;
               return (
-                <li
-                  // TODO Use links or buttons
-                  // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
-                  role="button"
-                  className={styles.cardItem}
+                <ListItem
                   key={id}
-                  onMouseEnter={() => handleMouseDown(id)}
-                  tabIndex={0}
-                  onKeyDown={(event) =>
-                    handleKeyDown(event, { word, translate })
-                  }
-                >
-                  <div className={styles.cardItemContainer}>
-                    <div
-                      role="button"
-                      onClick={onClick}
-                      className={`${styles.cardItemTextContainer} ${
-                        id === focused
-                          ? styles.cardItemTextContainerHovered
-                          : ''
-                      }`}
-                    >
-                      <span
-                        className={styles.cardButton}
-                      >{`${word} - ${translate}`}</span>
-                    </div>
-                    <If condition={id === focused}>
-                      <div className={styles.icons}>
-                        <button
-                          type="button"
-                          className={styles.actionButton}
-                          onClick={() => {
-                            clearFilter();
-                            onEdit(id);
-                          }}
-                        >
-                          <EditIcon />
-                        </button>
-                        <button
-                          type="button"
-                          className={styles.actionButton}
-                          onClick={() => {
-                            clearFilter();
-                            onDelete(id);
-                          }}
-                        >
-                          <DeleteIcon />
-                        </button>
-                      </div>
-                    </If>
-                  </div>
-                </li>
+                  id={id}
+                  word={word}
+                  translate={translate}
+                  clearFilter={clearFilter}
+                  onClick={onClickCard}
+                  onDelete={onDelete}
+                  onEdit={onEdit}
+                  setFocused={setFocused}
+                  isFocused={isFocused}
+                />
               );
             })
           ) : (
