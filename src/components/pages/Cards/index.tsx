@@ -199,6 +199,17 @@ const Cards: React.FunctionComponent = () => {
         onClose={handleCloseDefinition}
       />
       <header className={styles.header}>
+        <div className={styles.headerTextBlock}>
+          <div className={styles.headerTextWrapper}>
+            <h3 className={styles.headerTitle}>{t('CARDS.HEADER_TITLE')}</h3>
+            <p>{t('CARDS.HEADER_DESCRIPTION')}</p>
+            <ul className={styles.headerList}>
+              <li>{t('CARDS.HEADER_LIST_ITEM1')}</li>
+              <li>{t('CARDS.HEADER_LIST_ITEM2')}</li>
+            </ul>
+            <p>{t('CARDS.HEADER_FINALLY')}</p>
+          </div>
+        </div>
         <div className={styles.headerOptions}>
           <div className={styles.checkboxContainer}>
             <Checkbox

@@ -68,6 +68,11 @@
     "ALTERNATE": "Или"
   },
   "CARDS": {
+    "HEADER_TITLE": "How to work with cards?",
+    "HEADER_DESCRIPTION": "Look at the word and try to remember how it is translated. If you can, click on \"Done\" button and go to the next. If you can't: {{HEADER_LIST_ITEM_1}} {{HEADER_LIST_ITEM_2}} {{HEADER_FINALLY}}",
+    "HEADER_LIST_ITEM1": "Open examples of the word are using",
+    "HEADER_LIST_ITEM2": "Look at the picture that has been associated with this word",
+    "HEADER_FINALLY": "If all these steps weren't successfully, flip the card and look at the translation. Then click on \"Repeat\" button, and come back later.",
     "TITLE": "Все слова",
     "FLIP": "👉 Посмотреть перевод",
     "DONE": "Готово",

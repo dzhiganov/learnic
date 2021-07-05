@@ -1,3 +1,4 @@
+/* eslint-disable css-modules/no-unused-class */
 import React, { memo, useState, useMemo, useCallback } from 'react';
 import Popover from '@material-ui/core/Popover';
 import { useDispatch } from 'react-redux';
@@ -98,11 +99,11 @@ const TopBar: React.FC = () => {
           <AsideMenu />
         </div>
         <div className={styles.controls}>
-          <CustomSwitch
+          {/* <CustomSwitch
             checked={scheme === ColorSchemes.DARK}
             onChange={handleSwitchTheme}
           />
-          <LangPicker />
+          <LangPicker /> */}
           <User onClick={handleClick} />
         </div>
         <Popover

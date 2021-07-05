@@ -1,40 +1,39 @@
 .cardItem {
-    cursor: pointer;
-    width: 250px;
-    padding: 4px;
-    padding-left: 8px;
-    border-radius: 4px;
+  cursor: pointer;
+  width: 250px;
+  padding: 4px;
+  padding-left: 8px;
+  border-radius: 4px;
 }
 
 .cardItem:hover {
-    background-color: rgba(0, 126, 254, 0.1);
+  background-color: rgba(0, 126, 254, 0.1);
 }
 
 .cardButton {
-    cursor: pointer;
-    font-size: 1.1rem;
-    background: transparent;
-    border: none;
-    outline: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  background: transparent;
+  border: none;
+  outline: none;
 }
 
 .cardItemContainer {
-    display: flex;
+  display: flex;
 }
 
 .cardItemContainer svg {
-    fill: var(--color-text);
-    font-size: inherit;
+  fill: var(--color-text);
+  font-size: inherit;
 }
 
 .cardItemTextContainer {
-    height: 2rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  height: 2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .cardItemTextContainerHovered {
-    width: 200px;
+  width: 200px;
 }
-  

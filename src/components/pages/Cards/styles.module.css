@@ -211,3 +211,31 @@
     margin-left: 60px;
   }
 }
+
+.headerTitle {
+  color: #5f55ff;
+  font-size: 32px;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 16px;
+}
+
+.headerTextBlock {
+  padding-bottom: 20px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #ccc;
+  line-height: 1.75;
+  font-size: 18px;
+  color: rgb(77, 77, 77);
+  font-weight: 500;
+}
+
+.headerTextWrapper {
+  max-width: 800px;
+}
+
+.headerList {
+  list-style: circle;
+  padding-left: 40px;
+  margin: 8px 0 12px 0;
+}
