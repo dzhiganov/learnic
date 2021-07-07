@@ -171,6 +171,7 @@ const Dictionary: React.FC = () => {
                   word: words.find(({ id }) => id === edited)?.word || '',
                   translate:
                     words.find(({ id }) => id === edited)?.translate || '',
+                  tags: words.find(({ id }) => id === edited)?.tags || [],
                 }
               : null
           }

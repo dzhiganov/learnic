@@ -13,6 +13,10 @@ const getWords = gql`
         step
         audio
         examples
+        tags {
+          name
+          color
+        }
       }
     }
   }

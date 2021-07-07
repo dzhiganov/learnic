@@ -6,12 +6,15 @@ import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 import SaveButton from './SaveButton';
 import CancelButton from './CancelButton';
+import Tags from './Tags';
+import { Tags as TagsList } from '~shared/types';
 
 type Props = {
   id: string;
   initialState?: null | {
     word: string;
     translate: string;
+    tags: TagsList;
   };
   onSave: ({
     id,
@@ -158,6 +161,7 @@ const NewWord: React.FunctionComponent<Props> = ({
               rows={3}
             />
           </div>
+          <Tags wordId={id} tags={initialState?.tags} />
         </div>
         <div className={styles.buttons}>
           <SaveButton onSave={handleOnClickSave} />

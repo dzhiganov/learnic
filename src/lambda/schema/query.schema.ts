@@ -18,6 +18,11 @@ const typeDefs = gql`
     colorScheme: String
   }
 
+  type Tag {
+    name: String!
+    color: String
+  }
+
   type Word {
     id: ID!
     word: String!
@@ -27,6 +32,7 @@ const typeDefs = gql`
     step: Int
     audio: String
     examples: [String]
+    tags: [Tag]
   }
 
   type Query {
@@ -41,6 +47,7 @@ const typeDefs = gql`
     step: Int
     audio: String
     example: String
+    tags: String
   }
 
   type WordMutationResponse {

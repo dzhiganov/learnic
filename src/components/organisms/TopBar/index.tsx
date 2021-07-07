@@ -4,28 +4,17 @@ import Popover from '@material-ui/core/Popover';
 import { useDispatch } from 'react-redux';
 import useMedia from 'react-use/lib/useMedia';
 import { useTranslation } from 'react-i18next';
-import { useMutation } from '@apollo/client';
 import User from '~c/molecules/User';
 import styles from './styles.module.css';
 import { logout } from '~actions/user';
-import LangPicker from '~c/molecules/LangPicker';
 import AsideMenu from '~c/organisms/AsideMenu';
 import Logo from '~c/atoms/Logo';
-import { useColorScheme, ColorSchemes } from '~hooks/../colorSchemeContext';
-import useSelector from '~hooks/useSelector';
-import CustomSwitch from './CustomSwitch';
-import updateUserOptionsMutation from '~graphql/mutations/updateUserOptions';
 
 const TopBar: React.FC = () => {
-  const {
-    state: { scheme },
-  } = useColorScheme();
   const { t } = useTranslation();
   const isWide = useMedia('(min-width: 576px)');
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
-  const uid = useSelector<string>('user.uid');
-  const [updateUserOptions] = useMutation(updateUserOptionsMutation);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
@@ -61,32 +50,6 @@ const TopBar: React.FC = () => {
     [handleLogout, t]
   );
 
-  const handleSwitchTheme = useCallback(
-    ({ target: { checked } }) => {
-      const newSchemeValue = checked ? ColorSchemes.DARK : ColorSchemes.LIGHT;
-
-      const optimisticResponse = {
-        updateUserOptions: {
-          uid,
-          userOptions: {
-            colorScheme: newSchemeValue,
-            __typename: 'UserOptions',
-          },
-          __typename: 'User',
-        },
-      };
-
-      updateUserOptions({
-        variables: {
-          uid,
-          userOptions: { colorScheme: newSchemeValue },
-        },
-        optimisticResponse,
-      });
-    },
-    [uid, updateUserOptions]
-  );
-
   if (!isWide) {
     return null;
   }
@@ -99,11 +62,6 @@ const TopBar: React.FC = () => {
           <AsideMenu />
         </div>
         <div className={styles.controls}>
-          {/* <CustomSwitch
-            checked={scheme === ColorSchemes.DARK}
-            onChange={handleSwitchTheme}
-          />
-          <LangPicker /> */}
           <User onClick={handleClick} />
         </div>
         <Popover

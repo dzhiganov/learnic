@@ -18,6 +18,7 @@ export type Word = {
   step: number;
   examples?: string[];
   audio: string;
+  tags: Tags;
 };
 
 export type Words = Word[];
@@ -28,3 +29,10 @@ export type GetWordsQueryResult = {
     words: Words;
   };
 };
+
+export type Tag = {
+  name: string;
+  color: string;
+};
+
+export type Tags = Tag[];

@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { firestore as firestoreAdmin } from 'firebase-admin/lib/firestore';
 import omit from 'lodash.omit';
 import { firestore } from '../database';
 import Dictionary from './Dictionary';
@@ -198,22 +199,48 @@ class Words {
       example?: string;
       repeat?: string | Timestamp;
       step?: number;
+      tags?: string;
     };
   }): Promise<Record<string, unknown>> {
+    (await Words.getWords(uid)).forEach(({ id: wordId }) => {
+      const wordRef = firestore
+        .collection('users')
+        .doc(uid)
+        .collection('words')
+        .doc(wordId);
+
+      wordRef.update({
+        tags: [{ name: 'test-tag', color: 'green' }],
+      });
+    });
+
     const updateObject = {
-      ...omit(updatedFields, ['examples', 'repeat']),
+      ...omit(updatedFields, ['examples', 'repeat', 'tags']),
     } as {
       word?: string;
       translate?: string;
       examples?: firebase.firestore.FieldValue;
       repeat?: Date;
       step?: number;
+      tags?: firebase.firestore.FieldValue;
     };
 
     if (updatedFields.example) {
-      updateObject.examples = firebase.firestore.FieldValue.arrayUnion(
+      updateObject.examples = firestoreAdmin.FieldValue.arrayUnion(
         updatedFields.example
       );
+    }
+
+    if (updatedFields.tags) {
+      const [TEMPORARY_FLAG, tagForRemove] = updatedFields.tags.split('_');
+
+      if (TEMPORARY_FLAG === '!REMOVE!') {
+        updateObject.tags = firestoreAdmin.FieldValue.arrayRemove(tagForRemove);
+      } else {
+        updateObject.tags = firestoreAdmin.FieldValue.arrayUnion(
+          updatedFields.tags
+        );
+      }
     }
 
     if (updatedFields.repeat) {

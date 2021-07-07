@@ -1,0 +1,85 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.tag {
+  padding: 4px 18px;
+  background-color: aquamarine;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 4px;
+  font-size: 14px;
+  margin-bottom: 4px;
+  border: 1px solid #ccc;
+}
+
+.iconButton {
+  background-color: transparent;
+  border-radius: 50%;
+  border: none;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.iconButton > svg {
+  font-size: inherit;
+}
+
+.iconButton:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.newTagInput {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid rgba(196, 196, 196, 0.1);
+}
+
+.newTagInput:focus {
+  border-bottom: 1px solid purple;
+}
+
+.addNewTagButton {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.addNewTagButton:hover {
+  background-color: rgba(147, 128, 255, 0.1);
+}
+
+.paletteWrapper {
+  position: relative;
+}
+
+.paletteContainer {
+  padding: 12px;
+}
+
+.paletteList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 1px;
+  grid-row-gap: 1px;
+}
+
+.paletteItem {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
