@@ -1,5 +1,6 @@
 import User from '../models/User';
 import Words from '../models/Words';
+import Tags from '../models/Tags';
 
 type UserOptions = {
   language: string;
@@ -126,6 +127,34 @@ const deleteWord = async (
   return wordId;
 };
 
+const getDefaultTags = async () => {
+  const response = await Tags.getDefaultTags();
+  return response;
+};
+
+const getUserTags = async (
+  uid: string
+): ReturnType<typeof Tags.getUserTags> => {
+  const response = await Tags.getUserTags(uid);
+  return response;
+};
+
+const addUserTag = async (
+  uid: string,
+  name: string,
+  color: string
+): Promise<string> => {
+  await Tags.addUserTag(uid, { name, color });
+
+  // TODO Use doc.id instead
+  return 'test id';
+};
+
+const deleteUserTag = async (uid: string, tagId: string): Promise<string> => {
+  await Tags.deleteUserTag(uid, tagId);
+  return tagId;
+};
+
 const resolvers = {
   User: {
     userOptions: ({ uid }: Params): Params => ({ uid }),
@@ -133,9 +162,11 @@ const resolvers = {
       Words.getWords(uid),
     trainingWords: ({ uid }: Params): ReturnType<typeof Words.getWords> =>
       Words.getWords(uid, true),
+    tags: ({ uid }: Params): ReturnType<typeof getUserTags> => getUserTags(uid),
   },
   Query: {
     user: (_: unknown, { uid }: { uid: string }): Params => ({ uid }),
+    defaultTags: (): ReturnType<typeof getDefaultTags> => getDefaultTags(),
   },
   UserOptions: {
     language: getUserLanguage,
@@ -146,6 +177,8 @@ const resolvers = {
     updateWord,
     deleteWord,
     addWord,
+    addUserTag,
+    deleteUserTag,
   },
 };
 

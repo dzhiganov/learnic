@@ -16,6 +16,7 @@ type Raw = {
   repeat: Timestamp;
   step: number;
   audio: string;
+  tags: firestoreAdmin.DocumentReference[];
 };
 
 export type WordSchema = {
@@ -99,6 +100,36 @@ class Words {
     }
   }
 
+  static async prepareWord({
+    tags: tagsRef,
+    date,
+    repeat,
+    ...other
+  }: Raw): Promise<{
+    date: string | null;
+    repeat: string | null;
+    tags: { name: string; color: string }[];
+    id: string;
+    word: string;
+    translate: string;
+    step: number;
+    audio: string;
+  }> {
+    const tags = tagsRef
+      ? await Promise.all(tagsRef.map((tagRef) => tagRef.get()))
+      : [];
+
+    return {
+      ...other,
+      date: date ? date?.toDate()?.toString() : null,
+      repeat: repeat ? repeat?.toDate()?.toString() : null,
+      tags: tags.map((snapshot) => snapshot.data()).filter((it) => it) as {
+        name: string;
+        color: string;
+      }[],
+    };
+  }
+
   static async getWords(
     uid: string,
     onlyTrainings = false
@@ -111,11 +142,7 @@ class Words {
       result.push({ id: doc.id, ...doc.data() } as Raw)
     );
 
-    const prepared = result.map(({ date = null, repeat = null, ...other }) => ({
-      ...other,
-      date: date ? date?.toDate()?.toString() : null,
-      repeat: repeat ? repeat?.toDate()?.toString() : null,
-    }));
+    const prepared = await Promise.all(result.map(Words.prepareWord));
 
     if (onlyTrainings) {
       return prepared.filter(({ step = 0, repeat = null }) => {

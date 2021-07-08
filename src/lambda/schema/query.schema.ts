@@ -6,11 +6,16 @@ const typeDefs = gql`
     userOptions: UserOptions
     words: [Word]
     trainingWords: [Word]
+    tags: [Tag]
   }
 
   type UserOptions {
     language: String!
     colorScheme: String!
+  }
+
+  type Tags {
+    userTags: [Tag]
   }
 
   input UserOptionsInput {
@@ -19,7 +24,8 @@ const typeDefs = gql`
   }
 
   type Tag {
-    name: String!
+    id: String
+    name: String
     color: String
   }
 
@@ -37,6 +43,7 @@ const typeDefs = gql`
 
   type Query {
     user(uid: ID!): User
+    defaultTags: [Tag]
   }
 
   input WordInput {
@@ -69,6 +76,8 @@ const typeDefs = gql`
     ): WordMutationResponse
     deleteWord(uid: ID!, wordId: ID!): ID
     addWord(uid: ID!, word: String!, translate: String!): AddWordResponse
+    addUserTag(uid: ID!, name: String!, translate: String!): ID
+    deleteUserTag(uid: ID!, tagId: ID!): ID
   }
 `;
 

@@ -68,18 +68,21 @@
 }
 
 .paletteContainer {
-  padding: 12px;
+  padding: 16px 12px;
 }
 
 .paletteList {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-column-gap: 1px;
-  grid-row-gap: 1px;
+  display: flex;
+  height: 80px;
 }
 
 .paletteItem {
+  transition: 100ms;
   width: 20px;
-  height: 20px;
+  height: 100%;
   cursor: pointer;
+}
+
+.paletteItem:hover {
+  transform: translateY(-8px);
 }

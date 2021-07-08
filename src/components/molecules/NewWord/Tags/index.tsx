@@ -1,15 +1,19 @@
-/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import ClearIcon from '@material-ui/icons/Clear';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import CheckIcon from '@material-ui/icons/Check';
 import AddIcon from '@material-ui/icons/Add';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
 import Popover from '@material-ui/core/Popover';
 import useClickAway from 'react-use/lib/useClickAway';
+import random from 'lodash.random';
 import styles from './styles.module.css';
 import useSelector from '~hooks/useSelector';
 import updateWordMutation from '~graphql/mutations/updateWord';
+import getUserTags from '~graphql/queries/getUserTags';
+import getDefaultTags from '~graphql/queries/getDefaultTags';
 import { Tags as TagsList } from '~shared/types';
 
 type TagProps = {
@@ -51,37 +55,43 @@ const Tag: React.FC<TagProps> = ({ wordId, name, color = defaultTagColor }) => {
   );
 };
 
+const colors = [
+  '#AF87CE',
+  '#EA1A7F',
+  '#FEC603',
+  '#A8F387',
+  '#16D6FA',
+  '#6842EF',
+  '#F2B5D4',
+] as const;
+
+type Color = typeof colors[number];
+
 type PaletteProps = {
   onClose: () => void;
+  onPick: (color: Color) => void;
 };
 
-const Palette: React.FC<PaletteProps> = ({ onClose }) => {
+const Palette: React.FC<PaletteProps> = ({ onPick, onClose }) => {
   const containerRef = React.useRef(null);
-
-  const colors = [
-    'aqua',
-    'aquamarine',
-    'cadetblue',
-    'yellow',
-    'violet',
-    'tomato',
-    'tan',
-    'skyblue',
-    'lightgreen',
-  ];
 
   useClickAway(containerRef, onClose);
 
   return (
     <div ref={containerRef} className={styles.paletteContainer}>
       <ul className={styles.paletteList}>
-        {colors.map((colorName) => (
-          <li
-            key={colorName}
-            className={styles.paletteItem}
-            style={{ background: colorName }}
-          />
-        ))}
+        {colors.map((colorName) => {
+          const onClick = () => onPick(colorName);
+
+          return (
+            <li
+              onClick={onClick}
+              key={colorName}
+              className={styles.paletteItem}
+              style={{ background: colorName }}
+            />
+          );
+        })}
       </ul>
     </div>
   );
@@ -92,13 +102,16 @@ type NewTagProps = {
   setShowAddNewTag: (state: boolean) => void;
 };
 
+const pickRandomColor = () => colors[random(0, colors.length - 1)];
+
 const NewTag: React.FC<NewTagProps> = ({ wordId, setShowAddNewTag }) => {
   const userId = useSelector<string>('user.uid');
   const [fetchUpdate] = useMutation(updateWordMutation);
   const [value, setValue] = useState('');
-  const [paletteOpened, setPaletteOpen] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
+  const [color, setColor] = useState<Color>(pickRandomColor);
 
-  const open = Boolean(paletteOpened);
+  const open = Boolean(anchorEl);
 
   const handleChange = ({ target: { value: newValue = '' } = {} } = {}) =>
     setValue(newValue);
@@ -115,13 +128,23 @@ const NewTag: React.FC<NewTagProps> = ({ wordId, setShowAddNewTag }) => {
     }).then(() => setShowAddNewTag(false));
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleOpenPalette = (event: any) => {
-    setPaletteOpen(event.currentTarget);
+  const handleOpenPalette = ({
+    currentTarget,
+  }: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(currentTarget);
+
+  const handleClosePalette = () => setAnchorEl(null);
+
+  const handlePickColor = (newColor: Color) => {
+    setColor(newColor);
+    handleClosePalette();
   };
 
   return (
-    <div className={styles.tag} data-testid="newTagContainer">
+    <div
+      className={styles.tag}
+      data-testid="newTagContainer"
+      style={{ background: color }}
+    >
       <div className={styles.paletteWrapper}>
         <button
           type="button"
@@ -132,7 +155,7 @@ const NewTag: React.FC<NewTagProps> = ({ wordId, setShowAddNewTag }) => {
         </button>
         <Popover
           open={open}
-          anchorEl={paletteOpened}
+          anchorEl={anchorEl}
           onClose={() => {}}
           anchorOrigin={{
             vertical: 'bottom',
@@ -143,7 +166,7 @@ const NewTag: React.FC<NewTagProps> = ({ wordId, setShowAddNewTag }) => {
             horizontal: 'center',
           }}
         >
-          <Palette onClose={() => setPaletteOpen(null)} />
+          <Palette onClose={handleClosePalette} onPick={handlePickColor} />
         </Popover>
       </div>
 
@@ -163,11 +186,20 @@ const NewTag: React.FC<NewTagProps> = ({ wordId, setShowAddNewTag }) => {
   );
 };
 
-const Tags: React.FC<{ wordId: string; tags?: TagsList }> = ({
-  wordId,
-  tags = [],
-}) => {
+const Tags: React.FC<{ wordId: string; tags?: TagsList }> = ({ wordId }) => {
+  const uid = useSelector<string>('user.uid');
   const [showAddNewTag, setShowAddNewTag] = useState(false);
+
+  const { data: { user: { tags: userTags = [] } = {} } = {} } = useQuery(
+    getUserTags,
+    {
+      variables: {
+        uid,
+      },
+    }
+  );
+
+  const { data: { defaultTags = [] } = {} } = useQuery(getDefaultTags);
 
   const handleClickNewTag = () => {
     setShowAddNewTag(true);
@@ -175,9 +207,11 @@ const Tags: React.FC<{ wordId: string; tags?: TagsList }> = ({
 
   return (
     <div className={styles.container}>
-      {tags.map(({ name: tagName, color: tagColor }) => (
-        <Tag key={tagName} name={tagName} color={tagColor} wordId={wordId} />
-      ))}
+      {[...defaultTags, ...userTags].map(
+        ({ name: tagName, color: tagColor }) => (
+          <Tag key={tagName} name={tagName} color={tagColor} wordId={wordId} />
+        )
+      )}
       {showAddNewTag ? (
         <NewTag wordId={wordId} setShowAddNewTag={setShowAddNewTag} />
       ) : (
