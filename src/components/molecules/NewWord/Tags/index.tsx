@@ -22,9 +22,7 @@ type TagProps = {
   color?: string;
 };
 
-const defaultTagColor = '#000';
-
-const Tag: React.FC<TagProps> = ({ wordId, name, color = defaultTagColor }) => {
+const Tag: React.FC<TagProps> = ({ wordId, name }) => {
   const userId = useSelector<string>('user.uid');
   const [fetchUpdate] = useMutation(updateWordMutation);
 
@@ -41,7 +39,7 @@ const Tag: React.FC<TagProps> = ({ wordId, name, color = defaultTagColor }) => {
   };
 
   return (
-    <div className={styles.tag} style={{ background: color }}>
+    <div className={styles.tag}>
       {name}
       <button
         data-testid={`delete-${name}`}

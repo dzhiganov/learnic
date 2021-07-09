@@ -6,14 +6,16 @@
 
 .tag {
   padding: 4px 18px;
-  background-color: aquamarine;
   border-radius: 10px;
   display: inline-flex;
   align-items: center;
   margin-right: 4px;
   font-size: 14px;
   margin-bottom: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid #d4d4d4;
+  background: rgb(2, 122, 250, 0.85);
+  color: #000;
+  font-weight: 500;
 }
 
 .iconButton {

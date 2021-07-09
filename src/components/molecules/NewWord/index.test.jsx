@@ -5,8 +5,13 @@ import { render, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
+import { MockedProvider } from '@apollo/client/testing';
 import * as translateApi from '~store/api/translate';
 import NewWord from '.';
+// import getUserTags from '~graphql/queries/getUserTags';
+// import getDefaultTags from '~graphql/queries/getDefaultTags';
+
+const mocks = [];
 
 let mockedTranslateApi;
 let mockedConsoleError;
@@ -21,6 +26,9 @@ const fakeInitialState = {
 const mockStore = configureStore([]);
 
 const fakeInitialStore = {
+  user: {
+    uid: 'FAKE_USER_ID',
+  },
   translate: {
     token: 'FAKE_TOKEN',
   },
@@ -39,12 +47,14 @@ const renderNewWord = (
   );
 
   const utils = render(
-    <NewWord
-      onSave={mockedOnSave}
-      onCancel={mockedOnCancel}
-      initialState={initialState}
-      autoFetch={autoFetch}
-    />,
+    <MockedProvider mocks={mocks}>
+      <NewWord
+        onSave={mockedOnSave}
+        onCancel={mockedOnCancel}
+        initialState={initialState}
+        autoFetch={autoFetch}
+      />
+    </MockedProvider>,
     { wrapper: Wrapper }
   );
 
