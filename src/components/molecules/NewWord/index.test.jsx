@@ -21,6 +21,7 @@ const mockedOnCancel = jest.fn();
 const fakeInitialState = {
   word: 'test1',
   translate: 'test2',
+  tags: ['FAKE_TAG_ID'],
 };
 
 const mockStore = configureStore([]);

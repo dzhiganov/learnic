@@ -29,7 +29,12 @@ const selectedWordInitialState = {
 };
 
 interface HandleOnSave {
-  (props: { id?: string; word: string; translate: string }): void;
+  (props: {
+    id?: string;
+    word: string;
+    translate: string;
+    tags?: string[][];
+  }): void;
 }
 
 interface HandleOnDelete {
@@ -114,7 +119,7 @@ const Dictionary: React.FC = () => {
   }, []);
 
   const handleOnSave: HandleOnSave = useCallback(
-    ({ id, word, translate }) => {
+    ({ id, word, translate, tags }) => {
       if (id) {
         fetchUpdate({
           variables: {
@@ -123,13 +128,14 @@ const Dictionary: React.FC = () => {
             updatedFields: {
               word,
               translate,
+              tags,
             },
           },
         });
         setEdited('');
       } else {
         fetchAddNewWord({
-          variables: { uid: userId, word, translate },
+          variables: { uid: userId, word, translate, tags },
         });
 
         setShowNewWord(false);
@@ -187,6 +193,7 @@ const Dictionary: React.FC = () => {
         onClose={handleCancelEdit}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
+        style={{ overflow: 'auto' }}
       >
         {renderModalBody(edited ? 'edit' : 'new')}
       </Modal>

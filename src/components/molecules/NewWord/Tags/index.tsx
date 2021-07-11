@@ -9,38 +9,66 @@ import ColorLensIcon from '@material-ui/icons/ColorLens';
 import Popover from '@material-ui/core/Popover';
 import useClickAway from 'react-use/lib/useClickAway';
 import random from 'lodash.random';
+import produce from 'immer';
 import styles from './styles.module.css';
 import useSelector from '~hooks/useSelector';
-import updateWordMutation from '~graphql/mutations/updateWord';
+import deleteUserTagMutation from '~graphql/mutations/deleteUserTag';
 import getUserTags from '~graphql/queries/getUserTags';
 import getDefaultTags from '~graphql/queries/getDefaultTags';
-import { Tags as TagsList } from '~shared/types';
+import addUserTag from '~graphql/mutations/addUserTag';
+import { Tags as TagsList, GetTagQuerySelector } from '~shared/types';
 
-type TagProps = {
-  wordId: string;
+type UserTagProps = {
+  tagId: string;
   name: string;
-  color?: string;
+  color: string;
+  onClick: (tagId: string) => void;
 };
 
-const Tag: React.FC<TagProps> = ({ wordId, name }) => {
+type TagProps = {
+  name: string;
+  color: string;
+  onClick?: () => void;
+};
+
+const Tag: React.FC<TagProps> = ({ name, color, children, ...props }) => {
+  return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <div className={styles.tag} style={{ background: color }} {...props}>
+      {name}
+      {children}
+    </div>
+  );
+};
+
+const UserTag: React.FC<UserTagProps> = ({ tagId, name, color, onClick }) => {
   const userId = useSelector<string>('user.uid');
-  const [fetchUpdate] = useMutation(updateWordMutation);
+  const [fetchDelete] = useMutation(deleteUserTagMutation, {
+    update(cache, result) {
+      const id = result?.data?.deleteUserTag;
+
+      cache.evict({
+        id: cache.identify({
+          __typename: 'Tag',
+          id,
+        }),
+      });
+    },
+  });
 
   const handleDelete = () => {
-    fetchUpdate({
+    fetchDelete({
       variables: {
         uid: userId,
-        id: wordId,
-        updatedFields: {
-          tags: `!REMOVE!_${name}`,
-        },
+        tagId,
       },
     });
   };
 
+  const wrappedOnClick = () => onClick(tagId);
+
   return (
-    <div className={styles.tag}>
-      {name}
+    <Tag name={name} color={color} onClick={wrappedOnClick}>
       <button
         data-testid={`delete-${name}`}
         type="button"
@@ -49,18 +77,38 @@ const Tag: React.FC<TagProps> = ({ wordId, name }) => {
       >
         <ClearIcon />
       </button>
-    </div>
+    </Tag>
   );
 };
 
+type DefaultTagProps = {
+  id: string;
+  color: string;
+  name: string;
+  onClick: (tagId: string) => void;
+};
+
+const DefaultTag: React.FC<DefaultTagProps> = ({
+  id,
+  color,
+  name,
+  onClick,
+}) => {
+  const wrappedOnClick = () => onClick(id);
+
+  return <Tag name={name} color={color} onClick={wrappedOnClick} />;
+};
+
 const colors = [
-  '#AF87CE',
-  '#EA1A7F',
-  '#FEC603',
-  '#A8F387',
-  '#16D6FA',
-  '#6842EF',
-  '#F2B5D4',
+  '#ffd7d9',
+  '#ffd6e8',
+  '#e8daff',
+  '#d0e2ff',
+  '#bae6ff',
+  '#9ef0f0',
+  '#a7f0ba',
+  '#e0e0e0',
+  '#dde1e6',
 ] as const;
 
 type Color = typeof colors[number];
@@ -96,15 +144,43 @@ const Palette: React.FC<PaletteProps> = ({ onPick, onClose }) => {
 };
 
 type NewTagProps = {
-  wordId: string;
+  wordId?: string;
   setShowAddNewTag: (state: boolean) => void;
 };
 
 const pickRandomColor = () => colors[random(0, colors.length - 1)];
 
-const NewTag: React.FC<NewTagProps> = ({ wordId, setShowAddNewTag }) => {
+const NewTag: React.FC<NewTagProps> = ({ setShowAddNewTag }) => {
   const userId = useSelector<string>('user.uid');
-  const [fetchUpdate] = useMutation(updateWordMutation);
+  const [fetchAddUserTag] = useMutation(addUserTag, {
+    update(cache, result) {
+      const listWordsQueryResult = cache.readQuery<GetTagQuerySelector>({
+        query: getUserTags,
+        variables: {
+          uid: userId,
+        },
+      });
+
+      const newListUserTagsQueryResult = produce(
+        listWordsQueryResult,
+        (draft: typeof listWordsQueryResult) => {
+          draft?.user.tags.push(result?.data?.addUserTag?.tag);
+        }
+      );
+
+      cache.writeQuery({
+        query: getUserTags,
+        data: {
+          user: {
+            uid: userId,
+            tags: newListUserTagsQueryResult,
+            __typename: 'User',
+          },
+        },
+      });
+    },
+  });
+
   const [value, setValue] = useState('');
   const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
   const [color, setColor] = useState<Color>(pickRandomColor);
@@ -115,13 +191,11 @@ const NewTag: React.FC<NewTagProps> = ({ wordId, setShowAddNewTag }) => {
     setValue(newValue);
 
   const handleClickSave = () => {
-    fetchUpdate({
+    fetchAddUserTag({
       variables: {
         uid: userId,
-        id: wordId,
-        updatedFields: {
-          tags: value,
-        },
+        name: value,
+        color,
       },
     }).then(() => setShowAddNewTag(false));
   };
@@ -184,44 +258,132 @@ const NewTag: React.FC<NewTagProps> = ({ wordId, setShowAddNewTag }) => {
   );
 };
 
-const Tags: React.FC<{ wordId: string; tags?: TagsList }> = ({ wordId }) => {
+type ActiveTagsProps = {
+  activeTags: string[];
+  allTags: TagsList;
+  deleteTag: (tagId: string) => void;
+};
+
+const ActiveTags: React.FC<ActiveTagsProps> = ({
+  activeTags,
+  allTags,
+  deleteTag,
+}) => {
+  const tags =
+    allTags.length && activeTags.length
+      ? (activeTags.map((id) =>
+          allTags.find(({ id: checkId }) => id === checkId)
+        ) as TagsList)
+      : [];
+
+  return (
+    <div className={styles.inputContainer}>
+      <span className={styles.label}>Word tags</span>
+      <div className={styles.tagsContainer}>
+        {tags
+          .filter((it) => it)
+          .map(({ id, name, color }) => (
+            <Tag key={id} name={name} color={color}>
+              <button
+                data-testid={`delete-${name}`}
+                type="button"
+                onClick={() => deleteTag(id)}
+                className={styles.iconButton}
+              >
+                <ClearIcon />
+              </button>
+            </Tag>
+          ))}
+      </div>
+    </div>
+  );
+};
+
+const Tags: React.FC<{
+  wordId: string;
+  tagsIds?: string[];
+  setTags: (tags: string[]) => void;
+}> = ({ wordId, tagsIds = [], setTags }) => {
   const uid = useSelector<string>('user.uid');
   const [showAddNewTag, setShowAddNewTag] = useState(false);
 
-  const { data: { user: { tags: userTags = [] } = {} } = {} } = useQuery(
-    getUserTags,
-    {
-      variables: {
-        uid,
-      },
-    }
-  );
+  const { data: { user: { tags: userTags = [] } = {} } = {} } = useQuery<{
+    user: {
+      tags: {
+        id: string;
+        name: string;
+        color: string;
+      }[];
+    };
+  }>(getUserTags, {
+    variables: {
+      uid,
+    },
+  });
 
-  const { data: { defaultTags = [] } = {} } = useQuery(getDefaultTags);
+  const { data: { defaultTags = [] } = {} } = useQuery<{
+    defaultTags: {
+      id: string;
+      name: string;
+      color: string;
+    }[];
+  }>(getDefaultTags);
 
   const handleClickNewTag = () => {
     setShowAddNewTag(true);
   };
 
+  const addTagToWordTags = (newTagId: string) => {
+    setTags([...tagsIds, newTagId]);
+  };
+  const deleteTagFromWordTags = (deleteTagId: string) => {
+    setTags(tagsIds.filter((id) => id !== deleteTagId));
+  };
+
+  const allTags = [...defaultTags, ...userTags];
+
   return (
     <div className={styles.container}>
-      {[...defaultTags, ...userTags].map(
-        ({ name: tagName, color: tagColor }) => (
-          <Tag key={tagName} name={tagName} color={tagColor} wordId={wordId} />
-        )
-      )}
-      {showAddNewTag ? (
-        <NewTag wordId={wordId} setShowAddNewTag={setShowAddNewTag} />
-      ) : (
-        <button
-          className={styles.addNewTagButton}
-          data-testid="addNewTagButton"
-          type="button"
-          onClick={handleClickNewTag}
-        >
-          <AddIcon />
-        </button>
-      )}
+      <ActiveTags
+        activeTags={tagsIds}
+        allTags={allTags}
+        deleteTag={deleteTagFromWordTags}
+      />
+      <div className={styles.inputContainer}>
+        <span className={styles.label}>All tags</span>
+        <div className={styles.tagsContainer}>
+          {defaultTags.map(({ id, name: tagName, color: tagColor }) => (
+            <DefaultTag
+              key={id}
+              id={id}
+              name={tagName}
+              color={tagColor}
+              onClick={addTagToWordTags}
+            />
+          ))}
+          {userTags.map(({ id, name: tagName, color: tagColor }) => (
+            <UserTag
+              key={tagName}
+              name={tagName}
+              color={tagColor}
+              tagId={id}
+              onClick={addTagToWordTags}
+            />
+          ))}
+          {showAddNewTag ? (
+            <NewTag wordId={wordId} setShowAddNewTag={setShowAddNewTag} />
+          ) : (
+            <button
+              className={styles.addNewTagButton}
+              data-testid="addNewTagButton"
+              type="button"
+              onClick={handleClickNewTag}
+            >
+              <AddIcon />
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

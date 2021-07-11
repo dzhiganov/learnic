@@ -13,7 +13,11 @@ const updateWord = gql`
         step
         audio
         examples
-        tags
+        tags {
+          id
+          name
+          color
+        }
         __typename
       }
       __typename

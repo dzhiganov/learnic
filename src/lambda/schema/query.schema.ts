@@ -24,7 +24,7 @@ const typeDefs = gql`
   }
 
   type Tag {
-    id: String
+    id: ID!
     name: String
     color: String
   }
@@ -54,7 +54,7 @@ const typeDefs = gql`
     step: Int
     audio: String
     example: String
-    tags: String
+    tags: [[String]]
   }
 
   type WordMutationResponse {
@@ -67,6 +67,11 @@ const typeDefs = gql`
     newWord: Word!
   }
 
+  type AddUserTagResponse {
+    uid: ID!
+    tag: Tag!
+  }
+
   type Mutation {
     updateUserOptions(uid: ID!, userOptions: UserOptionsInput!): User
     updateWord(
@@ -76,7 +81,7 @@ const typeDefs = gql`
     ): WordMutationResponse
     deleteWord(uid: ID!, wordId: ID!): ID
     addWord(uid: ID!, word: String!, translate: String!): AddWordResponse
-    addUserTag(uid: ID!, name: String!, translate: String!): ID
+    addUserTag(uid: ID!, name: String!, color: String!): AddUserTagResponse
     deleteUserTag(uid: ID!, tagId: ID!): ID
   }
 `;

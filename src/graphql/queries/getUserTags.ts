@@ -5,6 +5,7 @@ const getUserTags = gql`
     user(uid: $uid) {
       uid
       tags {
+        id
         name
         color
       }

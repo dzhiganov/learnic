@@ -3,7 +3,6 @@
   flex-direction: column;
   border-radius: 4px;
   margin-top: 36px;
-  max-width: 600px;
   padding: 0 32px;
   padding-bottom: 32px;
 }
@@ -46,7 +45,6 @@
 .buttons {
   display: flex;
   justify-content: flex-end;
-  margin-top: 12px;
 }
 
 .buttons * + * {

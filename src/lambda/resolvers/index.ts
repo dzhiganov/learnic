@@ -140,17 +140,19 @@ const getUserTags = async (
 };
 
 const addUserTag = async (
-  uid: string,
-  name: string,
-  color: string
-): Promise<string> => {
-  await Tags.addUserTag(uid, { name, color });
+  _: unknown,
+  { uid, name, color }: { uid: string; name: string; color: string }
+): Promise<ReturnType<typeof Tags.addUserTag>> => {
+  const response = await Tags.addUserTag({ uid, name, color });
 
   // TODO Use doc.id instead
-  return 'test id';
+  return response;
 };
 
-const deleteUserTag = async (uid: string, tagId: string): Promise<string> => {
+const deleteUserTag = async (
+  _: unknown,
+  { uid, tagId }: { uid: string; tagId: string }
+): Promise<string> => {
   await Tags.deleteUserTag(uid, tagId);
   return tagId;
 };

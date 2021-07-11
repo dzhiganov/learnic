@@ -51,14 +51,34 @@ class Tags {
       .delete();
   }
 
-  static async addUserTag(
-    uid: string,
-    { name, color }: Omit<Tag, 'id'>
-  ): Promise<void> {
-    firestore.collection('users').doc(uid).collection('tags').add({
-      name,
-      color,
-    });
+  static async addUserTag({
+    uid,
+    name,
+    color,
+  }: { uid: string } & Omit<Tag, 'id'>): Promise<{
+    uid: string;
+    tag: { id: string };
+  }> {
+    const ref = await firestore
+      .collection('users')
+      .doc(uid)
+      .collection('tags')
+      .add({
+        name,
+        color,
+      });
+
+    const snapshot = await ref.get();
+    const data = snapshot.data();
+    const newTagId = snapshot.id;
+
+    return {
+      uid,
+      tag: {
+        id: newTagId,
+        ...data,
+      },
+    };
   }
 }
 

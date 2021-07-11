@@ -17,7 +17,12 @@ type Props = {
       translate: string;
     }[];
   onShowNewWord: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  onSave: (data: { id?: string; word: string; translate: string }) => void;
+  onSave: (data: {
+    id?: string;
+    word: string;
+    translate: string;
+    tags?: string[][];
+  }) => void;
   onDelete: (id: string) => void;
   onEdit: (id: string) => void;
   onClickCard: ({

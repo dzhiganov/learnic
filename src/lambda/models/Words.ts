@@ -3,6 +3,7 @@ import { firestore as firestoreAdmin } from 'firebase-admin/lib/firestore';
 import omit from 'lodash.omit';
 import { firestore } from '../database';
 import Dictionary from './Dictionary';
+// import Tags from './Tags';
 
 const { getDefinition } = Dictionary;
 
@@ -28,6 +29,7 @@ export type WordSchema = {
   step: number;
   examples?: string[];
   audio: string;
+  tags?: { id: string; name: string; color: string }[];
 };
 
 type WordSchemas = WordSchema[];
@@ -108,7 +110,7 @@ class Words {
   }: Raw): Promise<{
     date: string | null;
     repeat: string | null;
-    tags: { name: string; color: string }[];
+    tags: { id: string; name: string; color: string }[];
     id: string;
     word: string;
     translate: string;
@@ -123,7 +125,10 @@ class Words {
       ...other,
       date: date ? date?.toDate()?.toString() : null,
       repeat: repeat ? repeat?.toDate()?.toString() : null,
-      tags: tags.map((snapshot) => snapshot.data()).filter((it) => it) as {
+      tags: tags
+        .map((snapshot) => ({ id: snapshot.id, ...snapshot.data() }))
+        .filter((it) => it) as {
+        id: string;
         name: string;
         color: string;
       }[],
@@ -138,8 +143,8 @@ class Words {
     const request = firestore.collection('users').doc(uid).collection('words');
     const response = await request.get();
 
-    response.forEach((doc) =>
-      result.push({ id: doc.id, ...doc.data() } as Raw)
+    response.forEach((wordDoc) =>
+      result.push({ id: wordDoc.id, ...wordDoc.data() } as Raw)
     );
 
     const prepared = await Promise.all(result.map(Words.prepareWord));
@@ -159,19 +164,19 @@ class Words {
   }: {
     uid: string;
     id: string;
-  }): Promise<WordSchema | null> {
+  }): Promise<ReturnType<typeof Words.prepareWord> | null> {
     const wordRef = firestore
       .collection('users')
       .doc(uid)
       .collection('words')
       .doc(id);
 
-    const updatedWord = await wordRef.get();
+    const wordDoc = await wordRef.get();
 
-    if (!updatedWord.exists) {
+    if (!wordDoc.exists) {
       return null;
     }
-    return updatedWord.data() as WordSchema;
+    return Words.prepareWord({ id: wordDoc.id, ...wordDoc.data() } as Raw);
   }
 
   static async addWord({
@@ -226,21 +231,10 @@ class Words {
       example?: string;
       repeat?: string | Timestamp;
       step?: number;
-      tags?: string;
+      tags?: [string[], string[]];
     };
   }): Promise<Record<string, unknown>> {
-    (await Words.getWords(uid)).forEach(({ id: wordId }) => {
-      const wordRef = firestore
-        .collection('users')
-        .doc(uid)
-        .collection('words')
-        .doc(wordId);
-
-      wordRef.update({
-        tags: [{ name: 'test-tag', color: 'green' }],
-      });
-    });
-
+    const current = await Words.getWord({ uid, id });
     const updateObject = {
       ...omit(updatedFields, ['examples', 'repeat', 'tags']),
     } as {
@@ -249,7 +243,7 @@ class Words {
       examples?: firebase.firestore.FieldValue;
       repeat?: Date;
       step?: number;
-      tags?: firebase.firestore.FieldValue;
+      tags?: firestoreAdmin.DocumentReference[];
     };
 
     if (updatedFields.example) {
@@ -259,15 +253,32 @@ class Words {
     }
 
     if (updatedFields.tags) {
-      const [TEMPORARY_FLAG, tagForRemove] = updatedFields.tags.split('_');
+      const [addedTags = [], removedTags = []] = updatedFields.tags;
 
-      if (TEMPORARY_FLAG === '!REMOVE!') {
-        updateObject.tags = firestoreAdmin.FieldValue.arrayRemove(tagForRemove);
-      } else {
-        updateObject.tags = firestoreAdmin.FieldValue.arrayUnion(
-          updatedFields.tags
-        );
-      }
+      // TODO Optimize it!
+      const currentTags = current?.tags;
+      const filteredTags = removedTags.length
+        ? currentTags?.filter(
+            ({ id: tagId }) => !removedTags.includes(tagId)
+          ) || []
+        : currentTags || [];
+      const flatted = filteredTags.map(({ id: tagId }) => tagId);
+      const newTags = [...flatted, ...addedTags].map(async (tagId) => {
+        const docTag = await firestore.collection('tags').doc(tagId).get();
+        const isDefaultTag = docTag.exists;
+
+        if (isDefaultTag) {
+          return firestore.collection('tags').doc(tagId);
+        }
+
+        return firestore
+          .collection('users')
+          .doc(uid)
+          .collection('tags')
+          .doc(tagId);
+      });
+
+      updateObject.tags = await Promise.all(newTags);
     }
 
     if (updatedFields.repeat) {

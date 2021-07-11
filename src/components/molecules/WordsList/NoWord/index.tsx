@@ -8,7 +8,14 @@ import Escape from '~c/atoms/Icons/Escape';
 
 type Props = {
   word: string;
-  onSave: ({ word, translate }: { word: string; translate: string }) => void;
+  onSave: ({
+    word,
+    translate,
+  }: {
+    word: string;
+    translate: string;
+    tags?: string[][];
+  }) => void;
   clearFilter: () => void;
 };
 

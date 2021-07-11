@@ -31,8 +31,16 @@ export type GetWordsQueryResult = {
 };
 
 export type Tag = {
+  id: string;
   name: string;
   color: string;
 };
 
 export type Tags = Tag[];
+
+export type GetTagQuerySelector = {
+  user: {
+    uid: string;
+    tags: Tags;
+  };
+};

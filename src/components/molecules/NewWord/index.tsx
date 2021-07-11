@@ -20,10 +20,12 @@ type Props = {
     id,
     word,
     translate,
+    tags,
   }: {
     id?: string;
     word: string;
     translate: string;
+    tags: string[][];
   }) => void;
   onCancel: () => void;
   autoFetch?: boolean;
@@ -40,6 +42,7 @@ const NewWord: React.FunctionComponent<Props> = ({
   const inputRef: React.RefObject<HTMLTextAreaElement> = useRef(null);
   const [word, setWord] = useState('');
   const [translate, setTranslate] = useState('');
+  const [tagsIds, setTagsIds] = useState<string[]>([]);
   const selectedData = useSelector(
     ({ translate: translateState }: { translate: { token: string } }) =>
       translateState
@@ -76,6 +79,7 @@ const NewWord: React.FunctionComponent<Props> = ({
     if (initialState) {
       setWord(initialState?.word);
       setTranslate(initialState?.translate);
+      setTagsIds(initialState?.tags.map(({ id: tagId }) => tagId));
     }
   }, [initialState]);
 
@@ -95,24 +99,39 @@ const NewWord: React.FunctionComponent<Props> = ({
     (event) => {
       if (event.key === 'Enter') {
         if (word && translate) {
-          onSave({ id, word, translate });
+          onSave({ id, word, translate, tags: [tagsIds, []] });
 
           setWord('');
           setTranslate('');
         }
       }
     },
-    [id, onSave, translate, word]
+    [id, onSave, translate, word, tagsIds]
   );
 
   const handleOnClickSave = useCallback(() => {
+    const result: string[][] = [[], []];
+    const [addedTags, removedTags] = result;
+    const initialTagsIds = initialState?.tags.map(({ id: tagId }) => tagId);
+
+    // TODO Optimize it!
+    initialTagsIds?.forEach((tagId) => {
+      if (tagsIds.includes(tagId)) return;
+      removedTags.push(tagId);
+    });
+
+    tagsIds.forEach((tagId) => {
+      if (initialTagsIds?.includes(tagId)) return;
+      addedTags.push(tagId);
+    });
+
     if (word && translate) {
-      onSave({ id, word, translate });
+      onSave({ id, word, translate, tags: result });
 
       setWord('');
       setTranslate('');
     }
-  }, [id, onSave, word, translate]);
+  }, [id, onSave, word, translate, tagsIds, initialState?.tags]);
 
   const handleOnClickCancel = useCallback(() => {
     setWord('');
@@ -161,7 +180,7 @@ const NewWord: React.FunctionComponent<Props> = ({
               rows={3}
             />
           </div>
-          <Tags wordId={id} tags={initialState?.tags} />
+          <Tags wordId={id} tagsIds={tagsIds} setTags={setTagsIds} />
         </div>
         <div className={styles.buttons}>
           <SaveButton onSave={handleOnClickSave} />

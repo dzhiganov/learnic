@@ -1,7 +1,5 @@
 .container {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .tag {
@@ -16,6 +14,7 @@
   background: rgb(2, 122, 250, 0.85);
   color: #000;
   font-weight: 500;
+  cursor: pointer;
 }
 
 .iconButton {
@@ -87,4 +86,29 @@
 
 .paletteItem:hover {
   transform: translateY(-8px);
+}
+
+.tagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 6px;
+  padding-bottom: 2px;
+  border: 1px solid rgb(226, 226, 226);
+  border-radius: 10px;
+  min-height: 43px;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+
+.label {
+  display: inline-block;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  margin-right: 10px;
+  font-size: 16px;
+  margin-bottom: 4px;
 }

@@ -14,6 +14,7 @@ const getWords = gql`
         audio
         examples
         tags {
+          id
           name
           color
         }
