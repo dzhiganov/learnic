@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ClearIcon from '@material-ui/icons/Clear';
 import { useMutation, useQuery } from '@apollo/client';
 import CheckIcon from '@material-ui/icons/Check';
@@ -213,7 +213,7 @@ const NewTag: React.FC<NewTagProps> = ({ setShowAddNewTag }) => {
 
   return (
     <div
-      className={styles.tag}
+      className={`${styles.tag} ${styles.newTag}`}
       data-testid="newTagContainer"
       style={{ background: color }}
     >
@@ -283,37 +283,27 @@ const ActiveTags: React.FC<ActiveTagsProps> = ({
         {tags
           .filter((it) => it)
           .map(({ id, name, color }) => (
-            <Tag key={id} name={name} color={color}>
-              <button
-                data-testid={`delete-${name}`}
-                type="button"
-                onClick={() => deleteTag(id)}
-                className={styles.iconButton}
-              >
-                <ClearIcon />
-              </button>
-            </Tag>
+            <Tag
+              key={id}
+              name={name}
+              color={color}
+              onClick={() => deleteTag(id)}
+            />
           ))}
       </div>
     </div>
   );
 };
 
-const Tags: React.FC<{
-  wordId: string;
-  tagsIds?: string[];
-  setTags: (tags: string[]) => void;
-}> = ({ wordId, tagsIds = [], setTags }) => {
+const useTags = (wordTags: string[]) => {
   const uid = useSelector<string>('user.uid');
-  const [showAddNewTag, setShowAddNewTag] = useState(false);
+
+  const [visibleUserTags, setVisibleUserTags] = useState<TagsList>([]);
+  const [visibleDefaultTags, setVisibleDefaultTags] = useState<TagsList>([]);
 
   const { data: { user: { tags: userTags = [] } = {} } = {} } = useQuery<{
     user: {
-      tags: {
-        id: string;
-        name: string;
-        color: string;
-      }[];
+      tags: TagsList;
     };
   }>(getUserTags, {
     variables: {
@@ -322,25 +312,40 @@ const Tags: React.FC<{
   });
 
   const { data: { defaultTags = [] } = {} } = useQuery<{
-    defaultTags: {
-      id: string;
-      name: string;
-      color: string;
-    }[];
+    defaultTags: TagsList;
   }>(getDefaultTags);
+
+  const allTags = [...defaultTags, ...userTags];
+
+  useEffect(() => {
+    setVisibleUserTags(
+      userTags.filter(({ id: tagId }) => !wordTags.includes(tagId))
+    );
+    setVisibleDefaultTags(
+      defaultTags.filter(({ id: tagId }) => !wordTags.includes(tagId))
+    );
+  }, [wordTags, userTags, defaultTags]);
+
+  return [visibleDefaultTags, visibleUserTags, allTags];
+};
+
+const Tags: React.FC<{
+  wordId: string;
+  tagsIds?: string[];
+  setTags: (tags: string[]) => void;
+}> = ({ wordId, tagsIds = [], setTags }) => {
+  const [showAddNewTag, setShowAddNewTag] = useState(false);
+  const [defaultTags, userTags, allTags] = useTags(tagsIds);
 
   const handleClickNewTag = () => {
     setShowAddNewTag(true);
   };
 
-  const addTagToWordTags = (newTagId: string) => {
+  const addTagToWordTags = (newTagId: string) =>
     setTags([...tagsIds, newTagId]);
-  };
-  const deleteTagFromWordTags = (deleteTagId: string) => {
-    setTags(tagsIds.filter((id) => id !== deleteTagId));
-  };
 
-  const allTags = [...defaultTags, ...userTags];
+  const deleteTagFromWordTags = (deleteTagId: string) =>
+    setTags(tagsIds.filter((id) => id !== deleteTagId));
 
   return (
     <div className={styles.container}>

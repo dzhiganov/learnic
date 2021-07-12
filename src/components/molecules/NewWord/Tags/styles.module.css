@@ -29,6 +29,7 @@
   margin-left: 8px;
   justify-content: center;
   font-size: 16px;
+  color: #2d2d2d;
 }
 
 .iconButton > svg {
@@ -43,11 +44,12 @@
   background-color: transparent;
   border: none;
   outline: none;
-  border-bottom: 1px solid rgba(196, 196, 196, 0.1);
+  min-width: 70px;
+  max-width: 120px;
 }
 
-.newTagInput:focus {
-  border-bottom: 1px solid purple;
+.newTag {
+  font-size: inherit;
 }
 
 .addNewTagButton {
@@ -66,26 +68,37 @@
 
 .paletteWrapper {
   position: relative;
+  display: flex;
+}
+
+.paletteWrapper > .iconButton {
+  margin-left: 0;
 }
 
 .paletteContainer {
-  padding: 16px 12px;
+  border-radius: 10px;
+  padding: 12px 8px;
 }
 
 .paletteList {
-  display: flex;
-  height: 80px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
 }
 
 .paletteItem {
   transition: 100ms;
-  width: 20px;
-  height: 100%;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
   cursor: pointer;
 }
 
 .paletteItem:hover {
-  transform: translateY(-8px);
+  transform: scale(1.1);
 }
 
 .tagsContainer {
