@@ -318,12 +318,23 @@ const useTags = (wordTags: string[]) => {
   const allTags = [...defaultTags, ...userTags];
 
   useEffect(() => {
-    setVisibleUserTags(
-      userTags.filter(({ id: tagId }) => !wordTags.includes(tagId))
-    );
-    setVisibleDefaultTags(
-      defaultTags.filter(({ id: tagId }) => !wordTags.includes(tagId))
-    );
+    if (!userTags.length && !defaultTags.length) return;
+    if (!wordTags.length) {
+      setVisibleUserTags(userTags);
+      setVisibleDefaultTags(defaultTags);
+    }
+
+    if (userTags.length) {
+      setVisibleUserTags(
+        userTags.filter(({ id: tagId }) => !wordTags.includes(tagId))
+      );
+    }
+
+    if (defaultTags.length) {
+      setVisibleDefaultTags(
+        defaultTags.filter(({ id: tagId }) => !wordTags.includes(tagId))
+      );
+    }
   }, [wordTags, userTags, defaultTags]);
 
   return [visibleDefaultTags, visibleUserTags, allTags];
@@ -335,7 +346,7 @@ const Tags: React.FC<{
   setTags: (tags: string[]) => void;
 }> = ({ wordId, tagsIds = [], setTags }) => {
   const [showAddNewTag, setShowAddNewTag] = useState(false);
-  const [defaultTags, userTags, allTags] = useTags(tagsIds);
+  const [defaultTags = [], userTags = [], allTags = []] = useTags(tagsIds);
 
   const handleClickNewTag = () => {
     setShowAddNewTag(true);
