@@ -21,7 +21,8 @@
       "CANCEL_BUTTON": "Cancel"
     },
     "WORD_CARD": {
-      "ADD_EXAMPLE_BUTTON": "Add Example",
+      "EXAMPLES_TITLE": "Examples",
+      "ADD_EXAMPLE_BUTTON": "New",
       "SAVE_BUTTON": "Save",
       "CANCEL_BUTTON": "Cancel",
       "STEPS": {

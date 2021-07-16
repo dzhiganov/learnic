@@ -6,24 +6,15 @@
   max-width: initial;
 }
 
-@media (min-width: 576px) {
-  .container {
-    max-width: 300px;
-  }
-}
-
 .input {
   color: var(--color-text-secondary);
-  border-color: var(--color-input-border);
   background-color: var(--color-input-background);
+  border: none;
   text-overflow: ellipsis;
   font-size: 16px;
   line-height: 28px;
   font-weight: 400;
   width: 100%;
-  border-radius: 8px;
-  border-width: 1px;
-  border-style: solid;
   box-sizing: border-box;
   padding: 0.45rem 0.9rem;
   padding-left: 32px;
@@ -31,13 +22,13 @@
   appearance: none;
   align-items: center;
   height: 45px;
+  outline: none;
+  border-bottom: 1px solid var(--color-input-border);
 }
 
 .input:focus,
 .input:active {
-  border-color: rgba(58, 121, 212, 0.36);
-  box-shadow: 0 0 0 2px #bedcfa;
-  outline: none;
+  border-bottom: 1px solid #2c2e43;
 }
 
 .icon {

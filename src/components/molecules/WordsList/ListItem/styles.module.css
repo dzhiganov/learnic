@@ -1,13 +1,12 @@
 .cardItem {
   cursor: pointer;
-  width: 250px;
   padding: 4px;
   padding-left: 8px;
   border-radius: 4px;
 }
 
 .cardItem:hover {
-  background-color: rgba(0, 126, 254, 0.1);
+  background-color: #f3f3f3;
 }
 
 .cardButton {

@@ -2,7 +2,6 @@
 import React, { memo, useState, useCallback } from 'react';
 import produce from 'immer';
 import useMedia from 'react-use/lib/useMedia';
-import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@apollo/client';
 import Modal from '@material-ui/core/Modal';
 import styles from './styles.module.css';
@@ -54,7 +53,6 @@ interface HandleCancelEdit {
 }
 
 const Dictionary: React.FC = () => {
-  const { t } = useTranslation();
   const isWide = useMedia('(min-width: 576px)');
   const [selectedWord, setSelectedWord] = useState<SelectedWord>(
     selectedWordInitialState
@@ -200,9 +198,6 @@ const Dictionary: React.FC = () => {
       <div className={styles.listContainer}>
         {isWide || (!isWide && !selectedWord.id) ? (
           <div className={styles.wordsListContainer}>
-            {isWide || (!isWide && !selectedWord.id) ? (
-              <h2 className={styles.title}>{t('DICTIONARY.TITLE')}</h2>
-            ) : null}
             <WordsList
               words={words}
               onShowNewWord={handleShowNewWord}

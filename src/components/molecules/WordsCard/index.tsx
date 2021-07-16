@@ -93,21 +93,26 @@ const WordsCard: React.FunctionComponent<Props> = ({
           <span>{`${word} - ${translate}`}</span>
         </div>
 
-        <AudioButton audioURL={value?.audio || ''} />
+        <div className={styles.buttons}>
+          <AudioButton audioURL={value?.audio || ''} />
 
-        <StepsPopup
-          step={value?.step || 0}
-          repeat={(value?.repeat as unknown) as Date}
-        />
+          <StepsPopup
+            step={value?.step || 0}
+            repeat={(value?.repeat as unknown) as Date}
+          />
+        </div>
       </div>
       <div className={styles.contextSection}>
-        <div>
+        <div className={styles.examples}>
+          <div className={styles.examplesTitle}>
+            <span>{`${t('DICTIONARY.WORD_CARD.EXAMPLES_TITLE')}`}</span>
+          </div>
           <button
             className={styles.addExampleButton}
             type="button"
             onClick={handleClickAddExample}
           >
-            {`+ ${t('DICTIONARY.WORD_CARD.ADD_EXAMPLE_BUTTON')}`}
+            {`${t('DICTIONARY.WORD_CARD.ADD_EXAMPLE_BUTTON')}`}
           </button>
         </div>
         {showAddExample ? (

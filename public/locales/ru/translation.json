@@ -13,7 +13,7 @@
   },
   "DICTIONARY": {
     "TITLE": "Словарь",
-    "NEW_WORD_BUTTON": "Добавить слово",
+    "NEW_WORD_BUTTON": "Добавить",
     "NEW_WORD_WINDOW": {
       "WORD_PLACEHOLDER": "Слово или фраза для повторения",
       "TRANSLATE_PLACEHOLDER": "Перевод",
@@ -21,7 +21,8 @@
       "CANCEL_BUTTON": "Отменить"
     },
     "WORD_CARD": {
-      "ADD_EXAMPLE_BUTTON": "Новый пример",
+      "EXAMPLES_TITLE": "Примеры",
+      "ADD_EXAMPLE_BUTTON": "Добавить",
       "SAVE_BUTTON": "Сохранить",
       "CANCEL_BUTTON": "Отменить",
       "STEPS": {

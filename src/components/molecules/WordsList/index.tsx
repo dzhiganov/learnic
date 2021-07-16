@@ -2,7 +2,6 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 import firebase from 'firebase';
 import Fuse from 'fuse.js';
 import { useTranslation } from 'react-i18next';
-import useMedia from 'react-use/lib/useMedia';
 import Skeleton from '@material-ui/lab/Skeleton';
 import styles from './styles.module.css';
 import Search from './Search';
@@ -61,7 +60,6 @@ const WordsList: React.FunctionComponent<Props> = ({
     { id: string; word: string; translate: string }[]
   >([]);
   const [searchFocused, setSearchFocused] = useState<boolean>(false);
-  const isWide = useMedia('(min-width: 576px)');
 
   const onCancelAddNewWord = useCallback(() => {
     onCancelEdit();
@@ -139,13 +137,8 @@ const WordsList: React.FunctionComponent<Props> = ({
   return (
     <>
       <div className={styles.buttonsContainer}>
-        <>
-          <Search
-            value={filter}
-            onChange={handleChangeFilter}
-            onFocus={handleOnFocus}
-            onBlur={handleOnBlur}
-          />
+        <header className={styles.header}>
+          <h2 className={styles.headerTitle}>{t('DICTIONARY.TITLE')}</h2>
           <button
             type="button"
             disabled={showNewWord}
@@ -154,8 +147,17 @@ const WordsList: React.FunctionComponent<Props> = ({
             }`}
             onClick={onShowNewWord}
           >
-            {isWide ? t('DICTIONARY.NEW_WORD_BUTTON') : '+'}
+            {t('DICTIONARY.NEW_WORD_BUTTON')}
           </button>
+        </header>
+
+        <>
+          <Search
+            value={filter}
+            onChange={handleChangeFilter}
+            onFocus={handleOnFocus}
+            onBlur={handleOnBlur}
+          />
         </>
       </div>
 

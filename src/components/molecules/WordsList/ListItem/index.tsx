@@ -27,12 +27,6 @@ const ListItem: FC<Props> = ({
   setFocused,
   isFocused,
 }) => {
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLLIElement>) => {
-    if (event.key === 'Enter') {
-      onClick({ id, word, translate });
-    }
-  };
-
   const handleMouseDown = () => setFocused(id);
 
   const handleOnClick = () => onClick({ id, word, translate });
@@ -54,14 +48,12 @@ const ListItem: FC<Props> = ({
       key={id}
       onMouseEnter={handleMouseDown}
       tabIndex={0}
-      onKeyDown={handleKeyDown}
+      onKeyDown={handleOnClick}
+      onClick={handleOnClick}
     >
       <div className={styles.cardItemContainer}>
         <a
-          tabIndex={0}
           role="button"
-          onKeyDown={handleOnClick}
-          onClick={handleOnClick}
           className={`${styles.cardItemTextContainer} ${
             isFocused ? styles.cardItemTextContainerHovered : ''
           }`}

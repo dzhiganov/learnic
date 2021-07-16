@@ -7,7 +7,7 @@
   flex-direction: column;
   margin-top: 24px;
   background-color: #fff;
-  padding: 16px 24px;
+  padding: 24px;
   border-radius: 10px;
   box-shadow: 0 2px 12px rgb(0 40 117 / 6%);
 }
@@ -15,13 +15,19 @@
 .wordSection {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   font-size: 32px;
   font-weight: 600;
+  margin-bottom: 28px;
+  padding: 0 12px;
 }
 
 .contextSection {
   display: inline-block;
   margin-top: 25px;
+  /* background-color: #fbfbfb; */
+  padding: 12px;
+  border-radius: 8px;
 }
 
 .examplesList {
@@ -47,24 +53,32 @@
 }
 
 .addExampleButton {
-  display: flex;
-  align-items: center;
+  min-width: 100px;
+  flex-shrink: 1;
   cursor: pointer;
   border: none;
-  color: #007efe;
-  background-color: transparent;
-  padding: 0.5em 0;
-  font-size: 1.1rem;
-  min-width: 64px;
+  color: var(--color-text);
+  height: 32px;
+  padding: 0 1em;
+  font-size: 1rem;
   box-sizing: border-box;
-  font-weight: 600;
+  font-weight: 500;
+  line-height: 1.75;
   border-radius: 8px;
-  height: 45px;
+  letter-spacing: -0.025em;
   outline: none;
+  color: #51cf81;
+  background-color: #c8fbdb;
+}
+
+@media (min-width: 576px) {
+  .addExampleButton {
+    flex-shrink: 0;
+  }
 }
 
 .addExampleButton:hover {
-  color: #379bff;
+  background-color: #c2fdd6;
 }
 
 .backButtonContainer {
@@ -104,4 +118,29 @@
 
 .wordContainer {
   margin-right: 12px;
+}
+
+.examples {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgb(233, 233, 233);
+  padding-bottom: 8px;
+}
+
+.examplesTitle {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buttons * + * {
+  margin-left: 16px;
 }

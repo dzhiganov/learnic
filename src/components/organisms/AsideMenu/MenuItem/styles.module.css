@@ -17,16 +17,16 @@
 
 .item:hover:not(.itemActive),
 .item:focus:not(.itemActive) {
-  color: #86c3ff;
+  color: var(--color-primary-light);
 }
 
 .itemActive {
-  color: #1c8bfa;
+  color: var(--color-primary);
 }
 
 .itemActive:hover .title,
 .itemActive:focus .title {
-  color: #1c8bfa;
+  color: #c9ad31;
 }
 
 .link {

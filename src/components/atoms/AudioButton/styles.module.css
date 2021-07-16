@@ -16,10 +16,10 @@
   text-align: center;
   border: none;
   outline: none;
-  background-color: transparent;
   font-size: 25px;
   border-radius: 50%;
-  color: rgb(3, 70, 138);
+  background-color: #ffe470;
+  color: #2c2e43;
 }
 
 .audioButton:hover {
