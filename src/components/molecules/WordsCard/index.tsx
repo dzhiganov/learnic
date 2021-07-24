@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback, useMemo } from 'react';
+import React, { memo, useState, useCallback, useMemo, useEffect } from 'react';
 import useMedia from 'react-use/lib/useMedia';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { useTranslation } from 'react-i18next';
@@ -38,6 +38,12 @@ const WordsCard: React.FunctionComponent<Props> = ({
     },
   });
 
+  useEffect(() => {
+    if (word) {
+      setShowAddExample(false);
+    }
+  }, [word]);
+
   const value = useMemo(() => {
     return words.find(({ id: wordId }) => wordId === id);
   }, [id, words]);
@@ -53,7 +59,7 @@ const WordsCard: React.FunctionComponent<Props> = ({
   const onAddNewExample = useCallback(
     async (example) => {
       await fetchUpdate({
-        variables: { uid, wordId: id, updatedFields: { example } },
+        variables: { uid, id, updatedFields: { example } },
       });
       setShowAddExample(false);
     },
@@ -107,19 +113,25 @@ const WordsCard: React.FunctionComponent<Props> = ({
           <div className={styles.examplesTitle}>
             <span>{`${t('DICTIONARY.WORD_CARD.EXAMPLES_TITLE')}`}</span>
           </div>
-          <button
-            className={styles.addExampleButton}
-            type="button"
-            onClick={handleClickAddExample}
-          >
-            {`${t('DICTIONARY.WORD_CARD.ADD_EXAMPLE_BUTTON')}`}
-          </button>
+          {!showAddExample && (
+            <button
+              className={styles.addExampleButton}
+              type="button"
+              onClick={handleClickAddExample}
+            >
+              {`${t('DICTIONARY.WORD_CARD.ADD_EXAMPLE_BUTTON')}`}
+            </button>
+          )}
         </div>
         {showAddExample ? (
           <AddExample onSave={onAddNewExample} onCancel={handleCancelAddWord} />
         ) : null}
         <>
-          <ul className={styles.examplesList}>
+          <ul
+            className={`${styles.examplesList} ${
+              showAddExample ? styles.disabled : ''
+            }`}
+          >
             {Array.isArray(value?.examples) && value?.examples.length
               ? value?.examples.map((def: string) => (
                   <li key={def} className={styles.examplesItem}>

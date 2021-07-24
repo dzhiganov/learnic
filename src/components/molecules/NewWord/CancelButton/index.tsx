@@ -10,9 +10,7 @@ const CancelButton: React.FunctionComponent<Props> = ({ onCancel }: Props) => {
   const { t } = useTranslation();
   return (
     <button className={styles.cancelButton} type="button" onClick={onCancel}>
-      <span className={styles.saveTitle}>
-        {t('DICTIONARY.NEW_WORD_WINDOW.CANCEL_BUTTON')}
-      </span>
+      <span>{t('DICTIONARY.NEW_WORD_WINDOW.CANCEL_BUTTON')}</span>
     </button>
   );
 };

@@ -22,8 +22,7 @@
 }
 
 .openStepsButton:hover {
-  background-color: rgba(0, 126, 254, 0.1);
-  color: var(--color-primary);
+  background-color: #ffeb94;
 }
 
 .popup {

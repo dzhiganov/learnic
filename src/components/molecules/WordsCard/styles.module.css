@@ -58,7 +58,7 @@
   cursor: pointer;
   border: none;
   color: var(--color-text);
-  height: 32px;
+  height: 36px;
   padding: 0 1em;
   font-size: 1rem;
   box-sizing: border-box;
@@ -126,7 +126,7 @@
   align-items: flex-end;
   margin-bottom: 4px;
   border-bottom: 1px solid rgb(233, 233, 233);
-  padding-bottom: 8px;
+  padding-bottom: 4px;
 }
 
 .examplesTitle {
@@ -143,4 +143,8 @@
 
 .buttons * + * {
   margin-left: 16px;
+}
+
+.disabled {
+  color: rgb(180, 180, 180);
 }

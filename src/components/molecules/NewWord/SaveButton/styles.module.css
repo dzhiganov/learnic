@@ -1,32 +1,35 @@
 .saveButton {
+  min-width: 100px;
+  flex-shrink: 1;
+  cursor: pointer;
+  border: none;
+  color: var(--color-text);
+  padding: 0.5em 1em;
+  font-size: 1rem;
+  box-sizing: border-box;
+  font-weight: 500;
+  line-height: 1.75;
+  border-radius: 8px;
+  letter-spacing: -0.025em;
+  outline: none;
+  color: #51cf81;
+  background-color: #c8fbdb;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 6px 24px;
-  background: transparent;
-  border: none;
-  outline: none;
-  font-size: 20px;
-  background-color: #7c6ae0;
-  color: #fff;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 120px;
-  font-weight: 500;
-  height: 45px;
+  margin-right: 12px;
 }
 
-.saveButton:hover,
-.saveButton:focus {
-  background-color: #554b9b;
-  color: #fff;
+@media (min-width: 576px) {
+  .saveButton {
+    flex-shrink: 0;
+  }
 }
 
-.saveButton svg {
-  width: 1em;
-  height: 1em;
+.saveButton:hover {
+  background-color: #c2fdd6;
 }
 
-.saveTitle {
-  font-size: 16px;
+.saveButton:disabled {
+  cursor: not-allowed;
+  filter: grayscale(1);
 }

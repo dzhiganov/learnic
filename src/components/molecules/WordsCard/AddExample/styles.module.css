@@ -1,3 +1,7 @@
+.container {
+  margin-bottom: 16px;
+}
+
 .inputContainer {
   line-height: 0;
 }
@@ -22,6 +26,7 @@
   text-align: left;
   appearance: none;
   align-items: center;
+  resize: none;
 }
 
 .input:focus,
@@ -34,42 +39,4 @@
 .buttonsContainer {
   display: flex;
   justify-content: flex-end;
-}
-
-.buttonsContainer * + * {
-  margin-left: 14px;
-}
-
-.saveButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px 24px;
-  background: transparent;
-  border: none;
-  outline: none;
-  background-color: #16c79a;
-  border-radius: 4px;
-  color: #fff;
-  cursor: pointer;
-  width: 100px;
-  font-size: 16px;
-}
-
-.cancelButton {
-  composes: saveButton;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  background: transparent;
-  background-color: var(--color-button-secondary);
-  color: #000;
-}
-
-.saveButton:focus,
-.saveButton:hover {
-  background-color: #00af91;
-}
-
-.cancelButton:focus,
-.cancelButton:hover {
-  background-color: var(--color-button-secondary-hover);
 }
