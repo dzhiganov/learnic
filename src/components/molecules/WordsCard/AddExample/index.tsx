@@ -1,6 +1,7 @@
-import React, { memo, useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { memo, useCallback, useState, useRef, useEffect } from 'react';
 import styles from './styles.module.css';
+import SaveButton from '~c/molecules/NewWord/SaveButton';
+import CancelButton from '~c/molecules/NewWord/CancelButton';
 
 type Props = {
   onSave: (example: string) => Promise<void>;
@@ -11,10 +12,22 @@ const AddExample: React.FunctionComponent<Props> = ({
   onSave,
   onCancel,
 }: Props) => {
-  const { t } = useTranslation();
-  const [example, setExample] = useState<string>('');
+  const [example, setExample] = useState('');
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  const setFocusOnTextArea = useCallback(() => {
+    if (
+      textAreaRef.current &&
+      typeof textAreaRef.current.focus === 'function'
+    ) {
+      textAreaRef.current.focus();
+    }
+  }, []);
 
   const handleOnSave = useCallback(async () => {
+    if (!example) {
+      return;
+    }
     await onSave(example);
     setExample('');
   }, [onSave, example]);
@@ -24,30 +37,24 @@ const AddExample: React.FunctionComponent<Props> = ({
     setExample(value);
   }, []);
 
+  useEffect(() => {
+    setFocusOnTextArea();
+  }, [setFocusOnTextArea]);
+
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.inputContainer}>
         <textarea
+          ref={textAreaRef}
           className={styles.input}
           value={example}
           onChange={handleChangeInput}
+          rows={4}
         />
       </div>
       <div className={styles.buttonsContainer}>
-        <button
-          className={styles.saveButton}
-          type="button"
-          onClick={handleOnSave}
-        >
-          {t('DICTIONARY.WORD_CARD.SAVE_BUTTON')}
-        </button>
-        <button
-          className={styles.cancelButton}
-          type="button"
-          onClick={onCancel}
-        >
-          {t('DICTIONARY.WORD_CARD.CANCEL_BUTTON')}
-        </button>
+        <SaveButton onSave={handleOnSave} disabled={!example} />
+        <CancelButton onCancel={onCancel} />
       </div>
     </div>
   );

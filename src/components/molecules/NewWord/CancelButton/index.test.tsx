@@ -2,17 +2,8 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import CancelButton from '.';
 
-describe('ShowMore', () => {
-  test('Correct textContent', () => {
-    const onCancel = jest.fn();
-    const { container } = render(<CancelButton onCancel={onCancel} />);
-
-    const button = container.querySelector('button');
-
-    expect(button).toHaveTextContent(/Cancel/i);
-  });
-
-  test('Correct type', () => {
+describe('Cancel button', () => {
+  test('should has correct type', () => {
     const onCancel = jest.fn();
     const { container } = render(<CancelButton onCancel={onCancel} />);
 
@@ -21,7 +12,7 @@ describe('ShowMore', () => {
     expect(button).toHaveAttribute('type', 'button');
   });
 
-  test('click on button', () => {
+  test('has been clicked', () => {
     const onCancel = jest.fn();
     const { container } = render(<CancelButton onCancel={onCancel} />);
 
