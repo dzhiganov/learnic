@@ -1,9 +1,9 @@
 import firebase from 'firebase';
 import { firestore as firestoreAdmin } from 'firebase-admin/lib/firestore';
 import omit from 'lodash.omit';
+import dayjs from 'dayjs';
 import { firestore } from '../database';
 import Dictionary from './Dictionary';
-// import Tags from './Tags';
 
 const { getDefinition } = Dictionary;
 
@@ -135,6 +135,19 @@ class Words {
     };
   }
 
+  static sortByDate(words: WordSchemas): WordSchemas {
+    return words.sort((a, b) => {
+      if (!a.date || !b.date) return 0;
+      const firstDate = dayjs(a.date);
+      const secondDate = dayjs(b.date);
+
+      if (firstDate.isBefore(secondDate)) return 1;
+      if (firstDate.isAfter(secondDate)) return -1;
+
+      return 0;
+    });
+  }
+
   static async getWords(
     uid: string,
     onlyTrainings = false
@@ -150,12 +163,13 @@ class Words {
     const prepared = await Promise.all(result.map(Words.prepareWord));
 
     if (onlyTrainings) {
-      return prepared.filter(({ step = 0, repeat = null }) => {
+      const filtered = prepared.filter(({ step = 0, repeat = null }) => {
         const repeatDate = repeat ? new Date(repeat) : null;
         return step === 0 || (repeatDate && repeatDate < new Date());
       });
+      return Words.sortByDate(filtered);
     }
-    return prepared;
+    return Words.sortByDate(prepared);
   }
 
   static async getWord({

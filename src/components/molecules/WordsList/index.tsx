@@ -1,20 +1,17 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import firebase from 'firebase';
 import Fuse from 'fuse.js';
 import { useTranslation } from 'react-i18next';
 import Skeleton from '@material-ui/lab/Skeleton';
+import dayjs from 'dayjs';
 import styles from './styles.module.css';
 import Search from './Search';
 import NoWord from './NoWord';
 import ListItem from './ListItem';
+import HeaderDate from './HeaderDate';
+import { Words } from '~shared/types';
 
 type Props = {
-  words: firebase.firestore.DocumentData &
-    {
-      id: string;
-      word: string;
-      translate: string;
-    }[];
+  words: Words;
   onShowNewWord: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onSave: (data: {
     id?: string;
@@ -56,9 +53,7 @@ const WordsList: React.FunctionComponent<Props> = ({
   const { t } = useTranslation();
   const [focused, setFocused] = useState<string>('');
   const [filter, setFilter] = useState<string>('');
-  const [filtered, setFiltered] = useState<
-    { id: string; word: string; translate: string }[]
-  >([]);
+  const [filtered, setFiltered] = useState<Words>([]);
   const [searchFocused, setSearchFocused] = useState<boolean>(false);
 
   const onCancelAddNewWord = useCallback(() => {
@@ -164,23 +159,36 @@ const WordsList: React.FunctionComponent<Props> = ({
       <div className={styles.cardsContainer}>
         <ul className={styles.cardsList} onMouseLeave={() => setFocused('')}>
           {(filter && filtered.length > 0) || !filter ? (
-            (filter ? filtered : words).map(({ id, word, translate }) => {
-              const isFocused = focused === id;
-              return (
-                <ListItem
-                  key={id}
-                  id={id}
-                  word={word}
-                  translate={translate}
-                  clearFilter={clearFilter}
-                  onClick={onClickCard}
-                  onDelete={onDelete}
-                  onEdit={onEdit}
-                  setFocused={setFocused}
-                  isFocused={isFocused}
-                />
-              );
-            })
+            (filter ? filtered : words).map(
+              ({ id, word, translate, date }, i, arr) => {
+                const shouldRenderHeaderDate =
+                  i > 0 &&
+                  dayjs(arr[i - 1].date as string).isSame(
+                    dayjs(date as string),
+                    'day'
+                  );
+                const isFocused = focused === id;
+                return (
+                  <>
+                    {(!shouldRenderHeaderDate || i === 0) && (
+                      <HeaderDate strDate={date as string} />
+                    )}
+                    <ListItem
+                      key={id}
+                      id={id}
+                      word={word}
+                      translate={translate}
+                      clearFilter={clearFilter}
+                      onClick={onClickCard}
+                      onDelete={onDelete}
+                      onEdit={onEdit}
+                      setFocused={setFocused}
+                      isFocused={isFocused}
+                    />
+                  </>
+                );
+              }
+            )
           ) : (
             <NoWord word={filter} onSave={onSave} clearFilter={clearFilter} />
           )}
