@@ -148,3 +148,9 @@
 .disabled {
   color: rgb(180, 180, 180);
 }
+
+header {
+  display: flex;
+  justify-content: flex-start;
+  padding: 12px;
+}

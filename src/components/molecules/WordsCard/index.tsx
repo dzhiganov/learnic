@@ -11,12 +11,15 @@ import AudioButton from '~c/atoms/AudioButton';
 import updateWordMutation from '~graphql/mutations/updateWord';
 import getWords from '~graphql/queries/getWords';
 import { GetWordsQueryResult } from '~shared/types';
+import ActionsButtons from './ActionButtons';
 
 type Props = {
   id: string;
   word: string;
   translate: string;
   onClose: () => void;
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
 };
 
 const WordsCard: React.FunctionComponent<Props> = ({
@@ -24,6 +27,8 @@ const WordsCard: React.FunctionComponent<Props> = ({
   word,
   translate,
   onClose,
+  onEdit,
+  onDelete,
 }: Props) => {
   const { t } = useTranslation();
   const isWide = useMedia('(min-width: 576px)');
@@ -94,6 +99,12 @@ const WordsCard: React.FunctionComponent<Props> = ({
           </button>
         </div>
       ) : null}
+      <header>
+        <ActionsButtons
+          onEdit={() => typeof value?.id === 'string' && onEdit(value?.id)}
+          onDelete={() => typeof value?.id === 'string' && onDelete(value?.id)}
+        />
+      </header>
       <div className={styles.wordSection}>
         <div className={styles.wordContainer}>
           <span>{`${word} - ${translate}`}</span>

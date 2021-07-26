@@ -145,6 +145,7 @@ const Dictionary: React.FC = () => {
   const handleOnDelete: HandleOnDelete = useCallback(
     (id) => {
       fetchDeleteWord({ variables: { uid: userId, wordId: id } });
+      setSelectedWord(selectedWordInitialState);
     },
     [userId, fetchDeleteWord]
   );
@@ -202,8 +203,6 @@ const Dictionary: React.FC = () => {
               words={words}
               onShowNewWord={handleShowNewWord}
               onSave={handleOnSave}
-              onDelete={handleOnDelete}
-              onEdit={handleOnEdit}
               onClickCard={handleClickCard}
               showNewWord={showNewWord}
               setShowNewWord={setShowNewWord}
@@ -227,6 +226,8 @@ const Dictionary: React.FC = () => {
                   translate: '',
                 })
               }
+              onDelete={handleOnDelete}
+              onEdit={handleOnEdit}
             />
           </div>
         ) : null}

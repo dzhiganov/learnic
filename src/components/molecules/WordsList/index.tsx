@@ -19,8 +19,6 @@ type Props = {
     translate: string;
     tags?: string[][];
   }) => void;
-  onDelete: (id: string) => void;
-  onEdit: (id: string) => void;
   onClickCard: ({
     id,
     word,
@@ -43,8 +41,6 @@ const WordsList: React.FunctionComponent<Props> = ({
   showNewWord,
   setShowNewWord,
   onSave,
-  onDelete,
-  onEdit,
   onClickCard,
   edited,
   onCancelEdit,
@@ -178,10 +174,7 @@ const WordsList: React.FunctionComponent<Props> = ({
                       id={id}
                       word={word}
                       translate={translate}
-                      clearFilter={clearFilter}
                       onClick={onClickCard}
-                      onDelete={onDelete}
-                      onEdit={onEdit}
                       setFocused={setFocused}
                       isFocused={isFocused}
                     />
