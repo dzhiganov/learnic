@@ -8,6 +8,8 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { createStyles, withStyles, Theme } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import { useQuery, useMutation } from '@apollo/client';
+import groupBy from 'lodash.groupby';
+import dayjs from 'dayjs';
 import useSelector from '~hooks/useSelector';
 // eslint-disable-next-line css-modules/no-unused-class
 import styles from './styles.module.css';
@@ -18,6 +20,8 @@ import Loading from '~c/atoms/Loading';
 import Definition from './Definition';
 import getTrainingWords from '~graphql/queries/getTrainingWords';
 import updateWordMutation from '~graphql/mutations/updateWord';
+import { GetTrainingWordsQueryResult, TrainingTypes } from '~shared/types';
+import Selector from './Selector';
 
 const BorderLinearProgress = withStyles((theme: Theme) => {
   return createStyles({
@@ -37,6 +41,7 @@ const BorderLinearProgress = withStyles((theme: Theme) => {
 })(LinearProgress);
 
 const Cards: React.FunctionComponent = () => {
+  const [training] = useState<TrainingTypes | null>(null);
   const { t } = useTranslation();
   const uid = useSelector<string>('user.uid');
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -52,7 +57,7 @@ const Cards: React.FunctionComponent = () => {
   const {
     data: { user: { trainingWords: words = [] } = {} } = {},
     loading,
-  } = useQuery(getTrainingWords, {
+  } = useQuery<GetTrainingWordsQueryResult>(getTrainingWords, {
     variables: {
       uid,
     },
@@ -170,6 +175,32 @@ const Cards: React.FunctionComponent = () => {
     );
   }
 
+  if (!training) {
+    const prepared = words.map(({ date, ...props }) => ({
+      date: dayjs(date as string).format('YYYY.MM.DD'),
+      ...props,
+    }));
+    const groupedByDate = groupBy(prepared, 'date');
+    const sortedKeys = Object.keys(groupedByDate).sort((a, b) => {
+      return dayjs(a).isBefore(dayjs(b)) ? 1 : -1;
+    });
+
+    return (
+      <div className={styles.wrapper}>
+        <header className={styles.header}>
+          <h1 className={styles.title}>Select training</h1>
+        </header>
+        <Selector
+          counts={{
+            [TrainingTypes.Last]: groupedByDate[sortedKeys[0]].length,
+            [TrainingTypes.Penultimate]: groupedByDate[sortedKeys[1]].length,
+            [TrainingTypes.All]: words.length,
+          }}
+        />
+      </div>
+    );
+  }
+
   if ((!words.length && !loading) || finished) {
     return (
       <div className={styles.wrapper}>
@@ -199,27 +230,6 @@ const Cards: React.FunctionComponent = () => {
         onClose={handleCloseDefinition}
       />
       <header className={styles.header}>
-        <div className={styles.headerTextBlock}>
-          <div className={styles.headerTextWrapper}>
-            <h3 className={styles.headerTitle}>{t('CARDS.HEADER_TITLE')}</h3>
-            <p>{t('CARDS.HEADER_DESCRIPTION')}</p>
-            <ul className={styles.headerList}>
-              <li>{t('CARDS.HEADER_LIST_ITEM1')}</li>
-              <li>{t('CARDS.HEADER_LIST_ITEM2')}</li>
-            </ul>
-            <p>{t('CARDS.HEADER_FINALLY')}</p>
-          </div>
-        </div>
-        <div className={styles.headerOptions}>
-          <div className={styles.checkboxContainer}>
-            <Checkbox
-              checked={showTranslateOnCard}
-              onChange={handleChangeShowTranslateOnCard}
-              color="primary"
-            />
-            <span>{t('CARDS.SHOW_TRANSLATE_ON_CARD')}</span>
-          </div>
-        </div>
         <div className={styles.progressBarContainer}>
           <p className={styles.count}>{`${currentIndex + 1}/${
             words.length

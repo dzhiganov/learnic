@@ -1,0 +1,29 @@
+.card {
+  border-radius: 8px;
+  background-color: #43e97b;
+  display: flex;
+  padding: 20px;
+  height: 250px;
+  cursor: pointer;
+  box-shadow: rgb(0 0 0 / 18%) 0px 3px 6px, rgb(0 0 0 / 12%) 0px 0px;
+  transition: 300ms ease-in-out;
+  flex-direction: column;
+}
+
+.card:hover {
+  box-shadow: none;
+}
+
+.title {
+  font-size: 36px;
+  color: #fff;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.count {
+  font-size: 22px;
+  font-weight: 500;
+  color: #fff;
+  justify-self: flex-end;
+}

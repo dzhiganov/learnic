@@ -30,6 +30,13 @@ export type GetWordsQueryResult = {
   };
 };
 
+export type GetTrainingWordsQueryResult = {
+  user: {
+    uid: string;
+    trainingWords: Words;
+  };
+};
+
 export type Tag = {
   id: string;
   name: string;
@@ -44,3 +51,9 @@ export type GetTagQuerySelector = {
     tags: Tags;
   };
 };
+
+export enum TrainingTypes {
+  Last = 'last',
+  Penultimate = 'penultimate',
+  All = 'all',
+}

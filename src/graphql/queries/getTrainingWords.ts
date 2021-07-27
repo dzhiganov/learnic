@@ -10,6 +10,7 @@ const getTrainingWords = gql`
         translate
         audio
         examples
+        date
       }
     }
   }

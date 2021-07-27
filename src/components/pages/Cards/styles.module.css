@@ -1,6 +1,5 @@
 .wrapper {
   display: flex;
-  align-items: center;
   flex-direction: column;
   height: initial;
   box-shadow: 0 2px 12px rgb(0 40 117 / 6%);
@@ -8,14 +7,15 @@
   border-radius: 10px;
   padding: 25px;
   margin-top: 45px;
+  min-height: 80vh;
 }
 
 .title {
-  font-family: 'Montserrat', sans-serif;
   font-size: 36px;
   letter-spacing: -1px;
   padding: 0;
   margin: 0;
+  font-weight: 700;
 }
 
 .container {
@@ -162,7 +162,7 @@
 
 .header {
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 32px;
 }
 
 .progressBarContainer {
