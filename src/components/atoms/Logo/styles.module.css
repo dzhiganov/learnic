@@ -1,5 +1,5 @@
 .logo {
-  color: #ffd523;
+  color: var(--color-primary);
   /* font-family: 'Archivo Black', sans-serif; */
   letter-spacing: -1px;
   font-family: 'Kaushan Script', cursive;

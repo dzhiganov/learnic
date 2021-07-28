@@ -1,28 +1,14 @@
-import React, { memo, useCallback, useState, useRef, useEffect } from 'react';
+import React, { memo, useCallback, useState, useRef } from 'react';
 import styles from './styles.module.css';
 import SaveButton from '~c/molecules/NewWord/SaveButton';
-import CancelButton from '~c/molecules/NewWord/CancelButton';
 
 type Props = {
   onSave: (example: string) => Promise<void>;
-  onCancel: () => void;
 };
 
-const AddExample: React.FunctionComponent<Props> = ({
-  onSave,
-  onCancel,
-}: Props) => {
+const AddExample: React.FunctionComponent<Props> = ({ onSave }: Props) => {
   const [example, setExample] = useState('');
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-
-  const setFocusOnTextArea = useCallback(() => {
-    if (
-      textAreaRef.current &&
-      typeof textAreaRef.current.focus === 'function'
-    ) {
-      textAreaRef.current.focus();
-    }
-  }, []);
 
   const handleOnSave = useCallback(async () => {
     if (!example) {
@@ -37,10 +23,6 @@ const AddExample: React.FunctionComponent<Props> = ({
     setExample(value);
   }, []);
 
-  useEffect(() => {
-    setFocusOnTextArea();
-  }, [setFocusOnTextArea]);
-
   return (
     <div className={styles.container}>
       <div className={styles.inputContainer}>
@@ -50,11 +32,11 @@ const AddExample: React.FunctionComponent<Props> = ({
           value={example}
           onChange={handleChangeInput}
           rows={4}
+          placeholder="Add another one..."
         />
       </div>
       <div className={styles.buttonsContainer}>
         <SaveButton onSave={handleOnSave} disabled={!example} />
-        <CancelButton onCancel={onCancel} />
       </div>
     </div>
   );

@@ -42,7 +42,7 @@
 }
 
 .examplesItem::marker {
-  content: '👉 ';
+  content: '💬 ';
 }
 
 .examplesItem {
@@ -59,7 +59,7 @@
   font-weight: 500;
   letter-spacing: -0.025em;
   outline: none;
-  color: #51cf81;
+  color: var(--color-primary);
   background-color: inherit;
 }
 
@@ -128,7 +128,7 @@
   margin-top: 12px;
 }
 
-header {
+.wordCardHeader {
   display: flex;
   justify-content: flex-end;
   padding: 12px;

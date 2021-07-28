@@ -15,9 +15,9 @@
   height: inherit;
 }
 
-.item:hover:not(.itemActive),
-.item:focus:not(.itemActive) {
-  color: var(--color-primary-light);
+.item:hover,
+.item:focus {
+  color: var(--color-primary-medium);
 }
 
 .itemActive {
@@ -26,7 +26,7 @@
 
 .itemActive:hover .title,
 .itemActive:focus .title {
-  color: #c9ad31;
+  color: var(--color-primary);
 }
 
 .link {

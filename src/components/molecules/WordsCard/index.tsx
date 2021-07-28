@@ -1,4 +1,5 @@
-import React, { memo, useState, useCallback, useMemo, useEffect } from 'react';
+/* eslint-disable css-modules/no-unused-class */
+import React, { memo, useCallback, useMemo } from 'react';
 import useMedia from 'react-use/lib/useMedia';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { useTranslation } from 'react-i18next';
@@ -32,7 +33,6 @@ const WordsCard: React.FunctionComponent<Props> = ({
 }: Props) => {
   const { t } = useTranslation();
   const isWide = useMedia('(min-width: 576px)');
-  const [showAddExample, setShowAddExample] = useState<boolean>(false);
   const uid = useSelector<string>('user.uid');
   const [fetchUpdate] = useMutation(updateWordMutation);
   const {
@@ -43,30 +43,15 @@ const WordsCard: React.FunctionComponent<Props> = ({
     },
   });
 
-  useEffect(() => {
-    if (word) {
-      setShowAddExample(false);
-    }
-  }, [word]);
-
   const value = useMemo(() => {
     return words.find(({ id: wordId }) => wordId === id);
   }, [id, words]);
-
-  const handleClickAddExample = useCallback(() => {
-    setShowAddExample(true);
-  }, []);
-
-  const handleCancelAddWord = useCallback(() => {
-    setShowAddExample(false);
-  }, []);
 
   const onAddNewExample = useCallback(
     async (example) => {
       await fetchUpdate({
         variables: { uid, id, updatedFields: { example } },
       });
-      setShowAddExample(false);
     },
 
     [id, uid, fetchUpdate]
@@ -99,7 +84,7 @@ const WordsCard: React.FunctionComponent<Props> = ({
           </button>
         </div>
       ) : null}
-      <header>
+      <header className={styles.wordCardHeader}>
         <ActionsButtons
           onEdit={() => typeof value?.id === 'string' && onEdit(value?.id)}
           onDelete={() => typeof value?.id === 'string' && onDelete(value?.id)}
@@ -124,33 +109,20 @@ const WordsCard: React.FunctionComponent<Props> = ({
           <div className={styles.examplesTitle}>
             <span>{`${t('DICTIONARY.WORD_CARD.EXAMPLES_TITLE')}`}</span>
           </div>
-          {!showAddExample && (
-            <button
-              className={styles.addExampleButton}
-              type="button"
-              onClick={handleClickAddExample}
-            >
-              {`${t('DICTIONARY.WORD_CARD.ADD_EXAMPLE_BUTTON')}`}
-            </button>
-          )}
         </div>
-        {showAddExample ? (
-          <AddExample onSave={onAddNewExample} onCancel={handleCancelAddWord} />
-        ) : null}
-        <>
-          <ul className={styles.examplesList}>
-            {Array.isArray(value?.examples) && value?.examples.length
-              ? value?.examples.map((def: string) => (
-                  <li key={def} className={styles.examplesItem}>
-                    <span className={styles.example} key={def}>
-                      {def}
-                    </span>
-                  </li>
-                ))
-              : null}
-          </ul>
-        </>
+        <ul className={styles.examplesList}>
+          {Array.isArray(value?.examples) && value?.examples.length
+            ? value?.examples.map((def: string) => (
+                <li key={def} className={styles.examplesItem}>
+                  <span className={styles.example} key={def}>
+                    {def}
+                  </span>
+                </li>
+              ))
+            : null}
+        </ul>
       </div>
+      <AddExample onSave={onAddNewExample} />
     </div>
   );
 };

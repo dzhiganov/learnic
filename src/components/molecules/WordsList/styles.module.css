@@ -22,7 +22,7 @@
   flex-shrink: 1;
   cursor: pointer;
   border: none;
-  color: var(--color-text);
+  color: var(--color-primary);
   height: 45px;
   padding: 0.25em 1.25em;
   font-size: 1.1rem;
@@ -32,8 +32,7 @@
   border-radius: 8px;
   letter-spacing: -0.025em;
   outline: none;
-  color: #51cf81;
-  background-color: #e1fceb;
+  background-color: var(--color-primary-light);
 }
 
 @media (min-width: 576px) {
@@ -43,7 +42,7 @@
 }
 
 .addNewWordButton:hover {
-  background-color: #c2fdd6;
+  background-color: var(--color-primary-medium);
 }
 
 .disable {
