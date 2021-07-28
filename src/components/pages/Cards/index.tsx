@@ -187,7 +187,7 @@ const Cards: React.FunctionComponent = () => {
 
     return (
       <div className={styles.wrapper}>
-        <header className={styles.header}>
+        <header className={styles.trainingHeader}>
           <h1 className={styles.title}>Select training</h1>
         </header>
         <Selector
@@ -204,7 +204,7 @@ const Cards: React.FunctionComponent = () => {
   if ((!words.length && !loading) || finished) {
     return (
       <div className={styles.wrapper}>
-        <header className={styles.header}>
+        <header className={styles.trainingHeader}>
           <div className={styles.headerOptions}>
             <div className={styles.checkboxContainer}>
               <Checkbox
@@ -229,7 +229,7 @@ const Cards: React.FunctionComponent = () => {
         open={showDefinition}
         onClose={handleCloseDefinition}
       />
-      <header className={styles.header}>
+      <header className={styles.trainingHeader}>
         <div className={styles.progressBarContainer}>
           <p className={styles.count}>{`${currentIndex + 1}/${
             words.length

@@ -138,11 +138,7 @@ const WordsCard: React.FunctionComponent<Props> = ({
           <AddExample onSave={onAddNewExample} onCancel={handleCancelAddWord} />
         ) : null}
         <>
-          <ul
-            className={`${styles.examplesList} ${
-              showAddExample ? styles.disabled : ''
-            }`}
-          >
+          <ul className={styles.examplesList}>
             {Array.isArray(value?.examples) && value?.examples.length
               ? value?.examples.map((def: string) => (
                   <li key={def} className={styles.examplesItem}>

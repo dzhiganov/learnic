@@ -160,9 +160,10 @@
   background-color: rgba(158, 158, 158, 0.2);
 }
 
-.header {
+.trainingHeader {
   width: 100%;
   margin-bottom: 32px;
+  justify-content: flex-start;
 }
 
 .progressBarContainer {

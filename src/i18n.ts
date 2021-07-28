@@ -10,6 +10,7 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
+    lng: 'en',
     keySeparator: '.',
     interpolation: {
       escapeValue: false,
