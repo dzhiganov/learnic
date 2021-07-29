@@ -12,11 +12,6 @@
     grid-template-columns: 50% 50%;
   }
 
-  .listContainer > * {
-    max-height: 100%;
-    overflow: auto;
-  }
-
   .title {
     font-size: 3rem;
   }
@@ -35,25 +30,22 @@
   .listContainer {
     display: grid;
     grid-template-columns: 50% 50%;
-    grid-column-gap: 40px;
-  }
-
-  .listContainer > * {
-    max-height: 100%;
-    overflow: auto;
+    box-shadow: 0 2px 12px rgb(0 40 117 / 6%);
+    background-color: #fff;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    overflow: hidden;
   }
 }
 
 .wordsListContainer {
   height: initial;
-  overflow: auto;
   padding: 25px 0;
   width: 100%;
   background-color: #fff;
-  border-radius: 10px;
-  margin-top: 45px;
   padding: 25px;
-  box-shadow: 0 2px 12px rgb(0 40 117 / 6%);
+  border-right: 1px solid var(--color-input-border);
+  padding-right: 0;
 }
 
 .closePopupButton {
@@ -83,7 +75,6 @@
 
 .wordsCardContainer {
   height: initial;
-  overflow: auto;
   padding: 25px;
   overflow-x: hidden;
   min-width: 500px;

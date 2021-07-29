@@ -1,15 +1,13 @@
 .container {
-  position: fixed;
-  top: 80px;
   width: 100%;
-  max-width: 600px;
   display: flex;
   flex-direction: column;
-  margin-top: 24px;
   background-color: #fff;
   padding: 24px;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px rgb(0 40 117 / 6%);
+  padding-top: 0;
+  position: sticky;
+  top: 32px;
+  margin-top: -25px;
 }
 
 .wordSection {
