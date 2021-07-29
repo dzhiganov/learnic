@@ -5,12 +5,10 @@ import Card from './Card';
 
 type Props = {
   counts: Record<TrainingTypes, number>;
+  onSelect: (trainingType: TrainingTypes) => void;
 };
 
-const Selector: FC<Props> = ({ counts }) => {
-  const onSelect = (title: TrainingTypes) => {
-    return title;
-  };
+const Selector: FC<Props> = ({ counts, onSelect }) => {
   return (
     <ul className={styles.list}>
       {Object.values(TrainingTypes).map((title) => {

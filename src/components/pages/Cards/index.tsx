@@ -10,6 +10,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { useQuery, useMutation } from '@apollo/client';
 import groupBy from 'lodash.groupby';
 import dayjs from 'dayjs';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import useSelector from '~hooks/useSelector';
 // eslint-disable-next-line css-modules/no-unused-class
 import styles from './styles.module.css';
@@ -41,7 +42,6 @@ const BorderLinearProgress = withStyles((theme: Theme) => {
 })(LinearProgress);
 
 const Cards: React.FunctionComponent = () => {
-  const [training] = useState<TrainingTypes | null>(null);
   const { t } = useTranslation();
   const uid = useSelector<string>('user.uid');
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -52,7 +52,14 @@ const Cards: React.FunctionComponent = () => {
   );
   const [finished, setFinished] = useState<boolean>(false);
   const [showDefinition, setShowDefinition] = useState<boolean>(false);
+  const [selectedTraining, selectTraining] = useState<TrainingTypes | null>(
+    null
+  );
   const [fetchUpdate] = useMutation(updateWordMutation);
+
+  const handleSelectTraining = (trainingType: TrainingTypes) => {
+    selectTraining(trainingType);
+  };
 
   const {
     data: { user: { trainingWords: words = [] } = {} } = {},
@@ -165,38 +172,19 @@ const Cards: React.FunctionComponent = () => {
     []
   );
 
+  const handleBackToTheList = () => {
+    selectTraining(null);
+    setCurrentIndex(0);
+    setSuccesseful([]);
+    setFailed([]);
+  };
+
   if (loading) {
     return (
       <div className={styles.wrapper}>
         <div>
           <Loading />
         </div>
-      </div>
-    );
-  }
-
-  if (!training) {
-    const prepared = words.map(({ date, ...props }) => ({
-      date: dayjs(date as string).format('YYYY.MM.DD'),
-      ...props,
-    }));
-    const groupedByDate = groupBy(prepared, 'date');
-    const sortedKeys = Object.keys(groupedByDate).sort((a, b) => {
-      return dayjs(a).isBefore(dayjs(b)) ? 1 : -1;
-    });
-
-    return (
-      <div className={styles.wrapper}>
-        <header className={styles.trainingHeader}>
-          <h1 className={styles.title}>Select training</h1>
-        </header>
-        <Selector
-          counts={{
-            [TrainingTypes.Last]: groupedByDate[sortedKeys[0]].length,
-            [TrainingTypes.Penultimate]: groupedByDate[sortedKeys[1]].length,
-            [TrainingTypes.All]: words.length,
-          }}
-        />
       </div>
     );
   }
@@ -221,91 +209,157 @@ const Cards: React.FunctionComponent = () => {
     );
   }
 
-  return (
-    <div className={styles.wrapper}>
-      <Definition
-        title={words[currentIndex].word}
-        examples={words[currentIndex].examples}
-        open={showDefinition}
-        onClose={handleCloseDefinition}
-      />
-      <header className={styles.trainingHeader}>
-        <div className={styles.progressBarContainer}>
-          <p className={styles.count}>{`${currentIndex + 1}/${
-            words.length
-          }`}</p>
-          <BorderLinearProgress
-            variant="determinate"
-            value={words.length ? (100 / words.length) * (currentIndex + 1) : 0}
-          />
-        </div>
-      </header>
-      <div className={styles.container}>
-        <button
-          type="button"
-          className={`${styles.button} ${
-            currentIndex === 0 ? styles.hidden : ''
-          }`}
-          onClick={back}
-        >
-          <ArrowBackIcon />
-        </button>
+  if (selectedTraining && !finished) {
+    const prepared = words.map(({ date, ...props }) => ({
+      date: dayjs(date as string).format('YYYY.MM.DD'),
+      ...props,
+    }));
+    const groupedByDate = groupBy(prepared, 'date');
+    const sortedKeys = Object.keys(groupedByDate).sort((a, b) => {
+      return dayjs(a).isBefore(dayjs(b)) ? 1 : -1;
+    });
 
-        <div className={styles.sliderContainer}>
-          <Carousel value={currentIndex} onChange={handleOnChangeSlide}>
-            {(words as {
-              id: string;
-              word: string;
-              translate: string;
-              audio: string;
-            }[]).map(({ id, word, translate, audio }, index) => (
-              <div key={id}>
-                <Card
-                  word={showTranslateOnCard ? translate : word}
-                  translate={showTranslateOnCard ? word : translate}
-                  isActive={index === currentIndex}
-                  status={getStatusByIndex(index)}
-                  audio={audio as string}
-                  setShowDefinition={handleShowDefinition}
-                />
-                <div className={styles.controls}>
-                  <button
-                    onClick={handleDone}
-                    className={`${styles.cardButton} ${styles.done}`}
-                    type="button"
-                    disabled={
-                      successful.includes(index) || failed.includes(index)
-                    }
-                  >
-                    {t('CARDS.DONE')}
-                  </button>
-                  <button
-                    onClick={handleRepeat}
-                    className={`${styles.cardButton} ${styles.fail}`}
-                    type="button"
-                    disabled={
-                      successful.includes(index) || failed.includes(index)
-                    }
-                  >
-                    {t('CARDS.FAIL')}
-                  </button>
-                </div>
-              </div>
-            ))}
-          </Carousel>
+    const allWords = words;
+    const lastWords = groupedByDate[sortedKeys[0]];
+    const penultimateWords = groupedByDate[sortedKeys[1]];
+
+    let wordsSet = allWords;
+    if (selectedTraining === TrainingTypes.Last) {
+      wordsSet = lastWords;
+    }
+
+    if (selectedTraining === TrainingTypes.Penultimate) {
+      wordsSet = penultimateWords;
+    }
+
+    if (wordsSet[currentIndex]) {
+      return (
+        <div className={styles.wrapper}>
+          <Definition
+            title={wordsSet[currentIndex].word}
+            examples={wordsSet[currentIndex].examples}
+            open={showDefinition}
+            onClose={handleCloseDefinition}
+          />
+          <header className={styles.trainingHeader}>
+            <button
+              type="button"
+              className={styles.backToTheListButton}
+              onClick={handleBackToTheList}
+            >
+              <ArrowBackIosIcon /> Back
+            </button>
+            <div className={styles.progressBarContainer}>
+              <p className={styles.count}>{`${currentIndex + 1}/${
+                wordsSet.length
+              }`}</p>
+              <BorderLinearProgress
+                variant="determinate"
+                value={
+                  wordsSet.length
+                    ? (100 / wordsSet.length) * (currentIndex + 1)
+                    : 0
+                }
+              />
+            </div>
+          </header>
+          <div className={styles.container}>
+            <button
+              type="button"
+              className={`${styles.button} ${
+                currentIndex === 0 ? styles.hidden : ''
+              }`}
+              onClick={back}
+            >
+              <ArrowBackIcon />
+            </button>
+
+            <div className={styles.sliderContainer}>
+              <Carousel value={currentIndex} onChange={handleOnChangeSlide}>
+                {(wordsSet as {
+                  id: string;
+                  word: string;
+                  translate: string;
+                  audio: string;
+                }[]).map(({ id, word, translate, audio }, index) => (
+                  <div key={id}>
+                    <Card
+                      word={showTranslateOnCard ? translate : word}
+                      translate={showTranslateOnCard ? word : translate}
+                      isActive={index === currentIndex}
+                      status={getStatusByIndex(index)}
+                      audio={audio as string}
+                      setShowDefinition={handleShowDefinition}
+                    />
+                    <div className={styles.controls}>
+                      <button
+                        onClick={handleDone}
+                        className={`${styles.cardButton} ${styles.done}`}
+                        type="button"
+                        disabled={
+                          successful.includes(index) || failed.includes(index)
+                        }
+                      >
+                        {t('CARDS.DONE')}
+                      </button>
+                      <button
+                        onClick={handleRepeat}
+                        className={`${styles.cardButton} ${styles.fail}`}
+                        type="button"
+                        disabled={
+                          successful.includes(index) || failed.includes(index)
+                        }
+                      >
+                        {t('CARDS.FAIL')}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </Carousel>
+            </div>
+            <button
+              type="button"
+              className={`${styles.button} ${
+                currentIndex === wordsSet.length - 1 ? styles.hidden : ''
+              }`}
+              onClick={next}
+            >
+              <ArrowForwardIcon />
+            </button>
+          </div>
         </div>
-        <button
-          type="button"
-          className={`${styles.button} ${
-            currentIndex === words.length - 1 ? styles.hidden : ''
-          }`}
-          onClick={next}
-        >
-          <ArrowForwardIcon />
-        </button>
+      );
+    }
+  }
+
+  if (!selectedTraining) {
+    const prepared = words.map(({ date, ...props }) => ({
+      date: dayjs(date as string).format('YYYY.MM.DD'),
+      ...props,
+    }));
+    const groupedByDate = groupBy(prepared, 'date');
+    const sortedKeys = Object.keys(groupedByDate).sort((a, b) => {
+      return dayjs(a).isBefore(dayjs(b)) ? 1 : -1;
+    });
+
+    return (
+      <div className={styles.wrapper}>
+        <header className={styles.trainingHeader}>
+          <h1 className={styles.title}>Select training</h1>
+        </header>
+        <Selector
+          counts={{
+            [TrainingTypes.Last]: groupedByDate[sortedKeys[0]].length,
+            [TrainingTypes.Penultimate]: groupedByDate[sortedKeys[1]].length,
+            [TrainingTypes.All]: words.length,
+          }}
+          onSelect={handleSelectTraining}
+        />
       </div>
-    </div>
-  );
+    );
+  }
+
+  return null;
 };
 
 export default Cards;

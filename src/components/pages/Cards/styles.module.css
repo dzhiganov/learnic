@@ -40,6 +40,7 @@
   .container {
     padding: 8px;
     max-width: 750px;
+    margin: 0 auto;
   }
 }
 
@@ -239,4 +240,33 @@
   list-style: circle;
   padding-left: 40px;
   margin: 8px 0 12px 0;
+}
+
+.backToTheListButton {
+  min-width: 100px;
+  flex-shrink: 1;
+  cursor: pointer;
+  border: none;
+  color: var(--color-text);
+  padding: 0.5em 1em;
+  font-size: 16px;
+  box-sizing: border-box;
+  font-weight: 500;
+  line-height: 1.75;
+  border-radius: 8px;
+  letter-spacing: -0.025em;
+  outline: none;
+  color: rgb(39, 39, 39);
+  background-color: rgb(245, 245, 245);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backToTheListButton svg {
+  font-size: 14px;
+}
+
+.backToTheListButton:hover {
+  background-color: rgb(235, 235, 235);
 }

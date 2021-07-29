@@ -5,7 +5,7 @@ import styles from './styles.module.css';
 type Props = {
   title: TrainingTypes;
   count: number;
-  onClick: (title: TrainingTypes) => void;
+  onClick: (trainingType: TrainingTypes) => void;
 };
 
 const Card: FC<Props> = ({ title, count, onClick }) => {
