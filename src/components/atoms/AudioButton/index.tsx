@@ -1,12 +1,13 @@
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { FC, memo, useCallback, useMemo } from 'react';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import styles from './styles.module.css';
 
 type Props = {
   audioURL: string;
+  transcription?: string;
 };
 
-const AudioButton: React.FC<Props> = ({ audioURL }: Props) => {
+const AudioButton: FC<Props> = ({ audioURL, transcription }) => {
   const audio = useMemo((): HTMLAudioElement | null => {
     if (audioURL) {
       return new Audio(audioURL);
@@ -25,11 +26,14 @@ const AudioButton: React.FC<Props> = ({ audioURL }: Props) => {
   return (
     <span className={styles.audioButtonContainer}>
       <button
-        className={styles.audioButton}
+        className={`${styles.audioButton} ${transcription && styles.withText}`}
         type="button"
         onClick={handlePlayAudio}
       >
         <VolumeUpIcon />
+        {transcription && (
+          <span className={styles.transcription}>{transcription}</span>
+        )}
       </button>
     </span>
   );

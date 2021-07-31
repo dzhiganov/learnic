@@ -22,7 +22,6 @@
 .contextSection {
   display: inline-block;
   margin-top: 25px;
-  /* background-color: #fbfbfb; */
   padding: 12px;
   border-radius: 8px;
 }
@@ -40,7 +39,7 @@
 }
 
 .examplesItem::marker {
-  content: '💬 ';
+  content: '✅ ';
 }
 
 .examplesItem {

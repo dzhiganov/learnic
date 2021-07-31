@@ -269,3 +269,9 @@
 .backToTheListButton:hover {
   background-color: rgb(235, 235, 235);
 }
+
+.skeletons {
+  display: grid;
+  grid-template-columns: repeat(3, 250px);
+  grid-column-gap: 16px;
+}

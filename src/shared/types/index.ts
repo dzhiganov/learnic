@@ -17,6 +17,7 @@ export type Word = {
   repeat: string | null;
   step: number;
   examples?: string[];
+  transcription?: string;
   audio: string;
   tags: Tags;
 };

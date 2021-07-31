@@ -11,13 +11,13 @@ import { useQuery, useMutation } from '@apollo/client';
 import groupBy from 'lodash.groupby';
 import dayjs from 'dayjs';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import Skeleton from '@material-ui/lab/Skeleton';
 import useSelector from '~hooks/useSelector';
 // eslint-disable-next-line css-modules/no-unused-class
 import styles from './styles.module.css';
 import Card from './Card/Card';
 import getNewRepeatTimeByStep from './utils/getNewRepeatTimeByStep';
 import InfoBlock from './InfoBlock';
-import Loading from '~c/atoms/Loading';
 import Definition from './Definition';
 import getTrainingWords from '~graphql/queries/getTrainingWords';
 import updateWordMutation from '~graphql/mutations/updateWord';
@@ -182,8 +182,13 @@ const Cards: React.FunctionComponent = () => {
   if (loading) {
     return (
       <div className={styles.wrapper}>
-        <div>
-          <Loading />
+        <header className={styles.trainingHeader}>
+          <h1 className={styles.title}>Select training</h1>
+        </header>
+        <div className={styles.skeletons}>
+          <Skeleton animation="wave" variant="rect" width={250} height={250} />
+          <Skeleton animation="wave" variant="rect" width={250} height={250} />
+          <Skeleton animation="wave" variant="rect" width={250} height={250} />
         </div>
       </div>
     );

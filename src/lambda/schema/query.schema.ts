@@ -37,6 +37,7 @@ const typeDefs = gql`
     repeat: String
     step: Int
     audio: String
+    transcription: String
     examples: [String]
     tags: [Tag]
   }

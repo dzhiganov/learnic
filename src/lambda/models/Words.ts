@@ -44,11 +44,11 @@ class Words {
       >;
       phonetics: Array<Record<string, unknown>>;
     }>
-  ): { examples: string[]; audio: string } {
+  ): { examples: string[]; audio: string; transcription: string } {
     const [wordData] = data;
     const { meanings, phonetics: phoneticsList } = wordData;
     const [phonetics] = phoneticsList;
-    const { audio } = phonetics;
+    const { audio, text: transcription } = phonetics;
 
     const result = meanings.reduce(
       (
@@ -67,6 +67,7 @@ class Words {
     return {
       examples: result,
       audio: audio as string,
+      transcription: transcription as string,
     };
   }
 
@@ -75,29 +76,35 @@ class Words {
   ): Promise<{
     examples: string[];
     audio: string;
+    transcription: string;
   }> {
     try {
       const data = await getDefinition(keyword);
 
       if (data && Array.isArray(data)) {
-        const { examples: resExamples, audio: resAudio } = Words.getExamples(
-          data
-        );
+        const {
+          examples: resExamples,
+          audio: resAudio,
+          transcription,
+        } = Words.getExamples(data);
 
         return {
           examples: resExamples,
           audio: resAudio as string,
+          transcription,
         };
       }
 
       return {
         examples: [],
         audio: '',
+        transcription: '',
       };
     } catch (error) {
       return {
         examples: [],
         audio: '',
+        transcription: '',
       };
     }
   }
@@ -206,7 +213,7 @@ class Words {
     newWord: WordSchema;
   }> {
     const request = firestore.collection('users').doc(uid).collection('words');
-    const { examples, audio } = await Words.getDefinition(word);
+    const { examples, audio, transcription } = await Words.getDefinition(word);
 
     const ref = await request.add({
       word,
@@ -215,6 +222,7 @@ class Words {
       date: new Date(),
       repeat: new Date(),
       audio,
+      transcription,
       examples: (examples as string[]).filter((example: string) => example),
     });
     const snapshot = await ref.get();

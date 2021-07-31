@@ -96,7 +96,10 @@ const WordsCard: React.FunctionComponent<Props> = ({
         </div>
 
         <div className={styles.buttons}>
-          <AudioButton audioURL={value?.audio || ''} />
+          <AudioButton
+            audioURL={value?.audio || ''}
+            transcription={value?.transcription || ''}
+          />
 
           <StepsPopup
             step={value?.step || 0}
