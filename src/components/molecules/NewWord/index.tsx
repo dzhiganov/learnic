@@ -1,13 +1,19 @@
+/* eslint-disable css-modules/no-unused-class */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { getTranslate } from 'core/store/api/translate';
 import useDebounce from 'react-use/lib/useDebounce';
 import { useTranslation } from 'react-i18next';
+import Checkbox from '@material-ui/core/Checkbox';
+import { useMutation, useQuery } from '@apollo/client';
+import useSelector from '~hooks/useSelector';
 import styles from './styles.module.css';
 import SaveButton from './SaveButton';
 import CancelButton from './CancelButton';
 import Tags from './Tags';
 import { Tags as TagsList } from '~shared/types';
+import updateUserOptions from '~graphql/mutations/updateUserOptions';
+import getUseSuggestedTranslate from '~graphql/queries/getUseSuggestedTranslate';
 
 type Props = {
   id: string;
@@ -33,24 +39,35 @@ type Props = {
 
 const NewWord: React.FunctionComponent<Props> = ({
   id,
-  initialState,
+  initialState = null,
   onSave,
   onCancel,
-  autoFetch,
+  autoFetch = true,
 }: Props) => {
   const { t } = useTranslation();
   const inputRef: React.RefObject<HTMLTextAreaElement> = useRef(null);
   const [word, setWord] = useState('');
   const [translate, setTranslate] = useState('');
+  const [suggestedTranslate, setSuggestedTranslate] = useState('');
   const [tagsIds, setTagsIds] = useState<string[]>([]);
-  const selectedData = useSelector(
-    ({ translate: translateState }: { translate: { token: string } }) =>
-      translateState
-  );
-  const { token = '' } = selectedData || {};
+  const token = useSelector<string>('translate.token');
+  const [fetchUpdateUseSuggestedTranslate] = useMutation(updateUserOptions);
+  const uid = useSelector<string>('user.uid');
+  const queryResult = useQuery(getUseSuggestedTranslate, {
+    variables: {
+      uid,
+    },
+  });
+
+  const {
+    data: {
+      user: { userOptions: { useSuggestedTranslate = 'null' } = {} } = {},
+    } = {},
+  } = queryResult;
 
   const [, cancel] = useDebounce(
     async () => {
+      if (!useSuggestedTranslate) return;
       if (!autoFetch || !word) {
         return;
       }
@@ -63,7 +80,7 @@ const NewWord: React.FunctionComponent<Props> = ({
         res || {};
       const [value = ''] = dictionaryTranslate.split(',');
 
-      setTranslate(value);
+      setSuggestedTranslate(value);
     },
     500,
     [token, word]
@@ -139,6 +156,29 @@ const NewWord: React.FunctionComponent<Props> = ({
     onCancel();
   }, [onCancel]);
 
+  const handleChangeSuggestedTranslate = ({
+    target: { checked = false } = {},
+  }) => {
+    fetchUpdateUseSuggestedTranslate({
+      variables: {
+        uid,
+        userOptions: {
+          useSuggestedTranslate: checked,
+        },
+      },
+      optimisticResponse: {
+        updateUserOptions: {
+          uid,
+          userOptions: {
+            useSuggestedTranslate: checked,
+            __typename: 'UserOptions',
+          },
+          __typename: 'User',
+        },
+      },
+    });
+  };
+
   return (
     <>
       <header className={styles.header}>Adding new word</header>
@@ -168,17 +208,35 @@ const NewWord: React.FunctionComponent<Props> = ({
                 {t('DICTIONARY.NEW_WORD_WINDOW.TRANSLATE_PLACEHOLDER')}
               </span>
             </label>
-
             <textarea
               id="textAreaTranslate"
               data-testid="translate"
               name="translate"
               className={styles.input}
-              value={translate}
+              value={useSuggestedTranslate ? suggestedTranslate : translate}
               onChange={handleOnChangeTranslate}
               onKeyDown={handleKeyDown}
               rows={3}
             />
+
+            <label
+              htmlFor="suggestedTranslate"
+              className={`${styles.suggestedTranslateLabel} ${
+                !useSuggestedTranslate && styles.unchecked
+              }`}
+            >
+              <Checkbox
+                id="suggestedTranslate"
+                checked={useSuggestedTranslate}
+                onChange={handleChangeSuggestedTranslate}
+                color="primary"
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                disableRipple
+                style={{ backgroundColor: 'transparent', padding: '4px' }}
+                size="small"
+              />
+              Use suggested translate
+            </label>
           </div>
           <Tags wordId={id} tagsIds={tagsIds} setTags={setTagsIds} />
         </div>
@@ -189,11 +247,6 @@ const NewWord: React.FunctionComponent<Props> = ({
       </div>
     </>
   );
-};
-
-NewWord.defaultProps = {
-  initialState: null,
-  autoFetch: true,
 };
 
 export default memo(NewWord);

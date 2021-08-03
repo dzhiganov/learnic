@@ -12,6 +12,7 @@ const typeDefs = gql`
   type UserOptions {
     language: String!
     colorScheme: String!
+    useSuggestedTranslate: Boolean!
   }
 
   type Tags {
@@ -21,6 +22,7 @@ const typeDefs = gql`
   input UserOptionsInput {
     language: String
     colorScheme: String
+    useSuggestedTranslate: Boolean
   }
 
   type Tag {

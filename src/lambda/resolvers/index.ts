@@ -5,6 +5,7 @@ import Tags from '../models/Tags';
 type UserOptions = {
   language: string;
   colorScheme: string;
+  useSuggestedTranslate: boolean;
 };
 
 type Response = {
@@ -39,6 +40,22 @@ const getUserColorScheme = async ({ uid }: Params): Promise<string> => {
   }
 
   return colorScheme;
+};
+
+const getUseSuggestedTranslate = async ({ uid }: Params): Promise<boolean> => {
+  const { useSuggestedTranslate } = await getUserOptions(uid);
+
+  return useSuggestedTranslate;
+};
+
+const updateSuggestedTranslate = async ({
+  uid,
+  useSuggestedTranslate,
+}: {
+  uid: string;
+  useSuggestedTranslate: boolean;
+}): Promise<unknown> => {
+  return User.updateUser(uid, { useSuggestedTranslate });
 };
 
 const updateUserLanguage = async ({
@@ -78,6 +95,13 @@ const updateUserOptions = async (
     await updateUserColorScheme({
       uid,
       colorScheme: userOptions.colorScheme,
+    });
+  }
+
+  if (userOptions.useSuggestedTranslate !== undefined) {
+    await updateSuggestedTranslate({
+      uid,
+      useSuggestedTranslate: userOptions.useSuggestedTranslate,
     });
   }
 
@@ -173,6 +197,7 @@ const resolvers = {
   UserOptions: {
     language: getUserLanguage,
     colorScheme: getUserColorScheme,
+    useSuggestedTranslate: getUseSuggestedTranslate,
   },
   Mutation: {
     updateUserOptions,

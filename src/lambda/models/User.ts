@@ -3,6 +3,7 @@ import { firestore } from '../database';
 type UserOptions = {
   language: string;
   colorScheme: string;
+  useSuggestedTranslate: boolean;
 };
 
 type UserModel = {

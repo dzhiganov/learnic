@@ -6,6 +6,8 @@ const updateUserOptions = gql`
       uid
       userOptions {
         colorScheme
+        language
+        useSuggestedTranslate
         __typename
       }
       __typename

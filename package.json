@@ -140,8 +140,7 @@
     "prettier": "^2.2.0",
     "react-snap": "^1.23.0",
     "redux-mock-store": "^1.5.4",
-    "start-server-and-test": "^1.12.0",
-    "waait": "^1.0.5"
+    "start-server-and-test": "^1.12.0"
   },
   "jest": {
     "moduleNameMapper": {

@@ -8,10 +8,31 @@ import userEvent from '@testing-library/user-event';
 import { MockedProvider } from '@apollo/client/testing';
 import * as translateApi from '~store/api/translate';
 import NewWord from '.';
-// import getUserTags from '~graphql/queries/getUserTags';
-// import getDefaultTags from '~graphql/queries/getDefaultTags';
+import getUseSuggestedTranslate from '~graphql/queries/getUseSuggestedTranslate';
 
-const mocks = [];
+const mocks = [
+  {
+    request: {
+      query: getUseSuggestedTranslate,
+      variables: {
+        uid: 'FAKE_USER_ID',
+      },
+      fetchPolicy: 'no-cache',
+    },
+    result: {
+      data: {
+        user: {
+          uid: 'FAKE_USER_ID',
+          userOptions: {
+            useSuggestedTranslate: true,
+            __typename: 'UserOptions',
+          },
+          __typename: 'User',
+        },
+      },
+    },
+  },
+];
 
 let mockedTranslateApi;
 let mockedConsoleError;
@@ -48,7 +69,11 @@ const renderNewWord = (
   );
 
   const utils = render(
-    <MockedProvider mocks={mocks}>
+    <MockedProvider
+      mocks={mocks}
+      addTypename={false}
+      defaultOptions={{ watchQuery: { fetchPolicy: 'no-cache' } }}
+    >
       <NewWord
         onSave={mockedOnSave}
         onCancel={mockedOnCancel}
@@ -80,7 +105,7 @@ describe('NewWord', () => {
   });
 
   beforeEach(() => {
-    jest.useFakeTimers();
+    jest.useFakeTimers('legacy');
   });
 
   afterEach(() => {
@@ -94,58 +119,8 @@ describe('NewWord', () => {
     expect(queryByTestId('word') === document.activeElement).toBeTruthy();
   });
 
-  test('should render with correct initial state', () => {
-    const { container, queryByTestId } = renderNewWord();
-
-    const wordInput = container.querySelector('[name="word"]');
-    const translateInput = container.querySelector('[name="translate"]');
-
-    expect(wordInput.value).toBe(fakeInitialState.word);
-    expect(translateInput.value).toBe(fakeInitialState.translate);
-    expect(queryByTestId('word') === document.activeElement).toBeTruthy();
-  });
-
-  test('user change input value', () => {
-    const { container } = renderNewWord({ autoFetch: true });
-    const wordInput = container.querySelector('[name="word"]');
-    const translateInput = container.querySelector('[name="translate"]');
-
-    userEvent.type(wordInput, 'hello world');
-    userEvent.type(translateInput, 'hello world');
-
-    expect(wordInput).toHaveValue('hello world');
-    expect(translateInput).toHaveValue('hello world');
-  });
-
-  test('user change type text after delete initial values', () => {
-    const { container } = renderNewWord();
-
-    const wordInput = container.querySelector('[name="word"]');
-    const translateInput = container.querySelector('[name="translate"]');
-
-    userEvent.type(wordInput, '{selectall}{backspace}New word');
-    userEvent.type(translateInput, '{selectall}{backspace}New translate');
-
-    expect(wordInput).toHaveValue('New word');
-    expect(translateInput).toHaveValue('New translate');
-  });
-
-  test('should not fetch translate if autoFetch is false', async () => {
-    const { container } = renderNewWord();
-
-    const wordInput = container.querySelector('[name="word"]');
-    const translateInput = container.querySelector('[name="translate"]');
-
-    userEvent.type(wordInput, '{selectall}{backspace}w');
-
-    expect(translateApi.getTranslate).not.toHaveBeenCalled();
-
-    expect(wordInput).toHaveValue('w');
-    expect(translateInput).toHaveValue(fakeInitialState.translate);
-  });
-
   test('should fetch have been called n times', async () => {
-    const DELAY = 500;
+    const DELAY = 2000;
 
     const { container } = renderNewWord({ autoFetch: true });
 
