@@ -6,6 +6,8 @@ import useDebounce from 'react-use/lib/useDebounce';
 import { useTranslation } from 'react-i18next';
 import Checkbox from '@material-ui/core/Checkbox';
 import { useMutation, useQuery } from '@apollo/client';
+import useAsyncFn from 'react-use/lib/useAsyncFn';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import useSelector from '~hooks/useSelector';
 import styles from './styles.module.css';
 import SaveButton from './SaveButton';
@@ -51,7 +53,7 @@ const NewWord: React.FunctionComponent<Props> = ({
   const [suggestedTranslate, setSuggestedTranslate] = useState('');
   const [tagsIds, setTagsIds] = useState<string[]>([]);
   const token = useSelector<string>('translate.token');
-  const [fetchUpdateUseSuggestedTranslate] = useMutation(updateUserOptions);
+  const [fetchUpdateUserOptions] = useMutation(updateUserOptions);
   const uid = useSelector<string>('user.uid');
   const queryResult = useQuery(getUseSuggestedTranslate, {
     variables: {
@@ -61,29 +63,35 @@ const NewWord: React.FunctionComponent<Props> = ({
 
   const {
     data: {
-      user: { userOptions: { useSuggestedTranslate = 'null' } = {} } = {},
+      user: { userOptions: { useSuggestedTranslate = true } = {} } = {},
     } = {},
   } = queryResult;
 
+  const [{ loading }, fetchTranslate] = useAsyncFn(async (req) => {
+    if (!useSuggestedTranslate) return;
+    if (!autoFetch || !req) {
+      return;
+    }
+    const res = (await getTranslate(token, req, 'ru', 'en')) as {
+      Translation: {
+        Translation: string;
+      };
+    };
+    const { Translation: { Translation: dictionaryTranslate = '' } = {} } =
+      res || {};
+    const [value = ''] = dictionaryTranslate.split(',');
+
+    setSuggestedTranslate(value);
+  }, []);
+
   const [, cancel] = useDebounce(
     async () => {
-      if (!useSuggestedTranslate) return;
-      if (!autoFetch || !word) {
-        return;
+      if (useSuggestedTranslate) {
+        fetchTranslate(word);
       }
-      const res = (await getTranslate(token, word, 'ru', 'en')) as {
-        Translation: {
-          Translation: string;
-        };
-      };
-      const { Translation: { Translation: dictionaryTranslate = '' } = {} } =
-        res || {};
-      const [value = ''] = dictionaryTranslate.split(',');
-
-      setSuggestedTranslate(value);
     },
     500,
-    [token, word]
+    [word]
   );
 
   useEffect(() => {
@@ -99,6 +107,13 @@ const NewWord: React.FunctionComponent<Props> = ({
       setTagsIds(initialState?.tags.map(({ id: tagId }) => tagId));
     }
   }, [initialState]);
+
+  useEffect(() => {
+    if (!word && translate) {
+      setTranslate('');
+      setSuggestedTranslate('');
+    }
+  }, [word, translate]);
 
   const handleOnChangeWord = useCallback(({ target: { value = '' } = {} }) => {
     setWord(value);
@@ -159,7 +174,7 @@ const NewWord: React.FunctionComponent<Props> = ({
   const handleChangeSuggestedTranslate = ({
     target: { checked = false } = {},
   }) => {
-    fetchUpdateUseSuggestedTranslate({
+    fetchUpdateUserOptions({
       variables: {
         uid,
         userOptions: {
@@ -176,8 +191,16 @@ const NewWord: React.FunctionComponent<Props> = ({
           __typename: 'User',
         },
       },
+    }).then(() => {
+      if (checked) fetchTranslate(word);
     });
   };
+
+  useEffect(() => {
+    if (useSuggestedTranslate) {
+      setTranslate(suggestedTranslate);
+    }
+  }, [useSuggestedTranslate, suggestedTranslate]);
 
   return (
     <>
@@ -198,7 +221,7 @@ const NewWord: React.FunctionComponent<Props> = ({
               onChange={handleOnChangeWord}
               ref={inputRef}
               onKeyDown={handleKeyDown}
-              rows={3}
+              rows={1}
             />
           </div>
 
@@ -207,37 +230,51 @@ const NewWord: React.FunctionComponent<Props> = ({
               <span>
                 {t('DICTIONARY.NEW_WORD_WINDOW.TRANSLATE_PLACEHOLDER')}
               </span>
+              {loading && (
+                <CircularProgress
+                  className={styles.translateLoading}
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                  }}
+                />
+              )}
             </label>
-            <textarea
-              id="textAreaTranslate"
-              data-testid="translate"
-              name="translate"
-              className={styles.input}
-              value={useSuggestedTranslate ? suggestedTranslate : translate}
-              onChange={handleOnChangeTranslate}
-              onKeyDown={handleKeyDown}
-              rows={3}
-            />
 
-            <label
-              htmlFor="suggestedTranslate"
-              className={`${styles.suggestedTranslateLabel} ${
-                !useSuggestedTranslate && styles.unchecked
-              }`}
-            >
-              <Checkbox
-                id="suggestedTranslate"
-                checked={useSuggestedTranslate}
-                onChange={handleChangeSuggestedTranslate}
-                color="primary"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-                disableRipple
-                style={{ backgroundColor: 'transparent', padding: '4px' }}
-                size="small"
+            <div className={styles.inputWrapper}>
+              <textarea
+                id="textAreaTranslate"
+                data-testid="translate"
+                name="translate"
+                className={styles.input}
+                value={translate}
+                onChange={handleOnChangeTranslate}
+                onKeyDown={handleKeyDown}
+                rows={1}
+                disabled={loading}
               />
-              Use suggested translate
-            </label>
+            </div>
           </div>
+
+          <label
+            htmlFor="suggestedTranslate"
+            className={`${styles.suggestedTranslateLabel} ${
+              !useSuggestedTranslate && styles.unchecked
+            }`}
+          >
+            <Checkbox
+              id="suggestedTranslate"
+              checked={useSuggestedTranslate}
+              onChange={handleChangeSuggestedTranslate}
+              color="primary"
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+              disableRipple
+              style={{ backgroundColor: 'transparent', padding: '4px' }}
+              size="small"
+            />
+            Suggest translate
+          </label>
+
           <Tags wordId={id} tagsIds={tagsIds} setTags={setTagsIds} />
         </div>
         <div className={styles.buttons}>

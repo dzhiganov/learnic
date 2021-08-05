@@ -13,6 +13,11 @@
   flex-direction: column;
 }
 
+.inputWrapper {
+  position: relative;
+  font-size: 0;
+}
+
 .input {
   color: var(--color-text);
   border-color: var(--color-input-border);
@@ -26,7 +31,6 @@
   border-width: 1px;
   border-style: solid;
   box-sizing: border-box;
-  margin-bottom: 24px;
   padding: 0.3rem 0.6rem;
   text-align: left;
   appearance: none;
@@ -50,15 +54,18 @@
 .inputContainer {
   display: flex;
   flex-direction: column;
+  position: relative;
+  margin-bottom: 24px;
 }
 
 .label {
-  display: inline-block;
+  display: inline-flex;
   color: var(--color-text-secondary);
   font-weight: 500;
   margin-right: 10px;
   font-size: 16px;
   margin-bottom: 4px;
+  align-items: center;
 }
 
 .inputContainer:focus-within > .label {
@@ -99,4 +106,10 @@
 
 .suggestedTranslateLabel .MuiIconButton-label {
   color: var(--color-primary);
+}
+
+.translateLoading {
+  color: var(--color-primary);
+  margin-left: 8px;
+  margin-bottom: -2px;
 }

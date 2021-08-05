@@ -23,6 +23,11 @@ const cache = new InMemoryCache({
         words: {
           merge,
         },
+        userOptions: {
+          merge: (existing = {}, incoming: Record<string, unknown>) => {
+            return { ...existing, ...incoming };
+          },
+        },
       },
     },
   },

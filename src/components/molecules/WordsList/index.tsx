@@ -165,12 +165,11 @@ const WordsList: React.FunctionComponent<Props> = ({
                   );
                 const isFocused = focused === id;
                 return (
-                  <>
+                  <React.Fragment key={id}>
                     {(!shouldRenderHeaderDate || i === 0) && (
                       <HeaderDate strDate={date as string} />
                     )}
                     <ListItem
-                      key={id}
                       id={id}
                       word={word}
                       translate={translate}
@@ -178,7 +177,7 @@ const WordsList: React.FunctionComponent<Props> = ({
                       setFocused={setFocused}
                       isFocused={isFocused}
                     />
-                  </>
+                  </React.Fragment>
                 );
               }
             )
