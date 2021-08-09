@@ -329,7 +329,7 @@ const Cards: React.FunctionComponent = () => {
     }
   }
 
-  if (!selectTraining) {
+  if (!selectedTraining) {
     const prepared = words.map(({ date, ...props }) => ({
       date: dayjs(date as string).format('YYYY.MM.DD'),
       ...props,
