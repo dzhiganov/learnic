@@ -4,7 +4,10 @@ import { TrainingTypes } from '~shared/types';
 import Card from './Card';
 
 type Props = {
-  counts: Record<TrainingTypes, number>;
+  counts: Record<
+    TrainingTypes.All | TrainingTypes.Last | TrainingTypes.Penultimate,
+    number
+  >;
   onSelect: (trainingType: TrainingTypes) => void;
 };
 

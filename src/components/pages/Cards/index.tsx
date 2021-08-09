@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -6,7 +6,6 @@ import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { createStyles, withStyles, Theme } from '@material-ui/core/styles';
-import Checkbox from '@material-ui/core/Checkbox';
 import { useQuery, useMutation } from '@apollo/client';
 import groupBy from 'lodash.groupby';
 import dayjs from 'dayjs';
@@ -44,14 +43,11 @@ const BorderLinearProgress = withStyles((theme: Theme) => {
 const Cards: React.FunctionComponent = () => {
   const { t } = useTranslation();
   const uid = useSelector<string>('user.uid');
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [successful, setSuccesseful] = useState<number[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [successful, setSuccessful] = useState<number[]>([]);
   const [failed, setFailed] = useState<number[]>([]);
-  const [showTranslateOnCard, setshowTranslateOnCard] = useState<boolean>(
-    false
-  );
-  const [finished, setFinished] = useState<boolean>(false);
-  const [showDefinition, setShowDefinition] = useState<boolean>(false);
+  const [finished, setFinished] = useState(false);
+  const [showDefinition, setShowDefinition] = useState(false);
   const [selectedTraining, selectTraining] = useState<TrainingTypes | null>(
     null
   );
@@ -70,6 +66,25 @@ const Cards: React.FunctionComponent = () => {
     },
   });
 
+  const wordSets = useMemo(() => {
+    const prepared = words.map(({ date, ...props }) => ({
+      date: dayjs(date as string).format('YYYY.MM.DD'),
+      ...props,
+    }));
+    const groupedByDate = groupBy(prepared, 'date');
+    const sortedKeys = Object.keys(groupedByDate).sort((a, b) =>
+      dayjs(a).isBefore(dayjs(b)) ? 1 : -1
+    );
+
+    const [lastKeys, penultimateKeys] = sortedKeys;
+
+    return {
+      [TrainingTypes.All]: words,
+      [TrainingTypes.Last]: groupedByDate[lastKeys],
+      [TrainingTypes.Penultimate]: groupedByDate[penultimateKeys],
+    };
+  }, [words]);
+
   const back = useCallback(() => {
     const newIndex = currentIndex - 1;
     if (!words[newIndex]) return;
@@ -83,11 +98,11 @@ const Cards: React.FunctionComponent = () => {
   }, [currentIndex, words]);
 
   const handleDone = useCallback(() => {
-    setSuccesseful([...successful, currentIndex]);
+    setSuccessful([...successful, currentIndex]);
     const oldIndex = currentIndex;
     const newIndex = currentIndex + 1;
 
-    if (newIndex === words.length) {
+    if (newIndex === wordSets[selectedTraining as TrainingTypes].length) {
       setFinished(true);
     }
 
@@ -111,7 +126,15 @@ const Cards: React.FunctionComponent = () => {
         },
       });
     });
-  }, [uid, words, currentIndex, successful, fetchUpdate]);
+  }, [
+    uid,
+    words,
+    currentIndex,
+    successful,
+    fetchUpdate,
+    wordSets,
+    selectedTraining,
+  ]);
 
   const getStatusByIndex = (
     index: number
@@ -126,7 +149,7 @@ const Cards: React.FunctionComponent = () => {
     const newIndex = currentIndex + 1;
     const oldIndex = currentIndex;
 
-    if (newIndex === words.length) {
+    if (newIndex === wordSets[selectedTraining as TrainingTypes].length) {
       setFinished(true);
     }
 
@@ -152,30 +175,31 @@ const Cards: React.FunctionComponent = () => {
         },
       });
     });
-  }, [currentIndex, words, uid, failed, fetchUpdate]);
+  }, [
+    currentIndex,
+    words,
+    uid,
+    failed,
+    fetchUpdate,
+    selectedTraining,
+    wordSets,
+  ]);
 
-  const handleChangeShowTranslateOnCard = useCallback(
-    (event) => setshowTranslateOnCard(event.target.checked),
-    []
-  );
-
-  const handleShowDefinition = useCallback((value: boolean) => {
+  const handleShowDefinition = (value: boolean) => {
     setShowDefinition(value);
-  }, []);
+  };
 
-  const handleCloseDefinition = useCallback(() => {
+  const handleCloseDefinition = () => {
     setShowDefinition(false);
-  }, []);
+  };
 
-  const handleOnChangeSlide = useCallback(
-    (newSlideIndex: number) => setCurrentIndex(newSlideIndex),
-    []
-  );
+  const handleOnChangeSlide = (newSlideIndex: number) =>
+    setCurrentIndex(newSlideIndex);
 
   const handleBackToTheList = () => {
     selectTraining(null);
     setCurrentIndex(0);
-    setSuccesseful([]);
+    setSuccessful([]);
     setFailed([]);
   };
 
@@ -197,45 +221,13 @@ const Cards: React.FunctionComponent = () => {
   if ((!words.length && !loading) || finished) {
     return (
       <div className={styles.wrapper}>
-        <header className={styles.trainingHeader}>
-          <div className={styles.headerOptions}>
-            <div className={styles.checkboxContainer}>
-              <Checkbox
-                checked={showTranslateOnCard}
-                onChange={handleChangeShowTranslateOnCard}
-                color="primary"
-              />
-              <span>{t('CARDS.SHOW_TRANSLATE_ON_CARD')}</span>
-            </div>
-          </div>
-        </header>
         <InfoBlock />
       </div>
     );
   }
 
   if (selectedTraining && !finished) {
-    const prepared = words.map(({ date, ...props }) => ({
-      date: dayjs(date as string).format('YYYY.MM.DD'),
-      ...props,
-    }));
-    const groupedByDate = groupBy(prepared, 'date');
-    const sortedKeys = Object.keys(groupedByDate).sort((a, b) => {
-      return dayjs(a).isBefore(dayjs(b)) ? 1 : -1;
-    });
-
-    const allWords = words;
-    const lastWords = groupedByDate[sortedKeys[0]];
-    const penultimateWords = groupedByDate[sortedKeys[1]];
-
-    let wordsSet = allWords;
-    if (selectedTraining === TrainingTypes.Last) {
-      wordsSet = lastWords;
-    }
-
-    if (selectedTraining === TrainingTypes.Penultimate) {
-      wordsSet = penultimateWords;
-    }
+    const wordsSet = wordSets[selectedTraining as TrainingTypes];
 
     if (wordsSet[currentIndex]) {
       return (
@@ -289,8 +281,8 @@ const Cards: React.FunctionComponent = () => {
                 }[]).map(({ id, word, translate, audio }, index) => (
                   <div key={id}>
                     <Card
-                      word={showTranslateOnCard ? translate : word}
-                      translate={showTranslateOnCard ? word : translate}
+                      word={word}
+                      translate={translate}
                       isActive={index === currentIndex}
                       status={getStatusByIndex(index)}
                       audio={audio as string}
@@ -337,7 +329,7 @@ const Cards: React.FunctionComponent = () => {
     }
   }
 
-  if (!selectedTraining) {
+  if (!selectTraining) {
     const prepared = words.map(({ date, ...props }) => ({
       date: dayjs(date as string).format('YYYY.MM.DD'),
       ...props,
