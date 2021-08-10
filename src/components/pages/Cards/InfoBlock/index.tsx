@@ -1,17 +1,17 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 
-const InfoBlock: React.FC = () => {
-  const { t } = useTranslation();
+type Props = {
+  successful: number;
+  failed: number;
+};
 
+const InfoBlock: React.FC<Props> = ({ successful, failed }) => {
   return (
     <div className={styles.container}>
-      <p>{t('CARDS.ALL_WORDS_REPEATED')}</p>
-      <p>
-        <span>{t('CARDS.GO_TO')}</span>
-        <a href="/home/words">{t('CARDS.DICTIONARY')}</a>
-      </p>
+      <p>Your results</p>
+      <p className={styles.done}>{`Done ${successful}`}</p>
+      <p className={styles.repeat}>{`Repeat ${failed}`}</p>
     </div>
   );
 };

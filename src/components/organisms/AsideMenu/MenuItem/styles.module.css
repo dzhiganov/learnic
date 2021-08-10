@@ -1,11 +1,20 @@
 .item {
+  min-width: 100px;
+  flex-shrink: 1;
   cursor: pointer;
-  font-weight: 500;
-  text-align: left;
+  border: none;
+  color: var(--color-primary);
+  padding: 0.5em 1em;
   font-size: 18px;
-  height: 100%;
-  display: inline-flex;
-  padding: 0 18px;
+  box-sizing: border-box;
+  font-weight: 500;
+  line-height: 1.75;
+  border-radius: 8px;
+  letter-spacing: -0.025em;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .title {
@@ -17,16 +26,7 @@
 
 .item:hover,
 .item:focus {
-  color: var(--color-primary-medium);
-}
-
-.itemActive {
-  color: var(--color-primary);
-}
-
-.itemActive:hover .title,
-.itemActive:focus .title {
-  color: var(--color-primary);
+  background-color: rgba(233, 234, 251, 0.075);
 }
 
 .link {

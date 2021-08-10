@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 
@@ -15,8 +15,6 @@ const MenuItem: React.FunctionComponent<Props> = ({
   onClick,
 }: Props) => {
   const { t } = useTranslation();
-  const { pathname } = useLocation();
-  const isActive = pathname === to;
 
   return (
     <Link
@@ -25,7 +23,7 @@ const MenuItem: React.FunctionComponent<Props> = ({
       data-testid="page-link"
       onClick={onClick}
     >
-      <li className={`${styles.item} ${isActive && styles.itemActive}`}>
+      <li className={`${styles.item}`}>
         <div className={styles.itemWrapper}>
           <span className={styles.title}>{t(title)}</span>
         </div>

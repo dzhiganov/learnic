@@ -18,10 +18,10 @@ import Card from './Card/Card';
 import getNewRepeatTimeByStep from './utils/getNewRepeatTimeByStep';
 import InfoBlock from './InfoBlock';
 import Definition from './Definition';
-import getTrainingWords from '~graphql/queries/getTrainingWords';
 import updateWordMutation from '~graphql/mutations/updateWord';
-import { GetTrainingWordsQueryResult, TrainingTypes } from '~shared/types';
+import { GetWordsQueryResult, TrainingTypes } from '~shared/types';
 import Selector from './Selector';
+import getWords from '~graphql/queries/getWords';
 
 const BorderLinearProgress = withStyles((theme: Theme) => {
   return createStyles({
@@ -58,9 +58,9 @@ const Cards: React.FunctionComponent = () => {
   };
 
   const {
-    data: { user: { trainingWords: words = [] } = {} } = {},
+    data: { user: { words = [] } = {} } = {},
     loading,
-  } = useQuery<GetTrainingWordsQueryResult>(getTrainingWords, {
+  } = useQuery<GetWordsQueryResult>(getWords, {
     variables: {
       uid,
     },
@@ -201,6 +201,7 @@ const Cards: React.FunctionComponent = () => {
     setCurrentIndex(0);
     setSuccessful([]);
     setFailed([]);
+    setFinished(false);
   };
 
   if (loading) {
@@ -221,7 +222,16 @@ const Cards: React.FunctionComponent = () => {
   if ((!words.length && !loading) || finished) {
     return (
       <div className={styles.wrapper}>
-        <InfoBlock />
+        <header className={styles.trainingHeader}>
+          <button
+            type="button"
+            className={styles.backToTheListButton}
+            onClick={handleBackToTheList}
+          >
+            <ArrowBackIosIcon /> Back
+          </button>
+        </header>
+        <InfoBlock successful={successful.length} failed={failed.length} />
       </div>
     );
   }
