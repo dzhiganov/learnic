@@ -213,7 +213,11 @@ class Words {
     newWord: WordSchema;
   }> {
     const request = firestore.collection('users').doc(uid).collection('words');
-    const { examples, audio, transcription } = await Words.getDefinition(word);
+    const {
+      examples = [],
+      audio = '',
+      transcription = '',
+    } = await Words.getDefinition(word);
 
     const ref = await request.add({
       word,
