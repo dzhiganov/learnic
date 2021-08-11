@@ -10,6 +10,11 @@
   align-self: center;
   border-radius: 10px;
   color: var(--color-text-secondary);
+  margin-top: 22px;
+}
+
+.container > h2 {
+  font-size: 24px;
 }
 
 .done {

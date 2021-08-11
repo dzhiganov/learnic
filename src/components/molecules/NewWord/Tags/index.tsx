@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
@@ -32,9 +33,14 @@ type TagProps = {
 };
 
 const Tag: React.FC<TagProps> = ({ name, color, children, ...props }) => {
+  const fontColor = darker(color);
+
   return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    <div className={styles.tag} style={{ background: color }} {...props}>
+    <div
+      className={styles.tag}
+      style={{ background: color, color: fontColor, borderColor: fontColor }}
+      {...props}
+    >
       {name}
       {children}
     </div>
@@ -87,7 +93,6 @@ type DefaultTagProps = {
   name: string;
   onClick: (tagId: string) => void;
 };
-
 const DefaultTag: React.FC<DefaultTagProps> = ({
   id,
   color,
@@ -100,15 +105,15 @@ const DefaultTag: React.FC<DefaultTagProps> = ({
 };
 
 const colors = [
-  '#ffd7d9',
-  '#ffd6e8',
-  '#e8daff',
-  '#d0e2ff',
-  '#bae6ff',
-  '#9ef0f0',
-  '#a7f0ba',
-  '#e0e0e0',
-  '#dde1e6',
+  'hsl(357, 100%, 92%)', // pink
+  'hsl(334, 100%, 92%)', // bright pink
+  'hsl(263, 100%, 93%)', // purple
+  'hsl(217, 100%, 91%)', // sky blue
+  'hsl(202, 100%, 86%)', // light blue
+  'hsl(180, 73%, 78%)', // cyan
+  'hsl(136, 71%, 80%)', // green
+  'hsl(0, 0%, 88%)', // grey
+  'hsl(213, 15%, 88%)', // blue grey
 ] as const;
 
 type Color = typeof colors[number];
@@ -211,11 +216,17 @@ const NewTag: React.FC<NewTagProps> = ({ setShowAddNewTag }) => {
     handleClosePalette();
   };
 
+  const fontColor = darker(color);
+
   return (
     <div
       className={`${styles.tag} ${styles.newTag}`}
       data-testid="newTagContainer"
-      style={{ background: color }}
+      style={{
+        background: color,
+        color: fontColor,
+        borderColor: fontColor,
+      }}
     >
       <div className={styles.paletteWrapper}>
         <button

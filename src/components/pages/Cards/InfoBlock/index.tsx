@@ -9,7 +9,7 @@ type Props = {
 const InfoBlock: React.FC<Props> = ({ successful, failed }) => {
   return (
     <div className={styles.container}>
-      <p>Your results</p>
+      <h2>🚀 Your results</h2>
       <p className={styles.done}>{`Done ${successful}`}</p>
       <p className={styles.repeat}>{`Repeat ${failed}`}</p>
     </div>
