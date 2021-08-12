@@ -4,7 +4,8 @@
     "EN": "English"
   },
   "TOP_BAR": {
-    "LOGOUT": "Log out"
+    "LOGOUT": "Log out",
+    "PROFILE": "Profile"
   },
   "ASIDE_MENU": {
     "DICTIONARY": "Dictionary",

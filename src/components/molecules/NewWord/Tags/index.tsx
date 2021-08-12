@@ -18,6 +18,7 @@ import getUserTags from '~graphql/queries/getUserTags';
 import getDefaultTags from '~graphql/queries/getDefaultTags';
 import addUserTag from '~graphql/mutations/addUserTag';
 import { Tags as TagsList, GetTagQuerySelector } from '~shared/types';
+import darker from './darker';
 
 type UserTagProps = {
   tagId: string;

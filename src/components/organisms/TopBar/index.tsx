@@ -4,13 +4,16 @@ import Popover from '@material-ui/core/Popover';
 import { useDispatch } from 'react-redux';
 import useMedia from 'react-use/lib/useMedia';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import User from '~c/molecules/User';
 import styles from './styles.module.css';
 import { logout } from '~actions/user';
 import AsideMenu from '~c/organisms/AsideMenu';
 import Logo from '~c/atoms/Logo';
+import { HOME_PROFILE } from '~router/paths';
 
 const TopBar: React.FC = () => {
+  const history = useHistory();
   const { t } = useTranslation();
   const isWide = useMedia('(min-width: 576px)');
   const dispatch = useDispatch();
@@ -46,8 +49,16 @@ const TopBar: React.FC = () => {
         title: t('TOP_BAR.LOGOUT'),
         onClick: handleLogout,
       },
+      {
+        id: 'logout',
+        title: t('TOP_BAR.PROFILE'),
+        onClick: () => {
+          history.push(HOME_PROFILE);
+          handleClose();
+        },
+      },
     ],
-    [handleLogout, t]
+    [handleLogout, t, history]
   );
 
   if (!isWide) {
