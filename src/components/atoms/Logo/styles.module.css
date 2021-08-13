@@ -3,6 +3,7 @@
   /* font-family: 'Archivo Black', sans-serif; */
   letter-spacing: -1px;
   font-family: 'Kaushan Script', cursive;
+  text-align: center;
 }
 
 .normal {
@@ -10,5 +11,5 @@
 }
 
 .large {
-  font-size: 40px;
+  font-size: 100px;
 }

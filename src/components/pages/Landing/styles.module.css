@@ -24,6 +24,9 @@
 .block {
   font-size: 18px;
   color: var(--color-text-secondary);
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
 }
 
 .block + .block {
@@ -38,13 +41,49 @@
 }
 
 .mainBlock {
-  background-color: rgb(178, 128, 243);
-  color: #fff;
-  padding: 15px 25px;
-  border-radius: 10px;
-  font-weight: 600;
+  display: flex;
+  justify-content: center;
 }
 
 .list > li + li {
   margin-top: 12px;
+}
+
+.startButton {
+  height: 60px;
+  font-size: 24px;
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #7b22ec;
+  transition: 300ms ease-in-out;
+}
+
+.subtitle {
+  font-size: 28px;
+  font-weight: 500;
+  text-align: center;
+  color: #232323;
+}
+
+.promoImageDictionary {
+  width: 900px;
+  border-radius: 22px;
+  box-shadow: 0 15px 35px 0 rgba(60, 66, 87, 0.08),
+    0 5px 15px 0 rgba(0, 0, 0, 0.12);
+}
+
+.images {
+  display: flex;
+}
+
+.container {
+  background-color: #fdebeb;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.title {
+  color: #7b22ec;
 }

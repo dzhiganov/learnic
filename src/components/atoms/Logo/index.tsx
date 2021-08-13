@@ -6,11 +6,12 @@ type Sizes = 'normal' | 'large';
 
 type Props = {
   size?: Sizes;
+  className?: string;
 };
 
-const Logo: React.FC<Props> = ({ size = 'normal' }) => {
+const Logo: React.FC<Props> = ({ size = 'normal', className }) => {
   return (
-    <div className={`${styles.logo} ${styles[size]}`}>
+    <div className={`${styles.logo} ${styles[size]} ${className}`}>
       <span>Learnic</span>
     </div>
   );

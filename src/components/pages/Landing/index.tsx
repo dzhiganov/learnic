@@ -1,13 +1,12 @@
 import React, { useCallback } from 'react';
 import Modal from '@material-ui/core/Modal';
-import { useTranslation } from 'react-i18next';
 import Logo from '~c/atoms/Logo';
 import Button from '~c/atoms/Button';
+// eslint-disable-next-line css-modules/no-unused-class
 import styles from './styles.module.css';
 import Login from '~c/molecules/Login';
 
 const Landing: React.FC = () => {
-  const { t } = useTranslation();
   const [open, setOpen] = React.useState(false);
 
   const handleClick = useCallback(() => {
@@ -17,39 +16,21 @@ const Landing: React.FC = () => {
   const handleClose = useCallback(() => setOpen(false), []);
 
   return (
-    <div>
+    <div className={styles.container}>
       <header className={styles.header}>
-        <div className={styles.top}>
-          <Logo size="large" />
-          <Button title={t('LANDING.LOGIN')} onClick={handleClick} />
+        <Logo size="large" className={styles.title} />
+        <h2 className={styles.subtitle}>One place - all dictionaries</h2>
+        <div className={styles.images}>
+          <img src="promo.png" alt="" className={styles.promoImageDictionary} />
         </div>
       </header>
       <main className={styles.main}>
-        <div className={`${styles.block} ${styles.mainBlock}`}>
-          <h3 className={styles.blockTitle}>{t('LANDING.MAIN.TITLE')}</h3>
-          <p>
-            <ul className={styles.list}>
-              <li>{t('LANDING.MAIN.LIST.0')}</li>
-              <li>{t('LANDING.MAIN.LIST.1')}</li>
-              <li>{t('LANDING.MAIN.LIST.2')}</li>
-              <li>{t('LANDING.MAIN.LIST.3')}</li>
-            </ul>
-          </p>
-        </div>
-        <div className={styles.block}>
-          <h3 className={styles.blockTitle}>
-            {t('LANDING.WHY_IT_WORKS.TITLE')}
-          </h3>
-          <p>
-            <ul className={styles.list}>
-              <li>{t('LANDING.WHY_IT_WORKS.LIST.0')}</li>
-              <li>{t('LANDING.WHY_IT_WORKS.LIST.1')}</li>
-            </ul>
-          </p>
-        </div>
-        <div className={styles.block}>
-          <h3 className={styles.blockTitle}>{t('LANDING.HOW_TO_USE.TITLE')}</h3>
-          <p>{t('LANDING.HOW_TO_USE.TEXT')}</p>
+        <div className={`${styles.block}`}>
+          <Button
+            title="✌️ Sign in"
+            onClick={handleClick}
+            className={styles.startButton}
+          />
         </div>
       </main>
       <Modal
