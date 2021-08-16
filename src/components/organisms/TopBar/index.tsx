@@ -45,17 +45,17 @@ const TopBar: React.FC = () => {
   const menuItems = useMemo(
     () => [
       {
-        id: 'logout',
-        title: t('TOP_BAR.LOGOUT'),
-        onClick: handleLogout,
-      },
-      {
-        id: 'logout',
+        id: 'profile',
         title: t('TOP_BAR.PROFILE'),
         onClick: () => {
           history.push(HOME_PROFILE);
           handleClose();
         },
+      },
+      {
+        id: 'logout',
+        title: t('TOP_BAR.LOGOUT'),
+        onClick: handleLogout,
       },
     ],
     [handleLogout, t, history]

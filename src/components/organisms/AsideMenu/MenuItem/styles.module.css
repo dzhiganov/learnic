@@ -26,7 +26,7 @@
 
 .item:hover,
 .item:focus {
-  background-color: rgba(233, 234, 251, 0.075);
+  background-color: rgba(131, 137, 245, 0.075);
 }
 
 .link {
