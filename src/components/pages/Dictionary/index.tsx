@@ -202,7 +202,6 @@ const Dictionary: React.FC = () => {
             <WordsList
               words={words}
               onShowNewWord={handleShowNewWord}
-              onSave={handleOnSave}
               onClickCard={handleClickCard}
               showNewWord={showNewWord}
               setShowNewWord={setShowNewWord}

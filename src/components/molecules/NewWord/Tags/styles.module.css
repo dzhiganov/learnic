@@ -57,13 +57,16 @@
 }
 
 .addNewTagButton {
-  background-color: var(--color-button-secondary);
+  background-color: transparent;
   border-radius: 10px;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+}
+.addNewTagButton:hover {
+  background-color: aliceblue;
 }
 
 .paletteWrapper {

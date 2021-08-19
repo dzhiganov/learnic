@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import ClearIcon from '@material-ui/icons/Clear';
 import { useMutation, useQuery } from '@apollo/client';
 import CheckIcon from '@material-ui/icons/Check';
-import AddIcon from '@material-ui/icons/Add';
+import { AddIcon } from '@chakra-ui/icons';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
 import Popover from '@material-ui/core/Popover';
 import useClickAway from 'react-use/lib/useClickAway';

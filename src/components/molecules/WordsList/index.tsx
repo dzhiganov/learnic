@@ -13,12 +13,6 @@ import { Words } from '~shared/types';
 type Props = {
   words: Words;
   onShowNewWord: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  onSave: (data: {
-    id?: string;
-    word: string;
-    translate: string;
-    tags?: string[][];
-  }) => void;
   onClickCard: ({
     id,
     word,
@@ -40,7 +34,6 @@ const WordsList: React.FunctionComponent<Props> = ({
   onShowNewWord,
   showNewWord,
   setShowNewWord,
-  onSave,
   onClickCard,
   edited,
   onCancelEdit,
@@ -92,7 +85,7 @@ const WordsList: React.FunctionComponent<Props> = ({
     setFilter(value);
   }, []);
 
-  const clearFilter = useCallback(() => setFilter(''), []);
+  // const clearFilter = useCallback(() => setFilter(''), []);
 
   const handleOnFocus = useCallback(() => {
     if (!searchFocused) setSearchFocused(true);
@@ -182,7 +175,7 @@ const WordsList: React.FunctionComponent<Props> = ({
               }
             )
           ) : (
-            <NoWord word={filter} onSave={onSave} clearFilter={clearFilter} />
+            <NoWord />
           )}
         </ul>
       </div>
