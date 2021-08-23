@@ -59,7 +59,8 @@ const Dictionary: React.FC = () => {
   );
 
   const [showNewWord, setShowNewWord] = useState(false);
-  const [edited, setEdited] = useState<string>('');
+  const [edited, setEdited] = useState('');
+  const [filter, setFilter] = useState('');
   const userId = useSelector<string>('user.uid');
   const {
     data: { user: { words = [] } = {} } = {},
@@ -167,6 +168,7 @@ const Dictionary: React.FC = () => {
     return (
       <div className={styles.modalContainer}>
         <NewWord
+          initial={filter || ''}
           id={type === 'edit' ? edited : ''}
           onSave={handleOnSave}
           onCancel={handleCancelEdit}
@@ -200,6 +202,8 @@ const Dictionary: React.FC = () => {
         {isWide || (!isWide && !selectedWord.id) ? (
           <div className={styles.wordsListContainer}>
             <WordsList
+              filter={filter}
+              setFilter={setFilter}
               words={words}
               onShowNewWord={handleShowNewWord}
               onClickCard={handleClickCard}

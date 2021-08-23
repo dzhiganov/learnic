@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useState, useRef } from 'react';
+import { Tooltip } from '@chakra-ui/react';
 import styles from './styles.module.css';
 import SaveButton from '~c/molecules/NewWord/SaveButton';
 
@@ -9,9 +10,11 @@ type Props = {
 const AddExample: React.FunctionComponent<Props> = ({ onSave }: Props) => {
   const [example, setExample] = useState('');
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const handleOnSave = useCallback(async () => {
     if (!example) {
+      setShowTooltip(true);
       return;
     }
     await onSave(example);
@@ -36,7 +39,17 @@ const AddExample: React.FunctionComponent<Props> = ({ onSave }: Props) => {
         />
       </div>
       <div className={styles.buttonsContainer}>
-        <SaveButton onSave={handleOnSave} disabled={!example} />
+        <Tooltip
+          label="The example text must contain at least one letter"
+          aria-label="Empty example field"
+          isOpen={showTooltip}
+          color="white"
+          background="black"
+        >
+          <span>
+            <SaveButton onSave={handleOnSave} />
+          </span>
+        </Tooltip>
       </div>
     </div>
   );

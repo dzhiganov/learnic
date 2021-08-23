@@ -4,12 +4,14 @@
   letter-spacing: -1px;
   font-family: 'Kaushan Script', cursive;
   text-align: center;
+  align-items: center;
+  display: flex;
 }
 
 .normal {
-  font-size: 30px;
+  width: 90px;
 }
 
 .large {
-  font-size: 100px;
+  width: 150px;
 }

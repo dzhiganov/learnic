@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import Modal from '@material-ui/core/Modal';
-import Logo from '~c/atoms/Logo';
+import Logo, { Logos } from '~c/atoms/Logo';
 import Button from '~c/atoms/Button';
 // eslint-disable-next-line css-modules/no-unused-class
 import styles from './styles.module.css';
@@ -18,7 +18,7 @@ const Landing: React.FC = () => {
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <Logo size="large" className={styles.title} />
+        <Logo name={Logos.FullLogo} size="large" />
         <h2 className={styles.subtitle}>One place - all dictionaries</h2>
         <div className={styles.images}>
           <img src="promo.png" alt="" className={styles.promoImageDictionary} />

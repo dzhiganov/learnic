@@ -5,14 +5,25 @@ import styles from './styles.module.css';
 type Sizes = 'normal' | 'large';
 
 type Props = {
+  name?: Logos;
   size?: Sizes;
   className?: string;
 };
 
-const Logo: React.FC<Props> = ({ size = 'normal', className }) => {
+export enum Logos {
+  TextColorLogo = '/text-color-logo.png',
+  Logo = '/logo.png',
+  FullLogo = '/new-logo.png',
+}
+
+const Logo: React.FC<Props> = ({
+  name = Logos.Logo,
+  size = 'normal',
+  className,
+}) => {
   return (
     <div className={`${styles.logo} ${styles[size]} ${className}`}>
-      <span>Learnic</span>
+      <img src={name} alt="logo" style={{ width: 'inherit' }} />
     </div>
   );
 };

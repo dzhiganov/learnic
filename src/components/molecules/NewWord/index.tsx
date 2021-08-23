@@ -18,6 +18,7 @@ import updateUserOptions from '~graphql/mutations/updateUserOptions';
 import getUseSuggestedTranslate from '~graphql/queries/getUseSuggestedTranslate';
 
 type Props = {
+  initial: string;
   id: string;
   initialState?: null | {
     word: string;
@@ -40,6 +41,7 @@ type Props = {
 };
 
 const NewWord: React.FunctionComponent<Props> = ({
+  initial,
   id,
   initialState = null,
   onSave,
@@ -48,7 +50,7 @@ const NewWord: React.FunctionComponent<Props> = ({
 }: Props) => {
   const { t } = useTranslation();
   const inputRef: React.RefObject<HTMLTextAreaElement> = useRef(null);
-  const [word, setWord] = useState('');
+  const [word, setWord] = useState(initial);
   const [translate, setTranslate] = useState('');
   const [suggestedTranslate, setSuggestedTranslate] = useState('');
   const [tagsIds, setTagsIds] = useState<string[]>([]);

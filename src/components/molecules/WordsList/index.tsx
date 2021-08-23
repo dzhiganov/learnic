@@ -11,6 +11,8 @@ import HeaderDate from './HeaderDate';
 import { Words } from '~shared/types';
 
 type Props = {
+  filter: string;
+  setFilter: (filter: string) => void;
   words: Words;
   onShowNewWord: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onClickCard: ({
@@ -30,6 +32,8 @@ type Props = {
 };
 
 const WordsList: React.FunctionComponent<Props> = ({
+  filter,
+  setFilter,
   words,
   onShowNewWord,
   showNewWord,
@@ -40,8 +44,7 @@ const WordsList: React.FunctionComponent<Props> = ({
   isLoading = true,
 }: Props) => {
   const { t } = useTranslation();
-  const [focused, setFocused] = useState<string>('');
-  const [filter, setFilter] = useState<string>('');
+  const [focused, setFocused] = useState('');
   const [filtered, setFiltered] = useState<Words>([]);
   const [searchFocused, setSearchFocused] = useState<boolean>(false);
 
@@ -81,9 +84,12 @@ const WordsList: React.FunctionComponent<Props> = ({
     }
   }, [filter, words]);
 
-  const handleChangeFilter = useCallback(({ target: { value = '' } = {} }) => {
-    setFilter(value);
-  }, []);
+  const handleChangeFilter = useCallback(
+    ({ target: { value = '' } = {} }) => {
+      setFilter(value);
+    },
+    [setFilter]
+  );
 
   // const clearFilter = useCallback(() => setFilter(''), []);
 
