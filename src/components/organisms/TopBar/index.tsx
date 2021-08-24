@@ -9,7 +9,7 @@ import User from '~c/molecules/User';
 import styles from './styles.module.css';
 import { logout } from '~actions/user';
 import AsideMenu from '~c/organisms/AsideMenu';
-import Logo, { Logos } from '~c/atoms/Logo';
+import Logo from '~c/atoms/Logo';
 import { HOME_PROFILE } from '~router/paths';
 
 const TopBar: React.FC = () => {
@@ -69,7 +69,7 @@ const TopBar: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <div className={styles.leftContainer}>
-          <Logo name={Logos.TextColorLogo} />
+          <Logo />
           <AsideMenu />
         </div>
         <div className={styles.controls}>

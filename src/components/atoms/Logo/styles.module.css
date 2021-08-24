@@ -1,6 +1,5 @@
 .logo {
   color: var(--color-primary);
-  /* font-family: 'Archivo Black', sans-serif; */
   letter-spacing: -1px;
   font-family: 'Kaushan Script', cursive;
   text-align: center;
@@ -8,10 +7,10 @@
   display: flex;
 }
 
-.normal {
-  width: 90px;
+.normal svg {
+  transform: scale(1);
 }
 
-.large {
-  width: 150px;
+.large svg {
+  transform: scale(2);
 }
