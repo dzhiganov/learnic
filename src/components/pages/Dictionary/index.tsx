@@ -1,5 +1,5 @@
 /* eslint-disable css-modules/no-unused-class */
-import React, { memo, useState, useCallback } from 'react';
+import React, { memo, useState, useCallback, useEffect } from 'react';
 import produce from 'immer';
 import useMedia from 'react-use/lib/useMedia';
 import { useMutation, useQuery } from '@apollo/client';
@@ -19,12 +19,6 @@ type SelectedWord = {
   id: string;
   word: string;
   translate: string;
-};
-
-const selectedWordInitialState = {
-  id: '',
-  word: '',
-  translate: '',
 };
 
 interface HandleOnSave {
@@ -54,9 +48,7 @@ interface HandleCancelEdit {
 
 const Dictionary: React.FC = () => {
   const isWide = useMedia('(min-width: 576px)');
-  const [selectedWord, setSelectedWord] = useState<SelectedWord>(
-    selectedWordInitialState
-  );
+  const [selectedWord, setSelectedWord] = useState<SelectedWord | null>(null);
 
   const [showNewWord, setShowNewWord] = useState(false);
   const [edited, setEdited] = useState('');
@@ -99,6 +91,13 @@ const Dictionary: React.FC = () => {
       });
     },
   });
+
+  useEffect(() => {
+    if (words.length && !selectedWord) {
+      const { id, word, translate } = words[0];
+      setSelectedWord({ id, word, translate });
+    }
+  }, [selectedWord, words]);
 
   const [fetchDeleteWord] = useMutation(deleteWordMutation, {
     update(cache, result) {
@@ -146,7 +145,7 @@ const Dictionary: React.FC = () => {
   const handleOnDelete: HandleOnDelete = useCallback(
     (id) => {
       fetchDeleteWord({ variables: { uid: userId, wordId: id } });
-      setSelectedWord(selectedWordInitialState);
+      setSelectedWord(null);
     },
     [userId, fetchDeleteWord]
   );
@@ -199,7 +198,7 @@ const Dictionary: React.FC = () => {
         {renderModalBody(edited ? 'edit' : 'new')}
       </Modal>
       <div className={styles.listContainer}>
-        {isWide || (!isWide && !selectedWord.id) ? (
+        {isWide || (!isWide && selectedWord && !selectedWord.id) ? (
           <div className={styles.wordsListContainer}>
             <WordsList
               filter={filter}
@@ -216,7 +215,7 @@ const Dictionary: React.FC = () => {
           </div>
         ) : null}
 
-        {isWide || (!isWide && selectedWord.id) ? (
+        {(selectedWord && isWide) || (!isWide && selectedWord?.id) ? (
           <div>
             <WordsCard
               id={selectedWord.id}

@@ -30,6 +30,7 @@
   font-weight: 600;
   justify-self: flex-start;
   width: 100%;
+  text-align: center;
 }
 
 .providers {
@@ -60,7 +61,8 @@
 
 .providerButton:hover,
 .providerButton:focus {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(131, 137, 245, 0.075);
+  border-color: var(--color-primary);
 }
 
 .providerButton > svg {

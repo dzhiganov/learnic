@@ -55,9 +55,8 @@
     }
   },
   "LOGIN_PAGE": {
-    "TITLE": "Log in",
-    "ALTERNATE": "Or",
-    "WITH_GOOGLE": "Log in with Google",
+    "TITLE": "Sign Up or Log In",
+    "WITH_GOOGLE": "with Google",
     "NO_ACCOUNT": "if you don't have an account, you can create it"
   },
   "SIGN_UP_PAGE": {
