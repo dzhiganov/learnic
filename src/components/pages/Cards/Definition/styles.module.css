@@ -2,8 +2,7 @@
   background-color: var(--color-background);
   position: absolute;
   width: 95%;
-  padding: 12px 25px;
-  padding-top: 24px;
+  padding: 25px;
   outline: none;
   font-size: 18px;
   display: flex;
@@ -38,11 +37,11 @@
 }
 
 .item + .item {
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .item::marker {
-  content: '👉 ';
+  content: '✅ ';
 }
 
 .closeButton {

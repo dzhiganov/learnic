@@ -58,12 +58,15 @@
 
 .addNewTagButton {
   background-color: transparent;
-  border-radius: 10px;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  align-self: center;
 }
 .addNewTagButton:hover {
   background-color: aliceblue;

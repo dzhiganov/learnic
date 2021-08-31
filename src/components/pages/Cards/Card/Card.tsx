@@ -11,7 +11,7 @@ type Props = {
   isActive: boolean;
   status: 'successful' | 'failed' | 'pending';
   audio: string;
-  setShowDefinition: (value: boolean) => void;
+  setShowDefinition?: (value: boolean) => void;
 };
 
 const Card: React.FunctionComponent<Props> = ({
@@ -48,10 +48,6 @@ const Card: React.FunctionComponent<Props> = ({
     };
   }, []);
 
-  const handleClickShowDefinition = useCallback(() => {
-    setShowDefinition(true);
-  }, [setShowDefinition]);
-
   return (
     <div className={styles.container}>
       <div
@@ -62,12 +58,17 @@ const Card: React.FunctionComponent<Props> = ({
         <div
           className={`${styles.front} ${flipped ? styles.frontFlipped : ''}`}
         >
-          <span className={styles.audioButtonContainer}>
-            <AudioButton audioURL={audio} />
-          </span>
-          <span className={styles.showDefinitionButton}>
-            <InfoButton onClick={handleClickShowDefinition} />
-          </span>
+          <div className={styles.topButtonsContainer}>
+            <span className={styles.audioButtonContainer}>
+              <AudioButton audioURL={audio} />
+            </span>
+            <span className={styles.showDefinitionButton}>
+              {typeof setShowDefinition === 'function' && (
+                <InfoButton onClick={() => setShowDefinition(true)} />
+              )}
+            </span>
+          </div>
+
           <span className={styles.cardTitle}>{word}</span>
 
           <button type="button" className={styles.flip} onClick={flip}>

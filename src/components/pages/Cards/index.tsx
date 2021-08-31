@@ -240,6 +240,7 @@ const Cards: React.FunctionComponent = () => {
     const wordsSet = wordSets[selectedTraining as TrainingTypes];
 
     if (wordsSet[currentIndex]) {
+      const { examples: currentExamples = [] } = wordsSet[currentIndex];
       return (
         <div className={styles.wrapper}>
           <Definition
@@ -296,7 +297,11 @@ const Cards: React.FunctionComponent = () => {
                       isActive={index === currentIndex}
                       status={getStatusByIndex(index)}
                       audio={audio as string}
-                      setShowDefinition={handleShowDefinition}
+                      setShowDefinition={
+                        currentExamples.length
+                          ? handleShowDefinition
+                          : undefined
+                      }
                     />
                     <div className={styles.controls}>
                       <button
