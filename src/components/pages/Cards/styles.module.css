@@ -7,6 +7,8 @@
   border-radius: 10px;
   padding: 25px;
   min-height: 80vh;
+  position: relative;
+  overflow: hidden;
 }
 
 .title {
@@ -83,14 +85,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50%;
   height: 45px;
+  flex-grow: 1;
 }
 
 @media (min-width: 576px) {
   .cardButton {
     padding: 6px 12px;
-    width: 180px;
   }
 }
 
@@ -112,7 +113,7 @@
 }
 
 .cardButton + .cardButton {
-  margin-left: 40px;
+  margin-left: 15px;
 }
 
 .cardButton:disabled {
@@ -130,12 +131,20 @@
   color: var(--color-fail-accent);
 }
 
+.medium {
+  background-color: rgba(45, 16, 82, 0.2);
+}
+
 .done:not([disabled]):hover {
   background-color: #5f55ff;
 }
 
 .fail:not([disabled]):hover {
   background-color: var(--color-fail-light);
+}
+
+.medium:not([disabled]):hover {
+  background-color: rgba(45, 16, 82, 0.1);
 }
 
 .button {
@@ -162,7 +171,7 @@
 
 .trainingHeader {
   width: 100%;
-  margin-bottom: 32px;
+  margin-bottom: 12px;
   justify-content: flex-start;
 }
 
@@ -174,15 +183,15 @@
 
 @media (min-width: 576px) {
   .progressBarContainer {
-    width: 400px;
+    width: 100%;
     margin-top: 15px;
   }
 }
 
 .count {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 600;
-  color: var(--color-text-secondary);
+  color: #7c83fd;
   text-align: center;
 }
 
@@ -274,4 +283,12 @@
   display: grid;
   grid-template-columns: repeat(3, 250px);
   grid-column-gap: 16px;
+}
+
+.controlsHeader {
+  margin-top: 16px;
+  font-weight: 500;
+  color: rgb(0 0 0 / 85%);
+  font-size: 18px;
+  text-align: center;
 }

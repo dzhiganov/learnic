@@ -5,7 +5,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { createStyles, withStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, withStyles } from '@material-ui/core/styles';
 import { useQuery, useMutation } from '@apollo/client';
 import groupBy from 'lodash.groupby';
 import dayjs from 'dayjs';
@@ -23,19 +23,20 @@ import { GetWordsQueryResult, TrainingTypes } from '~shared/types';
 import Selector from './Selector';
 import getWords from '~graphql/queries/getWords';
 
-const BorderLinearProgress = withStyles((theme: Theme) => {
+const BorderLinearProgress = withStyles(() => {
   return createStyles({
     root: {
-      height: 8,
-      borderRadius: 4,
+      height: 6,
+      position: 'absolute',
+      top: 0,
+      width: '100%',
+      left: 0,
     },
     colorPrimary: {
-      backgroundColor:
-        theme.palette.grey[theme.palette.type === 'light' ? 200 : 700],
+      backgroundColor: '#f5f5f5',
     },
     bar: {
-      borderRadius: 4,
-      backgroundColor: '#00af91',
+      backgroundColor: '#7c83fd',
     },
   });
 })(LinearProgress);
@@ -136,13 +137,13 @@ const Cards: React.FunctionComponent = () => {
     selectedTraining,
   ]);
 
-  const getStatusByIndex = (
-    index: number
-  ): 'successful' | 'failed' | 'pending' => {
-    if (successful.includes(index)) return 'successful';
-    if (failed.includes(index)) return 'failed';
-    return 'pending';
-  };
+  // const getStatusByIndex = (
+  //   index: number
+  // ): 'successful' | 'failed' | 'pending' => {
+  //   if (successful.includes(index)) return 'successful';
+  //   if (failed.includes(index)) return 'failed';
+  //   return 'pending';
+  // };
 
   const handleRepeat = useCallback(() => {
     setFailed([...failed, currentIndex]);
@@ -295,7 +296,6 @@ const Cards: React.FunctionComponent = () => {
                       word={word}
                       translate={translate}
                       isActive={index === currentIndex}
-                      status={getStatusByIndex(index)}
                       audio={audio as string}
                       setShowDefinition={
                         currentExamples.length
@@ -303,27 +303,42 @@ const Cards: React.FunctionComponent = () => {
                           : undefined
                       }
                     />
-                    <div className={styles.controls}>
-                      <button
-                        onClick={handleDone}
-                        className={`${styles.cardButton} ${styles.done}`}
-                        type="button"
-                        disabled={
-                          successful.includes(index) || failed.includes(index)
-                        }
-                      >
-                        {t('CARDS.DONE')}
-                      </button>
-                      <button
-                        onClick={handleRepeat}
-                        className={`${styles.cardButton} ${styles.fail}`}
-                        type="button"
-                        disabled={
-                          successful.includes(index) || failed.includes(index)
-                        }
-                      >
-                        {t('CARDS.FAIL')}
-                      </button>
+                    <div>
+                      <div className={styles.controlsHeader}>
+                        <span>{t('CARDS.HOW_QUICKLY')}</span>
+                      </div>
+                      <div className={styles.controls}>
+                        <button
+                          onClick={handleDone}
+                          className={`${styles.cardButton} ${styles.done}`}
+                          type="button"
+                          disabled={
+                            successful.includes(index) || failed.includes(index)
+                          }
+                        >
+                          {t('CARDS.DONE')}
+                        </button>
+                        <button
+                          onClick={handleDone}
+                          className={`${styles.cardButton} ${styles.medium}`}
+                          type="button"
+                          disabled={
+                            successful.includes(index) || failed.includes(index)
+                          }
+                        >
+                          {t('CARDS.AGAIN')}
+                        </button>
+                        <button
+                          onClick={handleRepeat}
+                          className={`${styles.cardButton} ${styles.fail}`}
+                          type="button"
+                          disabled={
+                            successful.includes(index) || failed.includes(index)
+                          }
+                        >
+                          {t('CARDS.FAIL')}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}

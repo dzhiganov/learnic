@@ -46,7 +46,7 @@ ul {
   --color-input-background: hsla(0, 0%, 100%, 0.8);
   --color-input-border: #d2d2d7;
   --color-button-secondary: #e0e0e0;
-  --color-background-secondary: rgb(246 246 246);
+  --color-background-secondary: #fafafc;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -87,7 +87,7 @@ ul {
   --color-fail-accent: rgb(218, 119, 138);
   --color-input-background: hsla(0, 0%, 100%, 0.8);
   --color-input-border: #d2d2d7;
-  --color-background-secondary: rgb(246 246 246);
+  --color-background-secondary: #fafafc;
 }
 
 [data-scheme='dark'] {

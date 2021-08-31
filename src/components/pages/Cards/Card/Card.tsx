@@ -1,5 +1,5 @@
 /* eslint-disable css-modules/no-unused-class */
-import React, { memo, useCallback, useState, useEffect, useMemo } from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 import AudioButton from '~c/atoms/AudioButton';
@@ -9,7 +9,6 @@ type Props = {
   word: string;
   translate: string;
   isActive: boolean;
-  status: 'successful' | 'failed' | 'pending';
   audio: string;
   setShowDefinition?: (value: boolean) => void;
 };
@@ -18,7 +17,6 @@ const Card: React.FunctionComponent<Props> = ({
   word,
   translate,
   isActive,
-  status,
   audio,
   setShowDefinition,
 }: Props) => {
@@ -41,20 +39,9 @@ const Card: React.FunctionComponent<Props> = ({
     }
   }, [flipped, isActive]);
 
-  const classes = useMemo(() => {
-    return {
-      successful: 'cardSuccess',
-      failed: 'cardFailed',
-    };
-  }, []);
-
   return (
     <div className={styles.container}>
-      <div
-        className={`${styles.card} ${
-          status !== 'pending' ? styles[classes[status]] : null
-        }`}
-      >
+      <div className={styles.card}>
         <div
           className={`${styles.front} ${flipped ? styles.frontFlipped : ''}`}
         >
