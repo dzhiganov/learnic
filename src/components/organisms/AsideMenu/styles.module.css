@@ -11,14 +11,3 @@
   height: 100%;
   align-items: center;
 }
-
-.topBar {
-  display: flex;
-  justify-content: flex-end;
-  border-bottom: #f0f0f0;
-}
-
-.topBar svg {
-  width: 40px;
-  height: 40px;
-}

@@ -1,6 +1,13 @@
 .list {
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(3, 250px);
-  grid-column-gap: 16px;
+  grid-template-columns: repeat(1, 100%);
+  grid-row-gap: 10px;
+}
+
+@media (min-width: 720px) {
+  .list {
+    grid-template-columns: repeat(3, 250px);
+    grid-column-gap: 16px;
+  }
 }

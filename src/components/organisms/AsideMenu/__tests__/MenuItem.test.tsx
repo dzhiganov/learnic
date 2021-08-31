@@ -25,11 +25,12 @@ describe('MenuItem', () => {
     const history = createMemoryHistory({ initialEntries: ['/'] });
     const FAKE_TITLE = 'FAKE_TITLE';
     const FAKE_LINK = 'FAKE_LINK';
+    const FAKE_ID = '1';
 
     const { getByTestId, queryByTestId } = render(
       <Router history={history}>
         <Provider store={fakeStore}>
-          <MenuItem title={FAKE_TITLE} to={FAKE_LINK} onClick={() => {}} />
+          <MenuItem id={FAKE_ID} title={FAKE_TITLE} to={FAKE_LINK} isWide />
         </Provider>
       </Router>
     );

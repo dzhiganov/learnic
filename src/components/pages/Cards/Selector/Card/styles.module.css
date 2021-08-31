@@ -3,11 +3,17 @@
   background-color: #71efa3;
   display: flex;
   padding: 20px;
-  height: 250px;
+  height: 100%;
   cursor: pointer;
   box-shadow: rgb(0 0 0 / 18%) 0px 3px 6px, rgb(0 0 0 / 12%) 0px 0px;
   transition: 300ms ease-in-out;
   flex-direction: column;
+}
+
+@media (min-width: 720px) {
+  .card {
+    height: 250px;
+  }
 }
 
 .card:hover {

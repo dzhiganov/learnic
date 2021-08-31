@@ -13,9 +13,11 @@
 .grid {
   display: grid;
   grid-template-columns: auto;
+  height: 90vh;
+  overflow: auto;
 }
 
-@media (min-width: 576px) {
+@media (min-width: 720px) {
   .grid {
     width: 100%;
     margin: 0 auto;

@@ -5,13 +5,28 @@
   background-color: #fff;
   border-radius: 10px;
   padding: 0 25px;
-  min-height: 80vh;
+  min-height: auto;
+  height: 90vh;
+  flex-direction: column;
+}
+
+@media (min-width: 720px) {
+  .wrapper {
+    flex-direction: initial;
+    min-height: 80vh;
+    height: auto;
+  }
 }
 
 .aside {
   width: min-content;
-  border-right: 1px solid var(--color-input-border);
   padding: 25px 25px 25px 0;
+}
+
+@media (min-width: 720px) {
+  .aside {
+    border-right: 1px solid var(--color-input-border);
+  }
 }
 
 .avatar {
@@ -38,5 +53,11 @@
 }
 
 .main {
-  padding: 25px;
+  padding: 0;
+}
+
+@media (min-width: 720px) {
+  .main {
+    padding: 25px;
+  }
 }

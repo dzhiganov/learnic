@@ -34,8 +34,12 @@
   width: 100%;
   text-decoration: none;
   color: #eeeeee;
+  height: 100%;
 }
 
 .itemWrapper {
   height: 100%;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
 }

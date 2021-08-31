@@ -1,49 +1,23 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import useMedia from 'react-use/lib/useMedia';
-import MenuIcon from '@material-ui/icons/Menu';
-import Button from '@material-ui/core/Button';
-import Drawer from '@material-ui/core/Drawer';
 import styles from './styles.module.css';
 import MenuItem from './MenuItem';
-import { items } from './consts';
+import { desktopItems, mobileItems } from './consts';
 import Wrapper from '~c/atoms/Wrapper';
 
 const AsideMenu: React.FunctionComponent = () => {
-  const isWide = useMedia('(min-width: 576px)');
-  const [showMenu, setShowMenu] = useState(false);
+  const isWide = useMedia('(min-width: 720px)');
 
   const list = useMemo(
     () => (
       <ul className={styles.list}>
-        {items.map(({ key, title, to }) => (
-          <MenuItem
-            key={key}
-            title={title}
-            to={to}
-            onClick={() => setShowMenu(false)}
-          />
+        {(isWide ? desktopItems : mobileItems).map(({ key, title, to }) => (
+          <MenuItem key={key} id={key} title={title} to={to} isWide={isWide} />
         ))}
       </ul>
     ),
-    []
+    [isWide]
   );
-
-  if (!isWide) {
-    return (
-      <div className={styles.topBar}>
-        <Button onClick={() => setShowMenu(true)}>
-          <MenuIcon />
-        </Button>
-        <Drawer
-          open={showMenu}
-          anchor="right"
-          onClose={() => setShowMenu(false)}
-        >
-          {list}
-        </Drawer>
-      </div>
-    );
-  }
 
   return (
     <Wrapper>

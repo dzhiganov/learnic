@@ -62,7 +62,15 @@ const TopBar: React.FC = () => {
   );
 
   if (!isWide) {
-    return null;
+    return (
+      <div className={styles.container}>
+        <div className={styles.wrapper}>
+          <div className={styles.leftContainer}>
+            <AsideMenu />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

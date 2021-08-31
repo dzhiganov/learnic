@@ -89,7 +89,8 @@
   composes: saveButton;
   border: 1px solid rgba(0, 0, 0, 0.15);
   background: transparent;
-  background-color: var(--color-text);
+  background-color: var(--color-background);
+  color: var(--color-text);
 }
 
 .notSelectedContainer {

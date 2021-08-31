@@ -1,13 +1,14 @@
-import { HOME_WORDS, HOME_CARDS } from '~router/paths';
+import { HOME_WORDS, HOME_CARDS, HOME_PROFILE } from '~router/paths';
 
 const keys = {
   DICTIONARY: 'dictionary',
   TRAININGS: 'trainings',
   LOGOUT: 'logout',
   CARDS: 'cards',
+  PROFILE: 'profile',
 };
 
-const items = [
+const desktopItems = [
   {
     key: keys.DICTIONARY,
     title: 'ASIDE_MENU.DICTIONARY',
@@ -20,4 +21,14 @@ const items = [
   },
 ];
 
-export { keys, items };
+const mobileItems = [
+  ...desktopItems,
+  {
+    key: keys.PROFILE,
+    title: 'ASIDE_MENU.PROFILE',
+    to: HOME_PROFILE,
+    showOn: 'mobile',
+  },
+];
+
+export { keys, desktopItems, mobileItems };

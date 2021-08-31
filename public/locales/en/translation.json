@@ -10,7 +10,8 @@
   "ASIDE_MENU": {
     "DICTIONARY": "Dictionary",
     "TRAININGS": "Training",
-    "CARDS": "Cards"
+    "CARDS": "Cards",
+    "PROFILE": "Profile"
   },
   "DICTIONARY": {
     "TITLE": "Dictionary",

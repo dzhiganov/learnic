@@ -3,6 +3,13 @@
   padding: 4px;
   padding-left: 8px;
   border-radius: 4px;
+  max-width: 80vw;
+}
+
+@media (min-width: 720px) {
+  .cardItem {
+    max-width: 100%;
+  }
 }
 
 .cardItem:hover {
