@@ -191,8 +191,15 @@
 .count {
   font-size: 24px;
   font-weight: 600;
-  color: #7c83fd;
   text-align: center;
+}
+
+.count > span:nth-child(1) {
+  color: #7c83fd;
+}
+
+.count > :nth-child(2) {
+  color: #7c83fd;
 }
 
 .hidden {

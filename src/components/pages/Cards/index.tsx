@@ -4,8 +4,6 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { createStyles, withStyles } from '@material-ui/core/styles';
 import { useQuery, useMutation } from '@apollo/client';
 import groupBy from 'lodash.groupby';
 import dayjs from 'dayjs';
@@ -22,24 +20,6 @@ import updateWordMutation from '~graphql/mutations/updateWord';
 import { GetWordsQueryResult, TrainingTypes } from '~shared/types';
 import Selector from './Selector';
 import getWords from '~graphql/queries/getWords';
-
-const BorderLinearProgress = withStyles(() => {
-  return createStyles({
-    root: {
-      height: 6,
-      position: 'absolute',
-      top: 0,
-      width: '100%',
-      left: 0,
-    },
-    colorPrimary: {
-      backgroundColor: '#f5f5f5',
-    },
-    bar: {
-      backgroundColor: '#7c83fd',
-    },
-  });
-})(LinearProgress);
 
 const Cards: React.FunctionComponent = () => {
   const { t } = useTranslation();
@@ -259,17 +239,10 @@ const Cards: React.FunctionComponent = () => {
               <ArrowBackIosIcon /> Back
             </button>
             <div className={styles.progressBarContainer}>
-              <p className={styles.count}>{`${currentIndex + 1}/${
-                wordsSet.length
-              }`}</p>
-              <BorderLinearProgress
-                variant="determinate"
-                value={
-                  wordsSet.length
-                    ? (100 / wordsSet.length) * (currentIndex + 1)
-                    : 0
-                }
-              />
+              <p className={styles.count}>
+                <span>{`${currentIndex + 1}`}</span>
+                <span>{` / ${wordsSet.length}`}</span>
+              </p>
             </div>
           </header>
           <div className={styles.container}>
