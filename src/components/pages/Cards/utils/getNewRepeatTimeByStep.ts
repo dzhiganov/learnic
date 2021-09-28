@@ -37,9 +37,12 @@ const steps: Record<
   },
 };
 
+const getRepeatTimeIfFail = (): Date => dayjs().add(24, 'hour').toDate();
+const getRepeatTimeIfRepeatAgain = (): Date => dayjs().add(12, 'hour').toDate();
+
 const getNewRepeatTimeByStep = (step = 0): Date => {
-  return dayjs(new Date()).add(steps[step].value, steps[step].unit).toDate();
+  return dayjs().add(steps[step].value, steps[step].unit).toDate();
 };
 
-export { steps };
+export { steps, getRepeatTimeIfFail, getRepeatTimeIfRepeatAgain };
 export default getNewRepeatTimeByStep;

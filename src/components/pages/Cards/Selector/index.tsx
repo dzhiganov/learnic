@@ -5,7 +5,10 @@ import Card from './Card';
 
 type Props = {
   counts: Record<
-    TrainingTypes.All | TrainingTypes.Last | TrainingTypes.Penultimate,
+    | TrainingTypes.All
+    | TrainingTypes.Last
+    | TrainingTypes.Penultimate
+    | TrainingTypes.Repeat,
     number
   >;
   onSelect: (trainingType: TrainingTypes) => void;
@@ -16,8 +19,13 @@ const Selector: FC<Props> = ({ counts, onSelect }) => {
     <ul className={styles.list}>
       {Object.values(TrainingTypes).map((title) => {
         return (
-          <li>
-            <Card title={title} count={counts[title]} onClick={onSelect} />
+          <li key={title}>
+            <Card
+              title={title}
+              count={counts[title]}
+              onClick={onSelect}
+              isSpecial={title === TrainingTypes.Repeat}
+            />
           </li>
         );
       })}

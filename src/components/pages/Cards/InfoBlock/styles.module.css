@@ -16,11 +16,3 @@
 .container > h2 {
   font-size: 24px;
 }
-
-.done {
-  color: var(--color-text);
-}
-
-.repeat {
-  color: var(--color-text);
-}

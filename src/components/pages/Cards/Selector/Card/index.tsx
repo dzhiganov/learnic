@@ -6,15 +6,16 @@ type Props = {
   title: TrainingTypes;
   count: number;
   onClick: (trainingType: TrainingTypes) => void;
+  isSpecial?: boolean;
 };
 
-const Card: FC<Props> = ({ title, count, onClick }) => {
+const Card: FC<Props> = ({ title, count, onClick, isSpecial }) => {
   const handleClick = () => onClick(title);
   const handleKeyDown = () => {};
 
   return (
     <div
-      className={styles.card}
+      className={`${styles.card} ${isSpecial ? styles.special : ''}`}
       tabIndex={0}
       role="button"
       onKeyDown={handleKeyDown}

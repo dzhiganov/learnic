@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -6,20 +6,27 @@ import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import { useQuery, useMutation } from '@apollo/client';
 import groupBy from 'lodash.groupby';
-import dayjs from 'dayjs';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Skeleton from '@material-ui/lab/Skeleton';
+import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import useSelector from '~hooks/useSelector';
 // eslint-disable-next-line css-modules/no-unused-class
 import styles from './styles.module.css';
 import Card from './Card/Card';
-import getNewRepeatTimeByStep from './utils/getNewRepeatTimeByStep';
+import getNewRepeatTimeByStep, {
+  getRepeatTimeIfFail,
+  getRepeatTimeIfRepeatAgain,
+} from './utils/getNewRepeatTimeByStep';
 import InfoBlock from './InfoBlock';
 import Definition from './Definition';
 import updateWordMutation from '~graphql/mutations/updateWord';
 import { GetWordsQueryResult, TrainingTypes } from '~shared/types';
 import Selector from './Selector';
 import getWords from '~graphql/queries/getWords';
+
+const now = dayjs();
+dayjs.extend(isSameOrAfter);
 
 const Cards: React.FunctionComponent = () => {
   const { t } = useTranslation();
@@ -33,10 +40,7 @@ const Cards: React.FunctionComponent = () => {
     null
   );
   const [fetchUpdate] = useMutation(updateWordMutation);
-
-  const handleSelectTraining = (trainingType: TrainingTypes) => {
-    selectTraining(trainingType);
-  };
+  const wordsAmount = useRef(0);
 
   const {
     data: { user: { words = [] } = {} } = {},
@@ -45,6 +49,7 @@ const Cards: React.FunctionComponent = () => {
     variables: {
       uid,
     },
+    fetchPolicy: 'no-cache',
   });
 
   const wordSets = useMemo(() => {
@@ -58,13 +63,26 @@ const Cards: React.FunctionComponent = () => {
     );
 
     const [lastKeys, penultimateKeys] = sortedKeys;
+    const repeatWords = words.filter(({ repeat }) => {
+      if (repeat) {
+        return now.isSameOrAfter(dayjs(repeat));
+      }
+
+      return repeat;
+    });
 
     return {
+      [TrainingTypes.Repeat]: repeatWords,
       [TrainingTypes.All]: words,
       [TrainingTypes.Last]: groupedByDate[lastKeys],
       [TrainingTypes.Penultimate]: groupedByDate[penultimateKeys],
     };
   }, [words]);
+
+  const handleSelectTraining = (trainingType: TrainingTypes) => {
+    selectTraining(trainingType);
+    wordsAmount.current = wordSets[trainingType].length;
+  };
 
   const back = useCallback(() => {
     const newIndex = currentIndex - 1;
@@ -79,7 +97,7 @@ const Cards: React.FunctionComponent = () => {
   }, [currentIndex, words]);
 
   const handleDone = useCallback(() => {
-    setSuccessful([...successful, currentIndex]);
+    setSuccessful((prev) => [...prev, currentIndex]);
     const oldIndex = currentIndex;
     const newIndex = currentIndex + 1;
 
@@ -90,7 +108,9 @@ const Cards: React.FunctionComponent = () => {
     setCurrentIndex(newIndex);
 
     window.requestAnimationFrame(() => {
-      const { id, step: currentStep } = words[oldIndex];
+      const { id, step: currentStep } = wordSets[
+        selectedTraining as TrainingTypes
+      ][oldIndex];
       const nextStep = currentStep >= 6 ? 6 : currentStep + 1 || 0 + 1;
       const nextRepeat = getNewRepeatTimeByStep(nextStep);
 
@@ -107,26 +127,10 @@ const Cards: React.FunctionComponent = () => {
         },
       });
     });
-  }, [
-    uid,
-    words,
-    currentIndex,
-    successful,
-    fetchUpdate,
-    wordSets,
-    selectedTraining,
-  ]);
+  }, [uid, currentIndex, fetchUpdate, wordSets, selectedTraining]);
 
-  // const getStatusByIndex = (
-  //   index: number
-  // ): 'successful' | 'failed' | 'pending' => {
-  //   if (successful.includes(index)) return 'successful';
-  //   if (failed.includes(index)) return 'failed';
-  //   return 'pending';
-  // };
-
-  const handleRepeat = useCallback(() => {
-    setFailed([...failed, currentIndex]);
+  const handleAgain = useCallback(() => {
+    setFailed((prev) => [...prev, currentIndex]);
     const newIndex = currentIndex + 1;
     const oldIndex = currentIndex;
 
@@ -137,12 +141,8 @@ const Cards: React.FunctionComponent = () => {
     setCurrentIndex(newIndex);
 
     window.requestAnimationFrame(() => {
-      const { id } = words[oldIndex];
-      let { step: currentStep } = words[oldIndex];
-      if (currentStep === 0) {
-        currentStep = 1;
-      }
-      const nextRepeat = getNewRepeatTimeByStep(currentStep);
+      const { id } = wordSets[selectedTraining as TrainingTypes][oldIndex];
+      const nextRepeat = getRepeatTimeIfRepeatAgain();
 
       const data = {
         repeat: nextRepeat,
@@ -156,15 +156,36 @@ const Cards: React.FunctionComponent = () => {
         },
       });
     });
-  }, [
-    currentIndex,
-    words,
-    uid,
-    failed,
-    fetchUpdate,
-    selectedTraining,
-    wordSets,
-  ]);
+  }, [currentIndex, uid, fetchUpdate, selectedTraining, wordSets]);
+
+  const handleFail = useCallback(() => {
+    setFailed((prev) => [...prev, currentIndex]);
+    const newIndex = currentIndex + 1;
+    const oldIndex = currentIndex;
+
+    if (newIndex === wordSets[selectedTraining as TrainingTypes].length) {
+      setFinished(true);
+    }
+
+    setCurrentIndex(newIndex);
+
+    window.requestAnimationFrame(() => {
+      const { id } = wordSets[selectedTraining as TrainingTypes][oldIndex];
+      const nextRepeat = getRepeatTimeIfFail();
+
+      const data = {
+        repeat: nextRepeat,
+      };
+
+      fetchUpdate({
+        variables: {
+          uid,
+          id,
+          updatedFields: data,
+        },
+      });
+    });
+  }, [currentIndex, uid, fetchUpdate, selectedTraining, wordSets]);
 
   const handleShowDefinition = (value: boolean) => {
     setShowDefinition(value);
@@ -183,6 +204,7 @@ const Cards: React.FunctionComponent = () => {
     setSuccessful([]);
     setFailed([]);
     setFinished(false);
+    wordsAmount.current = 0;
   };
 
   if (loading) {
@@ -212,7 +234,7 @@ const Cards: React.FunctionComponent = () => {
             <ArrowBackIosIcon /> Back
           </button>
         </header>
-        <InfoBlock successful={successful.length} failed={failed.length} />
+        <InfoBlock />
       </div>
     );
   }
@@ -241,7 +263,7 @@ const Cards: React.FunctionComponent = () => {
             <div className={styles.progressBarContainer}>
               <p className={styles.count}>
                 <span>{`${currentIndex + 1}`}</span>
-                <span>{` / ${wordsSet.length}`}</span>
+                <span>{` / ${wordsAmount.current}`}</span>
               </p>
             </div>
           </header>
@@ -292,7 +314,7 @@ const Cards: React.FunctionComponent = () => {
                           {t('CARDS.DONE')}
                         </button>
                         <button
-                          onClick={handleDone}
+                          onClick={handleAgain}
                           className={`${styles.cardButton} ${styles.medium}`}
                           type="button"
                           disabled={
@@ -302,7 +324,7 @@ const Cards: React.FunctionComponent = () => {
                           {t('CARDS.AGAIN')}
                         </button>
                         <button
-                          onClick={handleRepeat}
+                          onClick={handleFail}
                           className={`${styles.cardButton} ${styles.fail}`}
                           type="button"
                           disabled={
@@ -333,15 +355,6 @@ const Cards: React.FunctionComponent = () => {
   }
 
   if (!selectedTraining) {
-    const prepared = words.map(({ date, ...props }) => ({
-      date: dayjs(date as string).format('YYYY.MM.DD'),
-      ...props,
-    }));
-    const groupedByDate = groupBy(prepared, 'date');
-    const sortedKeys = Object.keys(groupedByDate).sort((a, b) => {
-      return dayjs(a).isBefore(dayjs(b)) ? 1 : -1;
-    });
-
     return (
       <div className={styles.wrapper}>
         <header className={styles.trainingHeader}>
@@ -349,9 +362,10 @@ const Cards: React.FunctionComponent = () => {
         </header>
         <Selector
           counts={{
-            [TrainingTypes.Last]: groupedByDate[sortedKeys[0]].length,
-            [TrainingTypes.Penultimate]: groupedByDate[sortedKeys[1]].length,
-            [TrainingTypes.All]: words.length,
+            [TrainingTypes.Last]: wordSets.last.length,
+            [TrainingTypes.Penultimate]: wordSets.penultimate.length,
+            [TrainingTypes.All]: wordSets.all.length,
+            [TrainingTypes.Repeat]: wordSets.repeat.length,
           }}
           onSelect={handleSelectTraining}
         />

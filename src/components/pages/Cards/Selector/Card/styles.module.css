@@ -1,6 +1,6 @@
 .card {
   border-radius: 8px;
-  background-color: #71efa3;
+  background-color: #98b4ff;
   display: flex;
   padding: 20px;
   height: 100%;
@@ -32,4 +32,8 @@
   font-weight: 500;
   color: #fff;
   justify-self: flex-end;
+}
+
+.special {
+  background-color: #71efa3;
 }
