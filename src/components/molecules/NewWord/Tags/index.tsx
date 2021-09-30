@@ -273,14 +273,22 @@ const NewTag: React.FC<NewTagProps> = ({ setShowAddNewTag }) => {
 type ActiveTagsProps = {
   activeTags: string[];
   allTags: TagsList;
+  addTag: (tagId: string) => void;
   deleteTag: (tagId: string) => void;
+  suggestedTag?: string;
+  setSuggestedTag: (tag: string) => void;
 };
 
 const ActiveTags: React.FC<ActiveTagsProps> = ({
   activeTags,
   allTags,
+  addTag,
   deleteTag,
+  suggestedTag,
+  setSuggestedTag,
 }) => {
+  const suggestedTagData = allTags.find(({ name }) => suggestedTag === name);
+
   const tags =
     allTags.length && activeTags.length
       ? (activeTags.map((id) =>
@@ -290,7 +298,20 @@ const ActiveTags: React.FC<ActiveTagsProps> = ({
 
   return (
     <div className={styles.inputContainer}>
-      <span className={styles.label}>Word tags</span>
+      <div className={styles.labelContainer}>
+        <span className={styles.label}>Word tags</span>
+        {suggestedTagData && (
+          <Tag
+            key={suggestedTagData.id}
+            name={suggestedTagData.name}
+            color={suggestedTagData.color}
+            onClick={() => {
+              addTag(suggestedTagData.id);
+              setSuggestedTag('');
+            }}
+          />
+        )}
+      </div>
       <div className={styles.tagsContainer}>
         {tags
           .filter((it) => it)
@@ -356,7 +377,9 @@ const Tags: React.FC<{
   wordId: string;
   tagsIds?: string[];
   setTags: (tags: string[]) => void;
-}> = ({ wordId, tagsIds = [], setTags }) => {
+  setSuggestedTag: (tag: string) => void;
+  suggestedTag: string;
+}> = ({ wordId, tagsIds = [], setTags, suggestedTag, setSuggestedTag }) => {
   const [showAddNewTag, setShowAddNewTag] = useState(false);
   const [defaultTags = [], userTags = [], allTags = []] = useTags(tagsIds);
 
@@ -375,7 +398,10 @@ const Tags: React.FC<{
       <ActiveTags
         activeTags={tagsIds}
         allTags={allTags}
+        addTag={addTagToWordTags}
         deleteTag={deleteTagFromWordTags}
+        suggestedTag={suggestedTag}
+        setSuggestedTag={setSuggestedTag}
       />
       <div className={styles.inputContainer}>
         <span className={styles.label}>All tags</span>

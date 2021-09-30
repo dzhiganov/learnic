@@ -62,6 +62,9 @@ const NewWord: React.FunctionComponent<Props> = ({
       uid,
     },
   });
+  const [suggestedPartOfSpeech, setSuggestedPartOfSpeech] = useState<string>(
+    ''
+  );
 
   const {
     data: {
@@ -78,11 +81,15 @@ const NewWord: React.FunctionComponent<Props> = ({
       Translation: {
         Translation: string;
       };
+      partOfSpeech: string;
     };
-    const { Translation: { Translation: dictionaryTranslate = '' } = {} } =
-      res || {};
+    const {
+      Translation: { Translation: dictionaryTranslate = '' } = {},
+      partOfSpeech,
+    } = res || {};
     const [value = ''] = dictionaryTranslate.split(',');
 
+    setSuggestedPartOfSpeech(partOfSpeech);
     setSuggestedTranslate(value);
   }, []);
 
@@ -114,6 +121,7 @@ const NewWord: React.FunctionComponent<Props> = ({
     if (!word && translate) {
       setTranslate('');
       setSuggestedTranslate('');
+      setSuggestedPartOfSpeech('');
     }
   }, [word, translate]);
 
@@ -277,7 +285,13 @@ const NewWord: React.FunctionComponent<Props> = ({
             Suggest translate
           </label>
 
-          <Tags wordId={id} tagsIds={tagsIds} setTags={setTagsIds} />
+          <Tags
+            wordId={id}
+            tagsIds={tagsIds}
+            setTags={setTagsIds}
+            setSuggestedTag={setSuggestedPartOfSpeech}
+            suggestedTag={suggestedPartOfSpeech}
+          />
         </div>
         <div className={styles.buttons}>
           <SaveButton onSave={handleOnClickSave} />

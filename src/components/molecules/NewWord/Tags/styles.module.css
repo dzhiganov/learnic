@@ -16,7 +16,8 @@
   font-weight: 500;
   cursor: pointer;
   line-height: 0;
-  transition: 200 ease-in-out;
+  transition: 200ms ease-in-out;
+  min-height: 30px;
 }
 
 .iconButton {
@@ -129,4 +130,9 @@
   margin-right: 10px;
   font-size: 16px;
   margin-bottom: 4px;
+}
+
+.labelContainer {
+  display: flex;
+  align-items: center;
 }
