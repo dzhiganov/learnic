@@ -1,13 +1,13 @@
 /* eslint-disable css-modules/no-unused-class */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
-import { getTranslate } from 'core/store/api/translate';
 import useDebounce from 'react-use/lib/useDebounce';
 import { useTranslation } from 'react-i18next';
 import Checkbox from '@material-ui/core/Checkbox';
 import { useMutation, useQuery } from '@apollo/client';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { getWordData, AvailableLanguage } from '~store/api/wordData';
 import useSelector from '~hooks/useSelector';
 import styles from './styles.module.css';
 import SaveButton from './SaveButton';
@@ -77,16 +77,16 @@ const NewWord: React.FunctionComponent<Props> = ({
     if (!autoFetch || !req) {
       return;
     }
-    const res = (await getTranslate(token, req, 'ru', 'en')) as {
-      Translation: {
-        Translation: string;
-      };
-      partOfSpeech: string;
-    };
     const {
-      Translation: { Translation: dictionaryTranslate = '' } = {},
       partOfSpeech,
-    } = res || {};
+      translation: dictionaryTranslate,
+    } = await getWordData(
+      token,
+      req,
+      AvailableLanguage.Ru,
+      AvailableLanguage.En
+    );
+
     const [value = ''] = dictionaryTranslate.split(',');
 
     setSuggestedPartOfSpeech(partOfSpeech);

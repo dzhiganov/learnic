@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import type { AppThunk } from '..';
 
-import { auth } from '../api/translate';
+import { getTranslatorAuthKey } from '../api/wordData';
 
 type UserState = {
   token: string;
@@ -39,7 +39,7 @@ export default repoDetails.reducer;
 export const fetchAuth = (): AppThunk => async (dispatch) => {
   try {
     const apiKey = process.env.REACT_APP_LINGVOLIVE_API_KEY as string;
-    const token = await auth(apiKey);
+    const token = await getTranslatorAuthKey(apiKey);
     dispatch(getRepoDetailsSuccess(token));
   } catch (err) {
     dispatch(getRepoDetailsFailed(err.toString()));

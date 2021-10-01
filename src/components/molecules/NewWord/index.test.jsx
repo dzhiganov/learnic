@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import { MockedProvider } from '@apollo/client/testing';
-import * as translateApi from '~store/api/translate';
+import * as translateApi from '~store/api/wordData';
 import NewWord from '.';
 import getUseSuggestedTranslate from '~graphql/queries/getUseSuggestedTranslate';
 
@@ -92,7 +92,7 @@ const renderNewWord = (
 describe('NewWord', () => {
   beforeAll(() => {
     mockedTranslateApi = jest
-      .spyOn(translateApi, 'getTranslate')
+      .spyOn(translateApi, 'getWordData')
       .mockImplementation(() => {});
     mockedConsoleError = jest
       .spyOn(global.console, 'error')
@@ -124,7 +124,7 @@ describe('NewWord', () => {
 
     const { container } = renderNewWord({ autoFetch: true });
 
-    expect(translateApi.getTranslate).toHaveBeenCalledTimes(0);
+    expect(translateApi.getWordData).toHaveBeenCalledTimes(0);
 
     const wordInput = container.querySelector('[name="word"]');
 
@@ -133,7 +133,7 @@ describe('NewWord', () => {
       jest.advanceTimersByTime(DELAY);
     });
 
-    expect(translateApi.getTranslate).toHaveBeenCalledTimes(1);
+    expect(translateApi.getWordData).toHaveBeenCalledTimes(1);
     expect(wordInput).toHaveValue('w');
 
     act(() => {
@@ -141,7 +141,7 @@ describe('NewWord', () => {
       jest.advanceTimersByTime(DELAY);
     });
 
-    expect(translateApi.getTranslate).toHaveBeenCalledTimes(2);
+    expect(translateApi.getWordData).toHaveBeenCalledTimes(2);
 
     expect(wordInput).toHaveValue('wo');
   });
