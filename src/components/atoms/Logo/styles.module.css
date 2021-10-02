@@ -6,11 +6,3 @@
   align-items: center;
   display: flex;
 }
-
-.normal svg {
-  transform: scale(1);
-}
-
-.large svg {
-  transform: scale(2);
-}

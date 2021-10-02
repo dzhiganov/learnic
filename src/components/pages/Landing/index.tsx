@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import Modal from '@material-ui/core/Modal';
 import Logo from '~c/atoms/Logo';
 import Button from '~c/atoms/Button';
-// eslint-disable-next-line css-modules/no-unused-class
 import styles from './styles.module.css';
 import Login from '~c/molecules/Login';
 
@@ -16,23 +15,25 @@ const Landing: React.FC = () => {
   const handleClose = useCallback(() => setOpen(false), []);
 
   return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <Logo size="large" />
-        <h2 className={styles.subtitle}>One place - all dictionaries</h2>
-        <div className={styles.images}>
-          <img src="promo.png" alt="" className={styles.promoImageDictionary} />
-        </div>
-      </header>
-      <main className={styles.main}>
-        <div className={`${styles.block}`}>
-          <Button
-            title="✌️ Sign in"
-            onClick={handleClick}
-            className={styles.startButton}
-          />
-        </div>
-      </main>
+    <div className={styles.wrapper}>
+      <div className={styles.container}>
+        <header className={styles.header}>
+          <div>
+            <Logo />
+            <h2 className={styles.subtitle}>
+              Simple app to remember new words
+            </h2>
+          </div>
+          <div className={`${styles.block}`}>
+            <Button
+              title="Get Started"
+              onClick={handleClick}
+              className={styles.startButton}
+            />
+          </div>
+        </header>
+        <img src="promo.png" alt="" className={styles.promoImageDictionary} />
+      </div>
       <Modal
         open={open}
         onClose={handleClose}
@@ -41,6 +42,16 @@ const Landing: React.FC = () => {
       >
         <Login />
       </Modal>
+      <footer className={styles.footer}>
+        <div>
+          <a className={styles.link} href="https://github.com/delawere/learnic">
+            GitHub
+          </a>
+          <span
+            className={styles.copyright}
+          >{`© Learnic ${new Date().getFullYear()} `}</span>
+        </div>
+      </footer>
     </div>
   );
 };

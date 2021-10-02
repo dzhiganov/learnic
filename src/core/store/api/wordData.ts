@@ -111,7 +111,7 @@ export const getWordData = async (
     sourceLang,
     destinationLang
   );
-  const definition = await getWordDefinition(word, sourceLang);
+  const definition = await getWordDefinition(word);
 
   return {
     ...prepareTranslateResponse(translation),

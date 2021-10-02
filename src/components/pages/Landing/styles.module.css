@@ -1,26 +1,20 @@
-.header {
-  padding: 12px 0;
+.wrapper {
+  background-color: #fafafa;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.container {
   display: flex;
   flex-direction: column;
   margin-bottom: 30px;
-  place-content: flex-start center;
   max-width: 900px;
   margin: 0 auto;
   align-items: center;
   padding-top: 45px;
-}
-
-.top {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.main {
-  max-width: 900px;
-  margin: 0 auto;
-  padding-bottom: 50px;
+  height: auto;
 }
 
 .block {
@@ -28,61 +22,62 @@
   color: var(--color-text-secondary);
   display: flex;
   justify-content: center;
-  margin-top: 24px;
 }
 
 .block + .block {
   margin-top: 50px;
 }
 
-.blockTitle {
-  margin: 0;
-  padding: 0;
-  font-size: 32px;
-  margin-bottom: 10px;
-}
-
-.mainBlock {
-  display: flex;
-  justify-content: center;
-}
-
-.list > li + li {
-  margin-top: 12px;
-}
-
 .startButton {
   height: 60px;
   font-size: 24px;
-  font-weight: normal;
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #7b22ec;
-  transition: 300ms ease-in-out;
+  background-color: #5a4ae3;
 }
 
 .subtitle {
-  font-size: 20px;
-  font-weight: 600;
   text-align: center;
+  margin: 0;
+  font-size: 22px;
+  font-weight: 500;
 }
 
 .promoImageDictionary {
-  max-width: 800px;
-  width: 80%;
+  width: 100%;
   border-radius: 22px;
-  box-shadow: 0 15px 35px 0 rgba(60, 66, 87, 0.08),
+  box-shadow: 0 15px 35px 0 rgba(60, 67, 87, 0.08),
     0 5px 15px 0 rgba(0, 0, 0, 0.12);
 }
 
-.images {
+.header {
   display: flex;
-  margin-top: 15px;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 120px;
+}
+
+.footer {
+  margin: 12px 0;
+  display: flex;
   justify-content: center;
 }
 
-.container {
-  background-color: #f7f7f7;
-  min-height: 100vh;
+.link {
+  font-weight: 600;
+  text-decoration: none;
+  margin: 0 12px;
+  color: #5a4ae3;
+  border-bottom: 1px dashed rgb(192, 192, 192);
+}
+
+.link:hover,
+.link:focus {
+  border-color: #5a4ae3;
+}
+
+.copyright {
+  color: rgb(82, 82, 82);
 }

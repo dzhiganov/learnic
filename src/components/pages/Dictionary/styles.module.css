@@ -106,7 +106,7 @@
 @media (min-width: 576px) {
   .modalContainer {
     width: 800px;
-    transform: translate(-400px, 20px);
+    transform: translate(-400px, 100px);
     height: auto;
     left: 50%;
   }

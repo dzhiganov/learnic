@@ -2,16 +2,13 @@
 import React from 'react';
 import styles from './styles.module.css';
 
-type Sizes = 'normal' | 'large';
-
 type Props = {
-  size?: Sizes;
   className?: string;
 };
 
-const Logo: React.FC<Props> = ({ size = 'normal', className }) => {
+const Logo: React.FC<Props> = ({ className }) => {
   return (
-    <div className={`${styles.logo} ${styles[size]} ${className}`}>
+    <div className={`${styles.logo} ${className}`}>
       <svg
         width="101"
         height="32"
