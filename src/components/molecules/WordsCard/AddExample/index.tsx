@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState, useRef } from 'react';
+import React, { memo, useState, useRef } from 'react';
 import { Tooltip } from '@chakra-ui/react';
 import styles from './styles.module.css';
 import SaveButton from '~c/molecules/NewWord/SaveButton';
@@ -7,24 +7,37 @@ type Props = {
   onSave: (example: string) => Promise<void>;
 };
 
+let timer: ReturnType<typeof setTimeout> | null = null;
+const tooltipShowTime = 4000;
+
 const AddExample: React.FunctionComponent<Props> = ({ onSave }: Props) => {
   const [example, setExample] = useState('');
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const handleOnSave = useCallback(async () => {
+  const handleOnSave = () => {
     if (!example) {
-      setShowTooltip(true);
+      if (!showTooltip) {
+        setShowTooltip(true);
+      }
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        setShowTooltip(false);
+        timer = null;
+      }, tooltipShowTime);
       return;
     }
-    await onSave(example);
-    setExample('');
-  }, [onSave, example]);
+    onSave(example).then(() => setExample(''));
+  };
 
-  const handleChangeInput = useCallback((e) => {
+  const handleChangeInput: React.ChangeEventHandler<HTMLTextAreaElement> = (
+    e
+  ) => {
     const { value } = e.target;
     setExample(value);
-  }, []);
+  };
+
+  const handleFocus = () => setShowTooltip(false);
 
   return (
     <div className={styles.container}>
@@ -34,6 +47,7 @@ const AddExample: React.FunctionComponent<Props> = ({ onSave }: Props) => {
           className={styles.input}
           value={example}
           onChange={handleChangeInput}
+          onFocus={handleFocus}
           rows={4}
           placeholder="Add another one..."
         />
@@ -45,6 +59,8 @@ const AddExample: React.FunctionComponent<Props> = ({ onSave }: Props) => {
           isOpen={showTooltip}
           color="white"
           background="black"
+          placement="top"
+          hasArrow
         >
           <span>
             <SaveButton onSave={handleOnSave} />
