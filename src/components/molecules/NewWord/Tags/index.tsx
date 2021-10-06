@@ -33,6 +33,26 @@ type TagProps = {
   onClick?: () => void;
 };
 
+const SuggestedTag: React.FC<Omit<TagProps, 'color'>> = ({
+  name,
+  children,
+  ...props
+}) => {
+  const bgColor = 'hsl(211, 100%, 95%)';
+  const fontColor = 'hsl(237, 97%, 74%)';
+
+  return (
+    <div
+      className={styles.tag}
+      style={{ background: bgColor, color: fontColor, borderColor: fontColor }}
+      {...props}
+    >
+      {name}
+      {children}
+    </div>
+  );
+};
+
 const Tag: React.FC<TagProps> = ({ name, color, children, ...props }) => {
   const fontColor = darker(color);
 
@@ -116,6 +136,8 @@ const colors = [
   'hsl(0, 0%, 88%)', // grey
   'hsl(213, 15%, 88%)', // blue grey
 ] as const;
+
+const suggestedTagColor = 'hsl(211, 100%, 95%);';
 
 type Color = typeof colors[number];
 
@@ -301,10 +323,8 @@ const ActiveTags: React.FC<ActiveTagsProps> = ({
       <div className={styles.labelContainer}>
         <span className={styles.label}>Word tags</span>
         {suggestedTagData && (
-          <Tag
-            key={suggestedTagData.id}
+          <SuggestedTag
             name={suggestedTagData.name}
-            color={suggestedTagData.color}
             onClick={() => {
               addTag(suggestedTagData.id);
               setSuggestedTag('');

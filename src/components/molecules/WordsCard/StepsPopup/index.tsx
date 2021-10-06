@@ -62,7 +62,7 @@ const StepsPopup: React.FunctionComponent<Props> = ({
     const result = `${
       repeat
         ? t('DICTIONARY.WORD_CARD.STEPS.NEXT_REPEAT_DATE', {
-            date: new Date(repeat),
+            date: dayjs(repeat).format('d MMMM HH:MM'),
           })
         : ''
     }`;
@@ -100,9 +100,11 @@ const StepsPopup: React.FunctionComponent<Props> = ({
           />
           <div className={styles.section}>
             <span className={styles.title}>{`${t(
-              'DICTIONARY.WORD_CARD.STEPS.REPEAT'
+              'DICTIONARY.WORD_CARD.STEPS.PROGRESS'
             )}: `}</span>
-            <span className={styles.value}>{`${step}/6`}</span>
+            <span className={styles.value}>{`${
+              Math.ceil(((100 / 7) * step) / 5) * 5
+            }%`}</span>
           </div>
           {step < 6 ? (
             <div className={styles.section}>

@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable css-modules/no-unused-class */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
@@ -206,12 +208,6 @@ const NewWord: React.FunctionComponent<Props> = ({
     });
   };
 
-  useEffect(() => {
-    if (useSuggestedTranslate) {
-      setTranslate(suggestedTranslate);
-    }
-  }, [useSuggestedTranslate, suggestedTranslate]);
-
   return (
     <>
       <header className={styles.header}>Adding new word</header>
@@ -249,6 +245,17 @@ const NewWord: React.FunctionComponent<Props> = ({
                   }}
                 />
               )}
+              {suggestedTranslate && (
+                <span
+                  className={styles.suggestedTranslate}
+                  onClick={() => {
+                    setTranslate(suggestedTranslate);
+                    setSuggestedTranslate('');
+                  }}
+                >
+                  {suggestedTranslate}
+                </span>
+              )}
             </label>
 
             <div className={styles.inputWrapper}>
@@ -265,8 +272,7 @@ const NewWord: React.FunctionComponent<Props> = ({
               />
             </div>
           </div>
-
-          <label
+          {/* <label
             htmlFor="suggestedTranslate"
             className={`${styles.suggestedTranslateLabel} ${
               !useSuggestedTranslate && styles.unchecked
@@ -283,8 +289,7 @@ const NewWord: React.FunctionComponent<Props> = ({
               size="small"
             />
             Suggest translate
-          </label>
-
+          </label> */}
           <Tags
             wordId={id}
             tagsIds={tagsIds}

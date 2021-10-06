@@ -113,3 +113,22 @@
   margin-left: 8px;
   margin-bottom: -2px;
 }
+
+.suggestedTranslate {
+  background-color: hsl(211, 100%, 95%);
+  color: hsl(237, 97%, 74%);
+  padding: 4px 18px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 4px;
+  font-size: 14px;
+  border: 1px solid #d4d4d4;
+  border-color: rgb(124, 131, 253);
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 0;
+  transition: 200ms ease-in-out;
+  min-height: 30px;
+  margin-left: 10px;
+}

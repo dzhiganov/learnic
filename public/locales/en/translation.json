@@ -28,7 +28,7 @@
       "SAVE_BUTTON": "Save",
       "CANCEL_BUTTON": "Cancel",
       "STEPS": {
-        "REPEAT": "Repeat",
+        "PROGRESS": "Progress",
         "NEXT_REPEAT": "Next repeat",
         "NEXT_REPEAT_DATE": "{{date, D MMMM YYYY H mm}}",
         "TODAY": "Now"
