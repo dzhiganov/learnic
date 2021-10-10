@@ -5,7 +5,7 @@
 import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
 import useDebounce from 'react-use/lib/useDebounce';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { getWordData, AvailableLanguage } from '~store/api/wordData';
@@ -15,7 +15,7 @@ import SaveButton from './SaveButton';
 import CancelButton from './CancelButton';
 import Tags from './Tags';
 import { Tags as TagsList } from '~shared/types';
-import updateUserOptions from '~graphql/mutations/updateUserOptions';
+// import updateUserOptions from '~graphql/mutations/updateUserOptions';
 import getUseSuggestedTranslate from '~graphql/queries/getUseSuggestedTranslate';
 
 type Props = {
@@ -56,7 +56,7 @@ const NewWord: React.FunctionComponent<Props> = ({
   const [suggestedTranslate, setSuggestedTranslate] = useState('');
   const [tagsIds, setTagsIds] = useState<string[]>([]);
   const token = useSelector<string>('translate.token');
-  const [fetchUpdateUserOptions] = useMutation(updateUserOptions);
+  // const [fetchUpdateUserOptions] = useMutation(updateUserOptions);
   const uid = useSelector<string>('user.uid');
   const queryResult = useQuery(getUseSuggestedTranslate, {
     variables: {
