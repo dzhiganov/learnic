@@ -182,30 +182,30 @@ const NewWord: React.FunctionComponent<Props> = ({
     onCancel();
   }, [onCancel]);
 
-  const handleChangeSuggestedTranslate = ({
-    target: { checked = false } = {},
-  }) => {
-    fetchUpdateUserOptions({
-      variables: {
-        uid,
-        userOptions: {
-          useSuggestedTranslate: checked,
-        },
-      },
-      optimisticResponse: {
-        updateUserOptions: {
-          uid,
-          userOptions: {
-            useSuggestedTranslate: checked,
-            __typename: 'UserOptions',
-          },
-          __typename: 'User',
-        },
-      },
-    }).then(() => {
-      if (checked) fetchTranslate(word);
-    });
-  };
+  // const handleChangeSuggestedTranslate = ({
+  //   target: { checked = false } = {},
+  // }) => {
+  //   fetchUpdateUserOptions({
+  //     variables: {
+  //       uid,
+  //       userOptions: {
+  //         useSuggestedTranslate: checked,
+  //       },
+  //     },
+  //     optimisticResponse: {
+  //       updateUserOptions: {
+  //         uid,
+  //         userOptions: {
+  //           useSuggestedTranslate: checked,
+  //           __typename: 'UserOptions',
+  //         },
+  //         __typename: 'User',
+  //       },
+  //     },
+  //   }).then(() => {
+  //     if (checked) fetchTranslate(word);
+  //   });
+  // };
 
   return (
     <>
