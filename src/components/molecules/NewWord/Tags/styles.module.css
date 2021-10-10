@@ -2,121 +2,9 @@
   margin-bottom: 30px;
 }
 
-.tag {
-  padding: 4px 18px;
-  border-radius: 10px;
-  display: inline-flex;
-  align-items: center;
-  margin-right: 4px;
-  font-size: 14px;
-  margin-bottom: 4px;
-  border: 1px solid #d4d4d4;
-  background: rgb(2, 122, 250, 0.85);
-  color: #000;
-  font-weight: 500;
-  cursor: pointer;
-  line-height: 0;
-  transition: 200ms ease-in-out;
-  min-height: 30px;
-}
-
-.iconButton {
-  background-color: transparent;
-  border-radius: 50%;
-  border: none;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  margin-left: 8px;
-  justify-content: center;
-  font-size: 16px;
-  color: inherit;
-}
-
-.iconButton > svg {
-  font-size: inherit;
-}
-
-.newTagInput {
-  background-color: transparent;
-  border: none;
-  outline: none;
-  min-width: 70px;
-  max-width: 120px;
-  color: inherit;
-  font-weight: 500;
-}
-
-.newTag {
-  font-size: inherit;
-}
-
-.addNewTagButton {
-  background-color: transparent;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-  align-self: center;
-}
-.addNewTagButton:hover {
-  background-color: aliceblue;
-}
-
-.paletteWrapper {
-  position: relative;
-  display: flex;
-}
-
-.paletteWrapper > .iconButton {
-  margin-left: 0;
-}
-
-.paletteContainer {
-  border-radius: 10px;
-  padding: 12px 8px;
-}
-
-.paletteList {
-  cursor: pointer;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
-}
-
-.paletteItem {
-  transition: 100ms;
-  width: 30px;
-  height: 30px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.paletteItem:hover {
-  transform: scale(1.1);
-}
-
-.tagsContainer {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 6px;
-  border: 1px solid rgb(226, 226, 226);
-  border-radius: 10px;
-  min-height: 43px;
-}
-
 .inputContainer {
   display: flex;
   flex-direction: column;
-  margin-bottom: 25px;
 }
 
 .label {
@@ -131,4 +19,33 @@
 .labelContainer {
   display: flex;
   align-items: center;
+}
+
+.tagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 6px 0;
+  border-radius: 10px;
+  min-height: 43px;
+}
+
+.addNewTagButton {
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  align-self: center;
+  border: 2px solid rgb(105, 211, 105);
+  background-color: transparent;
+  color: rgb(105, 211, 105);
+  font-weight: 500;
+  font-size: 14px;
+  padding: 4px 18px;
+  height: 32px;
+  margin-bottom: 4px;
+  border-radius: 10px;
+}
+.addNewTagButton:hover {
+  background-color: rgb(231, 255, 231);
 }

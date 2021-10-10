@@ -1,0 +1,44 @@
+.label {
+  padding: 4px 18px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 4px;
+  font-size: 14px;
+  margin-bottom: 4px;
+  border: 2px solid #8a8a8a;
+  color: #8a8a8a;
+  background: transparent;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 0;
+  transition: 200ms ease-in-out;
+  height: 32px;
+  font-weight: 600;
+  position: relative;
+}
+
+.label:hover,
+.label:focus {
+  border-color: var(--color-primary);
+}
+
+.input {
+  appearance: none;
+  position: absolute;
+}
+
+.active {
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.suggested {
+  border: 2px solid rgb(124, 131, 253);
+  color: rgb(124, 131, 253);
+  background-color: rgb(234, 235, 253);
+}
+
+.new {
+  border: 2px solid rgb(41, 170, 41);
+}

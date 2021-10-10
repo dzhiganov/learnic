@@ -1,0 +1,56 @@
+.tag {
+  padding: 4px 18px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 4px;
+  font-size: 14px;
+  margin-bottom: 4px;
+  border: 2px solid #8a8a8a;
+  color: #8a8a8a;
+  background: transparent;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 0;
+  transition: 200ms ease-in-out;
+  height: 32px;
+  font-weight: 600;
+}
+
+.newTag {
+  border-color: rgb(48, 201, 48);
+}
+
+.newTagInput {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  min-width: 70px;
+  max-width: 120px;
+  color: rgb(27, 25, 25);
+  font-weight: 500;
+  font-size: inherit;
+}
+
+.iconButton {
+  background-color: transparent;
+  border-radius: 50%;
+  border: none;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+  justify-content: center;
+  font-size: 16px;
+  color: inherit;
+}
+
+.saveIcon {
+  color: inherit;
+}
+
+.saveIcon:hover {
+  color: rgb(48, 201, 48);
+}

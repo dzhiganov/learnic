@@ -42,6 +42,7 @@ export type Tag = {
   id: string;
   name: string;
   color: string;
+  isUserTag?: boolean;
 };
 
 export type Tags = Tag[];

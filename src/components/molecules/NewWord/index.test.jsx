@@ -113,12 +113,6 @@ describe('NewWord', () => {
     jest.useRealTimers();
   });
 
-  test('should set focus on the Word input', () => {
-    const { queryByTestId } = renderNewWord();
-
-    expect(queryByTestId('word') === document.activeElement).toBeTruthy();
-  });
-
   test('should fetch have been called n times', async () => {
     const DELAY = 2000;
 

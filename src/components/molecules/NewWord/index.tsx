@@ -5,7 +5,6 @@
 import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
 import useDebounce from 'react-use/lib/useDebounce';
 import { useTranslation } from 'react-i18next';
-import Checkbox from '@material-ui/core/Checkbox';
 import { useMutation, useQuery } from '@apollo/client';
 import useAsyncFn from 'react-use/lib/useAsyncFn';
 import CircularProgress from '@material-ui/core/CircularProgress';
