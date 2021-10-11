@@ -57,6 +57,5 @@ export type GetTagQuerySelector = {
 export enum TrainingTypes {
   Repeat = 'repeat',
   Last = 'last',
-  Penultimate = 'penultimate',
   All = 'all',
 }

@@ -62,7 +62,7 @@ const Cards: React.FunctionComponent = () => {
       dayjs(a).isBefore(dayjs(b)) ? 1 : -1
     );
 
-    const [lastKeys, penultimateKeys] = sortedKeys;
+    const [lastKeys] = sortedKeys;
     const repeatWords = words.filter(({ repeat }) => {
       if (repeat) {
         return now.isSameOrAfter(dayjs(repeat));
@@ -75,7 +75,6 @@ const Cards: React.FunctionComponent = () => {
       [TrainingTypes.Repeat]: repeatWords,
       [TrainingTypes.All]: words,
       [TrainingTypes.Last]: groupedByDate[lastKeys],
-      [TrainingTypes.Penultimate]: groupedByDate[penultimateKeys],
     };
   }, [words]);
 
@@ -363,7 +362,6 @@ const Cards: React.FunctionComponent = () => {
         <Selector
           counts={{
             [TrainingTypes.Last]: wordSets.last.length,
-            [TrainingTypes.Penultimate]: wordSets.penultimate.length,
             [TrainingTypes.All]: wordSets.all.length,
             [TrainingTypes.Repeat]: wordSets.repeat.length,
           }}

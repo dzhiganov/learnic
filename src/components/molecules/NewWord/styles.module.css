@@ -20,7 +20,6 @@
 
 .input {
   color: var(--color-text);
-  border-color: var(--color-input-border);
   background-color: var(--color-input-background);
   text-overflow: ellipsis;
   font-size: 16px;
@@ -28,8 +27,6 @@
   font-weight: 400;
   width: 100%;
   border-radius: 8px;
-  border-width: 1px;
-  border-style: solid;
   box-sizing: border-box;
   padding: 0.3rem 0.6rem;
   text-align: left;
@@ -39,11 +36,12 @@
   resize: none;
   overflow: hidden;
   outline: none;
+  background-color: #f3f3f3;
+  border: none;
 }
 
 .input:focus,
 .input:active {
-  border-color: var(--color-primary);
   outline: none;
 }
 
@@ -76,7 +74,7 @@
 .header {
   border-radius: 10px 10px 0 0;
   color: #fff;
-  padding: 24px;
+  padding: 24px 40px;
   font-size: 18px;
   font-weight: 600;
   color: var(--color-text);
@@ -124,9 +122,9 @@
   align-items: center;
   margin-right: 4px;
   font-size: 14px;
-  border: 1px solid #d4d4d4;
+  border: 2px solid #d4d4d4;
   border-color: rgb(124, 131, 253);
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   line-height: 0;
   transition: 200ms ease-in-out;

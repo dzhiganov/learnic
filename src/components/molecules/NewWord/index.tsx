@@ -15,7 +15,6 @@ import SaveButton from './SaveButton';
 import CancelButton from './CancelButton';
 import Tags from './Tags';
 import { Tags as TagsList } from '~shared/types';
-// import updateUserOptions from '~graphql/mutations/updateUserOptions';
 import getUseSuggestedTranslate from '~graphql/queries/getUseSuggestedTranslate';
 
 type Props = {
@@ -56,7 +55,6 @@ const NewWord: React.FunctionComponent<Props> = ({
   const [suggestedTranslate, setSuggestedTranslate] = useState('');
   const [tagsIds, setTagsIds] = useState<string[]>([]);
   const token = useSelector<string>('translate.token');
-  // const [fetchUpdateUserOptions] = useMutation(updateUserOptions);
   const uid = useSelector<string>('user.uid');
   const queryResult = useQuery(getUseSuggestedTranslate, {
     variables: {
@@ -96,7 +94,7 @@ const NewWord: React.FunctionComponent<Props> = ({
 
   const [, cancel] = useDebounce(
     async () => {
-      if (useSuggestedTranslate) {
+      if (useSuggestedTranslate && !id) {
         fetchTranslate(word);
       }
     },
@@ -182,34 +180,11 @@ const NewWord: React.FunctionComponent<Props> = ({
     onCancel();
   }, [onCancel]);
 
-  // const handleChangeSuggestedTranslate = ({
-  //   target: { checked = false } = {},
-  // }) => {
-  //   fetchUpdateUserOptions({
-  //     variables: {
-  //       uid,
-  //       userOptions: {
-  //         useSuggestedTranslate: checked,
-  //       },
-  //     },
-  //     optimisticResponse: {
-  //       updateUserOptions: {
-  //         uid,
-  //         userOptions: {
-  //           useSuggestedTranslate: checked,
-  //           __typename: 'UserOptions',
-  //         },
-  //         __typename: 'User',
-  //       },
-  //     },
-  //   }).then(() => {
-  //     if (checked) fetchTranslate(word);
-  //   });
-  // };
-
   return (
     <>
-      <header className={styles.header}>Adding new word</header>
+      <header className={styles.header}>
+        {id ? 'Editing' : 'Adding new word'}
+      </header>
       <div className={styles.container}>
         <div className={styles.inputsContainer}>
           <div className={styles.inputContainer}>
@@ -271,24 +246,6 @@ const NewWord: React.FunctionComponent<Props> = ({
               />
             </div>
           </div>
-          {/* <label
-            htmlFor="suggestedTranslate"
-            className={`${styles.suggestedTranslateLabel} ${
-              !useSuggestedTranslate && styles.unchecked
-            }`}
-          >
-            <Checkbox
-              id="suggestedTranslate"
-              checked={useSuggestedTranslate}
-              onChange={handleChangeSuggestedTranslate}
-              color="primary"
-              inputProps={{ 'aria-label': 'secondary checkbox' }}
-              disableRipple
-              style={{ backgroundColor: 'transparent', padding: '4px' }}
-              size="small"
-            />
-            Suggest translate
-          </label> */}
           <Tags
             wordId={id}
             tagsIds={tagsIds}

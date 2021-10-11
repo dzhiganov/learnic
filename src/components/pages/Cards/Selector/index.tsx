@@ -5,10 +5,7 @@ import Card from './Card';
 
 type Props = {
   counts: Record<
-    | TrainingTypes.All
-    | TrainingTypes.Last
-    | TrainingTypes.Penultimate
-    | TrainingTypes.Repeat,
+    TrainingTypes.All | TrainingTypes.Last | TrainingTypes.Repeat,
     number
   >;
   onSelect: (trainingType: TrainingTypes) => void;

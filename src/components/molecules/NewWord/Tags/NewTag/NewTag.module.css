@@ -6,9 +6,9 @@
   margin-right: 4px;
   font-size: 14px;
   margin-bottom: 4px;
-  border: 2px solid #8a8a8a;
+  border: none;
+  background-color: rgb(207, 248, 207);
   color: #8a8a8a;
-  background: transparent;
   font-weight: 500;
   cursor: pointer;
   line-height: 0;
@@ -18,7 +18,7 @@
 }
 
 .newTag {
-  border-color: rgb(48, 201, 48);
+  color: rgb(48, 201, 48);
 }
 
 .newTagInput {

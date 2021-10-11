@@ -42,6 +42,7 @@ const Tags: React.FC<{
               name={suggestedTagData.name}
               onClick={() => {
                 setSuggestedTag('');
+                setTags([...tagsIds, suggestedTagData.id]);
               }}
               status={Status.Suggested}
             />
