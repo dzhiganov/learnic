@@ -10,16 +10,12 @@
 .input {
   font-family: inherit;
   color: var(--color-text);
-  border-color: var(--color-input-border);
-  background-color: var(--color-input-background);
   text-overflow: ellipsis;
   font-size: 16px;
   line-height: 28px;
   font-weight: 400;
   width: 100%;
   border-radius: 8px;
-  border-width: 1px;
-  border-style: solid;
   box-sizing: border-box;
   margin-bottom: 1rem;
   margin-top: 1rem;
@@ -28,12 +24,12 @@
   appearance: none;
   align-items: center;
   resize: none;
+  background-color: #f3f3f3;
+  border: none;
 }
 
 .input:focus,
 .input:active {
-  border-color: rgba(58, 121, 212, 0.36);
-  box-shadow: 0 0 0 2px #bedcfa;
   outline: none;
 }
 
