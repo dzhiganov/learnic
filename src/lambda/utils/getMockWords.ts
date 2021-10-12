@@ -1,8 +1,15 @@
 const getMockWords = (...args: string[]): unknown[] => {
   return args.map((params: string, index: number) => {
-    const [word, translate, date, repeat, step, examples, audio] = params.split(
-      /\s{1,}\|\s{1,}/
-    );
+    const [
+      word,
+      translate,
+      date,
+      repeat,
+      step,
+      tags,
+      examples,
+      audio,
+    ] = params.split(/\s{1,}\|\s{1,}/);
     return {
       data: () => ({
         id: index.toString(),
@@ -19,6 +26,11 @@ const getMockWords = (...args: string[]): unknown[] => {
           }),
         },
         step: Number(step),
+        tags: tags.split(', ').map((tag) => ({
+          get: () => ({
+            data: () => ({ id: 'fake id', name: tag, color: 'fake color' }),
+          }),
+        })),
         examples: examples.split(', '),
         audio,
       }),
@@ -34,6 +46,7 @@ const getWordObject = (params: string): Record<string, unknown> => {
     date,
     repeat,
     step,
+    tags,
     examples,
     audio,
   ] = params.split(/\s{1,}\|\s{1,}/);
@@ -44,6 +57,9 @@ const getWordObject = (params: string): Record<string, unknown> => {
     date,
     repeat,
     step: Number(step),
+    tags: tags
+      .split(', ')
+      .map((tag) => ({ id: 'fake id', name: tag, color: 'fake color' })),
     examples: examples.split(', '),
     audio,
   };

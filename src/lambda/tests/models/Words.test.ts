@@ -10,7 +10,7 @@ beforeEach(() => {
 const RealDate = Date.now;
 
 beforeAll(() => {
-  global.Date.now = jest.fn(() => new Date('2021-05-11').getTime());
+  global.Date.now = () => new Date('2021-05-11').getTime();
 });
 
 afterAll(() => {
@@ -23,10 +23,10 @@ describe('Testing Words methods', () => {
 
     expect(result).toMatchObject(
       getArrayOfWord(
-        '1 | fish   | fish   | 2021.12.12 | 2021.12.12 | 0 | Fish bubbles | bubble.mp3',
-        '2 | cat    | cat    | 2021.11.12 | 2021.11.12 | 1 | Cat meows    | meow.mp3',
-        '3 | dog    | dog    | 2021.10.12 | 2021.10.12 | 2 | Dog barks    | bark.mp3',
-        '0 | rabbit | rabbit | 2021.01.12 | 2021.01.12 | 3 | Rabbit runs  | run.mp3'
+        '1 | fish   | fish   | 2021.12.12 | 2021.12.12 | 0 | noun | Fish bubbles | bubble.mp3',
+        '2 | cat    | cat    | 2021.11.12 | 2021.11.12 | 1 | noun | Cat meows    | meow.mp3',
+        '3 | dog    | dog    | 2021.10.12 | 2021.10.12 | 2 | noun | Dog barks    | bark.mp3',
+        '0 | rabbit | rabbit | 2021.01.12 | 2021.01.12 | 3 | noun | Rabbit runs  | run.mp3'
       )
     );
   });
@@ -36,8 +36,8 @@ describe('Testing Words methods', () => {
 
     expect(result).toMatchObject(
       getArrayOfWord(
-        '1 | fish   | fish   | 2021.12.12 | 2021.12.12 | 0 | Fish bubbles | bubble.mp3',
-        '0 | rabbit | rabbit | 2021.01.12 | 2021.01.12 | 3 | Rabbit runs  | run.mp3'
+        '1 | fish   | fish   | 2021.12.12 | 2021.12.12 | 0 | noun | Fish bubbles | bubble.mp3',
+        '0 | rabbit | rabbit | 2021.01.12 | 2021.01.12 | 3 | noun | Rabbit runs  | run.mp3'
       )
     );
   });
