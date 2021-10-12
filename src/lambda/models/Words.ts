@@ -172,7 +172,7 @@ class Words {
     if (onlyTrainings) {
       const filtered = prepared.filter(({ step = 0, repeat = null }) => {
         const repeatDate = repeat ? new Date(repeat) : null;
-        return step === 0 || (repeatDate && repeatDate < new Date());
+        return step === 0 || (repeatDate && repeatDate < new Date(Date.now()));
       });
       return Words.sortByDate(filtered);
     }
