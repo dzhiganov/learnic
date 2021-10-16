@@ -53,8 +53,9 @@
   "scripts": {
     "dev": "netlify dev",
     "start": "craco start --open",
-    "build:lambda": "tsc -p src/lambda/tsconfig.json",
-    "build": " yarn build:lambda && craco build",
+    "build:server": "tsc -p src/lambda/tsconfig.json",
+    "build:web": "craco build",
+    "build": " yarn build:server && yarn build:web",
     "test": "react-scripts test",
     "cy:open": "cypress open",
     "test:e2e": "start-server-and-test start http://localhost:3000 cy:open",
