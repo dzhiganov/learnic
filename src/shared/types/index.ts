@@ -9,6 +9,11 @@ export type UserOptions = {
   language: Language;
 };
 
+export type Example = {
+  id: string;
+  text: string;
+};
+
 export type Word = {
   id: string;
   word: string;
@@ -16,7 +21,7 @@ export type Word = {
   date: string | null;
   repeat: string | null;
   step: number;
-  examples?: { id: string; text: string }[];
+  examples?: Example[];
   transcription?: string;
   audio: string;
   tags: Tags;

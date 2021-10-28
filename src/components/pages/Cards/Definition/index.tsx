@@ -2,10 +2,11 @@ import React from 'react';
 import Modal from '@material-ui/core/Modal';
 import CloseIcon from '@material-ui/icons/Close';
 import styles from './styles.module.css';
+import { Example } from '~shared/types';
 
 type Props = {
   title: string;
-  examples?: string[];
+  examples?: Example[];
   open: boolean;
   onClose: () => void;
 };
@@ -29,8 +30,8 @@ const Definition: React.FC<Props> = ({ title, examples, open, onClose }) => {
         <span className={styles.title}>{title}</span>
         <ul className={styles.list}>
           {examples.map((example) => (
-            <li key={example} className={styles.item}>
-              <span>{example}</span>
+            <li key={example.id} className={styles.item}>
+              <span>{example.text}</span>
             </li>
           ))}
         </ul>
