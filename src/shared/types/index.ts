@@ -16,13 +16,18 @@ export type Word = {
   date: string | null;
   repeat: string | null;
   step: number;
-  examples?: string[];
+  examples?: { id: string; text: string }[];
   transcription?: string;
   audio: string;
   tags: Tags;
 };
 
 export type Words = Word[];
+
+export type User = {
+  uid: string;
+  words: Words;
+};
 
 export type GetWordsQueryResult = {
   user: {

@@ -21,7 +21,6 @@
 
 .contextSection {
   display: inline-block;
-  margin-top: 25px;
   padding: 12px;
   border-radius: 8px;
 }
@@ -29,23 +28,15 @@
 .examplesList {
   padding: 0;
   margin: 4px 0;
-  list-style-type: disc;
-  margin-left: 22px;
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 0;
 }
 
-.example {
-  font-weight: normal;
-  font-size: 16px;
-}
-
-.examplesItem::marker {
-  content: '✅ ';
-}
-
-.examplesItem {
-  position: relative;
+.examplesTitle {
+  font-size: 20px;
   font-weight: 500;
-  padding: 8px 0px;
+  line-height: 1;
 }
 
 .addExampleButton {
@@ -110,15 +101,6 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 4px;
-  border-bottom: 1px solid rgb(233, 233, 233);
-  padding-bottom: 4px;
-}
-
-.examplesTitle {
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 1;
 }
 
 .buttons {
@@ -130,4 +112,15 @@
   display: flex;
   justify-content: flex-end;
   padding: 12px;
+}
+
+.tagsContainer {
+  padding: 15px 0 30px 0;
+}
+
+.tagsTitle {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1;
+  padding-bottom: 12px;
 }

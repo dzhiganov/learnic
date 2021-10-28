@@ -31,6 +31,16 @@ const typeDefs = gql`
     color: String
   }
 
+  input Example {
+    id: ID!
+    text: String
+  }
+
+  type ExampleOutput {
+    id: ID!
+    text: String
+  }
+
   type Word {
     id: ID!
     word: String!
@@ -40,7 +50,7 @@ const typeDefs = gql`
     step: Int
     audio: String
     transcription: String
-    examples: [String]
+    examples: [ExampleOutput]
     tags: [Tag]
   }
 
@@ -75,6 +85,15 @@ const typeDefs = gql`
     tag: Tag!
   }
 
+  input ExampleBody {
+    text: String
+  }
+
+  type AddExampleResponse {
+    wordId: ID!
+    example: ExampleOutput!
+  }
+
   type Mutation {
     updateUserOptions(uid: ID!, userOptions: UserOptionsInput!): User
     updateWord(
@@ -86,6 +105,9 @@ const typeDefs = gql`
     addWord(uid: ID!, word: String!, translate: String!): AddWordResponse
     addUserTag(uid: ID!, name: String!, color: String!): AddUserTagResponse
     deleteUserTag(uid: ID!, tagId: ID!): ID
+    addExample(uid: ID!, wordId: ID!, data: ExampleBody): AddExampleResponse
+    updateExample(uid: ID!, wordId: ID!, data: Example): ExampleOutput
+    deleteExample(uid: ID!, wordId: ID!, id: ID!): ID
   }
 `;
 

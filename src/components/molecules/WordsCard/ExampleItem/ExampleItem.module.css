@@ -1,0 +1,46 @@
+.example {
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.examplesItem {
+  position: relative;
+  font-weight: 500;
+  padding: 6px 8px;
+  border-radius: 8px;
+  cursor: default;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.examplesItem:hover {
+  background-color: #f3f3f3;
+}
+
+.active {
+  background-color: #f3f3f3;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  visibility: hidden;
+}
+
+.icon {
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.exampleInput {
+  background-color: transparent;
+  border: none;
+  font-weight: normal;
+  font-size: 16px;
+  outline: none;
+}

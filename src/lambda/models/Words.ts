@@ -9,6 +9,11 @@ const { getDefinition } = Dictionary;
 
 type Timestamp = firebase.firestore.Timestamp;
 
+type Example = {
+  id: string;
+  text: string;
+};
+
 type Raw = {
   id: string;
   word: string;
@@ -18,6 +23,7 @@ type Raw = {
   step: number;
   audio: string;
   tags: firestoreAdmin.DocumentReference[];
+  examples: Example[];
 };
 
 export type WordSchema = {
@@ -27,7 +33,7 @@ export type WordSchema = {
   date: string | null;
   repeat: string | null;
   step: number;
-  examples?: string[];
+  examples?: Example[];
   audio: string;
   tags?: { id: string; name: string; color: string }[];
 };
@@ -123,6 +129,7 @@ class Words {
     translate: string;
     step: number;
     audio: string;
+    examples: Example[];
   }> {
     const tags = tagsRef
       ? await Promise.all(tagsRef.map((tagRef) => tagRef.get()))
@@ -133,7 +140,9 @@ class Words {
       date: date ? date?.toDate()?.toString() : null,
       repeat: repeat ? repeat?.toDate()?.toString() : null,
       tags: tags
-        .map((snapshot) => ({ id: snapshot.id, ...snapshot.data() }))
+        .map((snapshot) => {
+          return { id: snapshot.id, ...snapshot.data() };
+        })
         .filter((it) => it) as {
         id: string;
         name: string;
@@ -159,13 +168,35 @@ class Words {
     uid: string,
     onlyTrainings = false
   ): Promise<WordSchemas> {
-    const result: Raw[] = [];
+    const promises: Promise<Raw>[] = [];
+    let result: Raw[] = [];
     const request = firestore.collection('users').doc(uid).collection('words');
     const response = await request.get();
 
-    response.forEach((wordDoc) =>
-      result.push({ id: wordDoc.id, ...wordDoc.data() } as Raw)
-    );
+    response.forEach((snapshot) => {
+      promises.push(
+        (async () => {
+          const examples: Example[] = [];
+          const examplesResponse = await snapshot.ref
+            .collection('examples')
+            .get();
+          examplesResponse.forEach((it) => {
+            examples.push({
+              id: it.id,
+              ...it.data(),
+            } as Example);
+          });
+
+          return {
+            id: snapshot.id,
+            ...snapshot.data(),
+            examples,
+          } as Raw;
+        })()
+      );
+    });
+
+    result = await Promise.all(promises);
 
     const prepared = await Promise.all(result.map(Words.prepareWord));
 
@@ -219,6 +250,36 @@ class Words {
       transcription = '',
     } = await Words.getDefinition(word);
 
+    const exampleRequests = firestore
+      .collection('users')
+      .doc(uid)
+      .collection('examples');
+
+    const addExampleRequests = await Promise.all(
+      examples.map(async (example) => {
+        if (!example) return null;
+        return exampleRequests.add({
+          text: example,
+          word,
+        });
+      })
+    );
+
+    // const exampleRefs = [...flatted, ...addedTags].map(async (tagId) => {
+    //   const docTag = await firestore.collection('tags').doc(tagId).get();
+    //   const isDefaultTag = docTag.exists;
+
+    //   if (isDefaultTag) {
+    //     return firestore.collection('tags').doc(tagId);
+    //   }
+
+    //   return firestore
+    //     .collection('users')
+    //     .doc(uid)
+    //     .collection('tags')
+    //     .doc(tagId);
+    // });
+
     const ref = await request.add({
       word,
       translate,
@@ -227,7 +288,7 @@ class Words {
       repeat: new Date(),
       audio,
       transcription,
-      examples: (examples as string[]).filter((example: string) => example),
+      examples: addExampleRequests.filter((it) => it),
     });
     const snapshot = await ref.get();
     const data = snapshot.data();
@@ -243,6 +304,10 @@ class Words {
       } as WordSchema,
     };
   }
+
+  // static async addExample() {}
+  // static async updateExample() {}
+  // static async deleteExample
 
   static async updateWord({
     uid,

@@ -31,9 +31,27 @@ const getMockWords = (...args: string[]): unknown[] => {
             data: () => ({ id: 'fake id', name: tag, color: 'fake color' }),
           }),
         })),
-        examples: examples.split(', '),
         audio,
       }),
+      ref: {
+        collection: (collectionName: string) => {
+          const collections = {
+            examples: {
+              get: () =>
+                examples.split(', ').map((example) => {
+                  return {
+                    id: `${example}_id`,
+                    data: () => ({
+                      text: example,
+                    }),
+                  };
+                }),
+            },
+          };
+
+          return collections[collectionName as keyof typeof collections];
+        },
+      },
     };
   });
 };
@@ -60,8 +78,13 @@ const getWordObject = (params: string): Record<string, unknown> => {
     tags: tags
       .split(', ')
       .map((tag) => ({ id: 'fake id', name: tag, color: 'fake color' })),
-    examples: examples.split(', '),
     audio,
+    examples: examples.split(', ').map((example) => {
+      return {
+        id: `${example}_id`,
+        text: example,
+      };
+    }),
   };
 };
 

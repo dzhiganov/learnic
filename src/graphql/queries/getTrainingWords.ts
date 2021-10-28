@@ -9,7 +9,10 @@ const getTrainingWords = gql`
         word
         translate
         audio
-        examples
+        examples {
+          id
+          text
+        }
         date
       }
     }

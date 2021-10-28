@@ -12,7 +12,7 @@ export enum Status {
 
 type TagProps = {
   name: string;
-  onClick: () => void;
+  onClick?: () => void;
   status?: Status;
 };
 
@@ -24,13 +24,16 @@ const Tag: React.FC<TagProps> = ({
 }) => {
   const handleKeyDown: React.KeyboardEventHandler = (event) => {
     if (event.key === 'Enter') {
-      onClick();
+      if (typeof onClick === 'function') onClick();
     }
   };
 
   return (
     <label
       data-testid="tagLabel"
+      style={{
+        cursor: typeof onClick === 'function' ? 'pointer' : 'default',
+      }}
       className={`${styles.label} ${
         !status || status === Status.Inactive ? '' : styles[status]
       }`}

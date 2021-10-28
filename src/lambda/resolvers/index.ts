@@ -1,6 +1,7 @@
 import User from '../models/User';
 import Words from '../models/Words';
 import Tags from '../models/Tags';
+import Examples from '../models/Examples';
 
 type UserOptions = {
   language: string;
@@ -181,6 +182,34 @@ const deleteUserTag = async (
   return tagId;
 };
 
+const addExample = async (
+  _: unknown,
+  { uid, wordId, data }: { uid: string; wordId: string; data: { text: string } }
+): Promise<ReturnType<typeof Examples.addExample>> => {
+  const response = await Examples.addExample(uid, wordId, data);
+  return response;
+};
+
+const updateExample = async (
+  _: unknown,
+  {
+    uid,
+    wordId,
+    data,
+  }: { uid: string; wordId: string; data: { id: string; text: string } }
+): Promise<ReturnType<typeof Examples.updateExample>> => {
+  const response = await Examples.updateExample(uid, wordId, data);
+  return response;
+};
+
+const deleteExample = async (
+  _: unknown,
+  { uid, wordId, id }: { uid: string; wordId: string; id: string }
+): Promise<ReturnType<typeof Examples.deleteExample>> => {
+  const response = await Examples.deleteExample(uid, wordId, id);
+  return response;
+};
+
 const resolvers = {
   User: {
     userOptions: ({ uid }: Params): Params => ({ uid }),
@@ -206,6 +235,9 @@ const resolvers = {
     addWord,
     addUserTag,
     deleteUserTag,
+    addExample,
+    updateExample,
+    deleteExample,
   },
 };
 

@@ -3,16 +3,17 @@ import React, { memo, useCallback, useMemo } from 'react';
 import useMedia from 'react-use/lib/useMedia';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { useTranslation } from 'react-i18next';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+import Tag, { Status } from 'components/molecules/NewWord/Tags/Tag/Tag';
 import styles from './styles.module.css';
 import AddExample from './AddExample';
 import useSelector from '~hooks/useSelector';
 import StepsPopup from './StepsPopup';
 import AudioButton from '~c/atoms/AudioButton';
-import updateWordMutation from '~graphql/mutations/updateWord';
 import getWords from '~graphql/queries/getWords';
 import { GetWordsQueryResult } from '~shared/types';
 import ActionsButtons from './ActionButtons';
+import ExampleItem from './ExampleItem/ExampleItem';
 
 type Props = {
   id: string;
@@ -34,7 +35,6 @@ const WordsCard: React.FunctionComponent<Props> = ({
   const { t } = useTranslation();
   const isWide = useMedia('(min-width: 576px)');
   const uid = useSelector<string>('user.uid');
-  const [fetchUpdate] = useMutation(updateWordMutation);
   const {
     data: { user: { words = [] } = {} } = {},
   } = useQuery<GetWordsQueryResult>(getWords, {
@@ -46,16 +46,6 @@ const WordsCard: React.FunctionComponent<Props> = ({
   const value = useMemo(() => {
     return words.find(({ id: wordId }) => wordId === id);
   }, [id, words]);
-
-  const onAddNewExample = useCallback(
-    async (example) => {
-      await fetchUpdate({
-        variables: { uid, id, updatedFields: { example } },
-      });
-    },
-
-    [id, uid, fetchUpdate]
-  );
 
   const backToTheList = useCallback(() => {
     onClose();
@@ -98,24 +88,45 @@ const WordsCard: React.FunctionComponent<Props> = ({
         </div>
       </div>
       <div className={styles.contextSection}>
+        {value?.tags.length ? (
+          <div className={styles.tagsContainer}>
+            <div className={styles.tagsTitle}>
+              <span>Tags</span>
+            </div>
+            <ul>
+              {value?.tags
+                .filter((tag) => tag.name)
+                .map((tag) => (
+                  <li key={tag.id}>
+                    <Tag name={tag.name} status={Status.Active} />
+                  </li>
+                ))}
+            </ul>
+          </div>
+        ) : (
+          ''
+        )}
         <div className={styles.examples}>
           <div className={styles.examplesTitle}>
             <span>{`${t('DICTIONARY.WORD_CARD.EXAMPLES_TITLE')}`}</span>
           </div>
         </div>
         <ul className={styles.examplesList}>
-          {Array.isArray(value?.examples) && value?.examples.length
-            ? value?.examples.map((def: string) => (
-                <li key={def} className={styles.examplesItem}>
-                  <span className={styles.example} key={def}>
-                    {def}
-                  </span>
-                </li>
-              ))
-            : null}
+          {Array.isArray(value?.examples) && value?.examples.length ? (
+            value?.examples.map(({ id: exampleId, text }) => (
+              <ExampleItem
+                key={exampleId}
+                id={exampleId}
+                wordId={id}
+                text={text}
+              />
+            ))
+          ) : (
+            <p>There are no examples so far. Let&apos;s add the first one!</p>
+          )}
         </ul>
       </div>
-      <AddExample onSave={onAddNewExample} />
+      <AddExample wordId={id} />
     </div>
   );
 };

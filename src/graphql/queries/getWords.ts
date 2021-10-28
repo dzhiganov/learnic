@@ -13,7 +13,10 @@ const getWords = gql`
         step
         audio
         transcription
-        examples
+        examples {
+          id
+          text
+        }
         tags {
           id
           name
