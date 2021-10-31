@@ -1,4 +1,4 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/97d21626-4a0e-4a5b-b658-9f559133e4aa/deploy-status)](https://app.netlify.com/sites/learnic/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/7590609f-4049-4acb-8447-64b072fb9b15/deploy-status)](https://app.netlify.com/sites/learnic/deploys)
 
 ## To running localy
 
