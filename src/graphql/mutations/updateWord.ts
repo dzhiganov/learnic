@@ -12,7 +12,10 @@ const updateWord = gql`
         repeat
         step
         audio
-        examples
+        examples {
+          id
+          text
+        }
         tags {
           id
           name

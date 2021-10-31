@@ -6,23 +6,7 @@ on:
   pull_request: 
     branches: [main]
     
-jobs: 
-  generate-badges:
-    runs-on: ubuntu-latest
-    container: 
-      image: debian:stretch-slim
-    steps: 
-      - uses: actions/checkout@v2
-      - run: echo "github_sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-      - name: Make Latest Commit badge
-        uses: action-badges/core@0.2.1
-        with:
-          label: latest commit
-          message: "${{ env.github_sha_short }}"
-          message-color: blue
-          file-name: latest-commit.svg
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-          
+jobs:           
   eslint:
     runs-on: ubuntu-latest
     container:
