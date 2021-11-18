@@ -6,7 +6,6 @@ import UserTag from './UserTag/UserTag';
 import NewTag from './NewTag/NewTag';
 
 const Tags: React.FC<{
-  wordId: string;
   tagsIds?: string[];
   setTags: (tags: string[]) => void;
   setSuggestedTag: (tag: string) => void;

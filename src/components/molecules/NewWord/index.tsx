@@ -247,7 +247,6 @@ const NewWord: React.FunctionComponent<Props> = ({
             </div>
           </div>
           <Tags
-            wordId={id}
             tagsIds={tagsIds}
             setTags={setTagsIds}
             setSuggestedTag={setSuggestedPartOfSpeech}

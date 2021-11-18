@@ -41,7 +41,7 @@ export const fetchAuth = (): AppThunk => async (dispatch) => {
     const apiKey = process.env.REACT_APP_LINGVOLIVE_API_KEY as string;
     const token = await getTranslatorAuthKey(apiKey);
     dispatch(getRepoDetailsSuccess(token));
-  } catch (err) {
-    dispatch(getRepoDetailsFailed(err.toString()));
+  } catch (err: unknown) {
+    dispatch(getRepoDetailsFailed(`${err}`));
   }
 };
