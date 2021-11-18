@@ -18,6 +18,7 @@ module.exports = {
     'jest',
     'eslint-plugin-cypress',
     'css-modules',
+    'prettier'
   ],
   env: {
     browser: true,
