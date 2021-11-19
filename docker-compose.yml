@@ -15,5 +15,5 @@ services:
       - ./src:/app/src
       - ./public:/app/public
     ports:
-      - "3000:8888"
+      - "8888:8888"
       
