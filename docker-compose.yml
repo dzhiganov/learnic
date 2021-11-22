@@ -1,8 +1,11 @@
 version: "3.9"
 services:
-  web:
-    container_name: memorize_words
-    image: williamjackson/netlify-cli
+  firestore_emulator:
+      image: mtlynch/firestore-emulator
+      environment:
+          - FIRESTORE_PROJECT_ID=${REACT_APP_PROJECT_ID}
+          - PORT=8200
+  app:
     environment:
       - CHOKIDAR_USEPOLLING=true
       - CHOKIDAR_INTERVAL=1000
@@ -10,10 +13,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: "npm run dev"
     volumes:
       - ./src:/app/src
       - ./public:/app/public
     ports:
       - "8888:8888"
+  depends_on:
+      - firestore_emulator
       

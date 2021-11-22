@@ -17,6 +17,7 @@
   align-items: center;
   margin-right: 12px;
   justify-content: center;
+  height: 44px;
 }
 
 @media (min-width: 576px) {
@@ -36,4 +37,13 @@
 
 .saveButton:disabled:hover {
   background-color: var(--color-primary-light);
+}
+
+.loader {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

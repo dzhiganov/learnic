@@ -122,7 +122,9 @@ const WordsCard: React.FunctionComponent<Props> = ({
               />
             ))
           ) : (
-            <p>There are no examples so far. Let&apos;s add the first one!</p>
+            <p className={styles.noExamples}>
+              There are no examples so far. Let&apos;s add the first one!
+            </p>
           )}
         </ul>
       </div>

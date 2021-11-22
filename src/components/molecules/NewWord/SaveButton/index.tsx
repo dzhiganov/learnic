@@ -1,15 +1,18 @@
 import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { SpinnerIcon } from '@chakra-ui/icons';
 import styles from './styles.module.css';
 
 type Props = {
   onSave: () => void;
   disabled?: boolean;
+  loading?: boolean;
 };
 
 const SaveButton: React.FunctionComponent<Props> = ({
   onSave,
   disabled = false,
+  loading = false,
 }: Props) => {
   const { t } = useTranslation();
 
@@ -20,7 +23,11 @@ const SaveButton: React.FunctionComponent<Props> = ({
       onClick={onSave}
       disabled={disabled}
     >
-      <span>{t('DICTIONARY.NEW_WORD_WINDOW.SAVE_BUTTON')}</span>
+      {loading ? (
+        <SpinnerIcon className={styles.loader} />
+      ) : (
+        <span>{t('DICTIONARY.NEW_WORD_WINDOW.SAVE_BUTTON')}</span>
+      )}
     </button>
   );
 };

@@ -12,7 +12,10 @@ const addWord = gql`
         repeat
         step
         audio
-        examples
+        examples {
+          id
+          text
+        }
         __typename
       }
       __typename

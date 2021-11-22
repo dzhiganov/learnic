@@ -124,3 +124,11 @@
   line-height: 1;
   padding-bottom: 12px;
 }
+
+.noExamples {
+  width: 100%;
+  text-align: center;
+  padding-top: 16px;
+  color: #8d8d8d;
+  font-style: italic;
+}

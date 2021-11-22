@@ -2,6 +2,7 @@ import React, { memo, useState, useRef } from 'react';
 import { Tooltip } from '@chakra-ui/react';
 import { useMutation } from '@apollo/client';
 import produce from 'immer';
+import useAsyncFn from 'react-use/lib/useAsyncFn';
 import styles from './styles.module.css';
 import SaveButton from '~c/molecules/NewWord/SaveButton';
 import addExampleMutation from '~graphql/mutations/addExample';
@@ -13,14 +14,12 @@ type Props = {
   wordId: string;
 };
 
-// const timer: ReturnType<typeof setTimeout> | null = null;
-// const tooltipShowTime = 4000;
-
 const AddExample: React.FunctionComponent<Props> = ({ wordId }: Props) => {
   const uid = useSelector<string>('user.uid');
   const [example, setExample] = useState('');
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
+
   const [fetchAdd] = useMutation(addExampleMutation, {
     update(cache, result) {
       const listWordsQueryResult = cache.readQuery<{
@@ -57,26 +56,12 @@ const AddExample: React.FunctionComponent<Props> = ({ wordId }: Props) => {
     },
   });
 
-  const handleAddNewExample = async () => {
+  const [{ loading }, saveNewExample] = useAsyncFn(async (text: string) => {
     await fetchAdd({
-      variables: { uid, wordId, data: { text: example } },
+      variables: { uid, wordId, data: { text } },
     });
-  };
-
-  // const handleOnSave = () => {
-  //   if (!example) {
-  //     if (!showTooltip) {
-  //       setShowTooltip(true);
-  //     }
-  //     if (timer) clearTimeout(timer);
-  //     timer = setTimeout(() => {
-  //       setShowTooltip(false);
-  //       timer = null;
-  //     }, tooltipShowTime);
-  //     return;
-  //   }
-  //   onSave(example).then(() => setExample(''));
-  // };
+    setExample('');
+  }, []);
 
   const handleChangeInput: React.ChangeEventHandler<HTMLTextAreaElement> = (
     e
@@ -111,7 +96,10 @@ const AddExample: React.FunctionComponent<Props> = ({ wordId }: Props) => {
           hasArrow
         >
           <span>
-            <SaveButton onSave={handleAddNewExample} />
+            <SaveButton
+              onSave={() => saveNewExample(example)}
+              loading={loading}
+            />
           </span>
         </Tooltip>
       </div>

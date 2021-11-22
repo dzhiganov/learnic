@@ -16,12 +16,15 @@ const getWords = gql`
         examples {
           id
           text
+          __typename
         }
         tags {
           id
           name
           color
+          __typename
         }
+        __typename
       }
     }
   }
