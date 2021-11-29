@@ -3,14 +3,20 @@ import {
   DefaultRootState,
 } from 'react-redux';
 
-const useSelector = <T>(path: string): T => {
-  const [store, key] = path.split('.');
-  const result = useSelectorOrigin(
-    (rootState) => rootState[store as keyof DefaultRootState]
-  );
+const useSelector = <Value extends unknown>(path: string): Value => {
+  const [storeName, key] = path.split('.') as [
+    keyof DefaultRootState,
+    keyof DefaultRootState
+  ];
+  const store = useSelectorOrigin((rootStore) => {
+    if (storeName in rootStore) {
+      return rootStore[storeName];
+    }
+    throw new Error(`Store ${storeName} doesn't exist in root store`);
+  });
 
-  if (Object.hasOwnProperty.call(result, key)) {
-    return result[key];
+  if (key in store) {
+    return store[key];
   }
   throw new Error(`${key} is not found`);
 };

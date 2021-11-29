@@ -12,7 +12,7 @@ type UserModel = {
 };
 
 class User {
-  static async getUser(uid: string): Promise<UserModel> {
+  static async getUser(uid: string): Promise<UserModel | Error> {
     try {
       const doc = await firestore.collection('users').doc(uid).get();
       const userOptions = doc.data() as UserOptions;

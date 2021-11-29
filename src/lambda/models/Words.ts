@@ -305,10 +305,6 @@ class Words {
     };
   }
 
-  // static async addExample() {}
-  // static async updateExample() {}
-  // static async deleteExample
-
   static async updateWord({
     uid,
     id,

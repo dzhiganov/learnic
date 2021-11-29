@@ -11,7 +11,7 @@ import {
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 
-const rootElement = document.getElementById('root') as HTMLElement;
+const rootElement = document.getElementById('root');
 
 const merge: FieldMergeFunction<unknown, unknown> = (_, incoming) => incoming;
 
@@ -37,7 +37,7 @@ const connectToDevTools = true;
 
 const client = new ApolloClient({ cache, uri, connectToDevTools });
 
-if (rootElement.hasChildNodes()) {
+if (rootElement && rootElement.hasChildNodes()) {
   hydrate(
     <React.StrictMode>
       <ApolloProvider client={client}>

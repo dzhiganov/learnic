@@ -5,6 +5,8 @@ import { initReactI18next } from 'react-i18next';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 
+const defaultLang = 'en';
+
 i18n
   .use(Backend)
   .use(LanguageDetector)
@@ -17,7 +19,7 @@ i18n
       format: (value, format, lng) => {
         if (value instanceof Date)
           return dayjs(value)
-            .locale(lng as string)
+            .locale(lng || defaultLang)
             .format(format);
         return value;
       },
