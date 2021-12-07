@@ -15,6 +15,7 @@
   height: 32px;
   font-weight: 600;
   position: relative;
+  border: 1px solid #ccc;
 }
 
 .label:hover,
@@ -30,12 +31,20 @@
 .active {
   color: var(--color-primary);
   background-color: rgb(219, 220, 253);
+  border-color: var(--color-primary);
 }
 
 .suggested {
-  border: 2px solid rgb(124, 131, 253);
-  color: rgb(124, 131, 253);
-  background-color: hsl(211, 100%, 95%);
+  color: var(--color-primary);
+  padding: 0 2px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  line-height: 0;
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  margin-bottom: 4px;
 }
 
 .new {

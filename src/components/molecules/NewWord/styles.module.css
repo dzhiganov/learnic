@@ -114,20 +114,10 @@
 }
 
 .suggestedTranslate {
-  background-color: hsl(211, 100%, 95%);
-  color: hsl(237, 97%, 74%);
-  padding: 4px 18px;
-  border-radius: 10px;
-  display: inline-flex;
-  align-items: center;
-  margin-right: 4px;
-  font-size: 14px;
-  border: 2px solid #d4d4d4;
-  border-color: rgb(124, 131, 253);
+  color: var(--color-primary);
+  padding: 0 12px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   line-height: 0;
-  transition: 200ms ease-in-out;
-  min-height: 30px;
-  margin-left: 10px;
 }

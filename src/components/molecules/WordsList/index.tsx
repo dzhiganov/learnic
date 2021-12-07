@@ -91,8 +91,6 @@ const WordsList: React.FunctionComponent<Props> = ({
     [setFilter]
   );
 
-  // const clearFilter = useCallback(() => setFilter(''), []);
-
   const handleOnFocus = useCallback(() => {
     if (!searchFocused) setSearchFocused(true);
   }, [searchFocused]);
@@ -104,22 +102,42 @@ const WordsList: React.FunctionComponent<Props> = ({
   if (isLoading) {
     return (
       <>
-        <div style={{ marginBottom: '20px' }}>
-          <Skeleton
-            variant="rect"
-            width={330}
-            height={45}
-            style={{ marginRight: '20px', display: 'inline-block' }}
-          />
-          <Skeleton
-            variant="rect"
-            width={150}
-            height={45}
-            style={{ display: 'inline-block' }}
-          />
-        </div>
-
-        <Skeleton variant="rect" width={500} height={800} />
+        <Skeleton
+          variant="rect"
+          width="70%"
+          height={30}
+          style={{ marginBottom: '10px' }}
+        />
+        <Skeleton
+          variant="rect"
+          width="60%"
+          height={30}
+          style={{ marginBottom: '10px' }}
+        />
+        <Skeleton
+          variant="rect"
+          width="80%"
+          height={30}
+          style={{ marginBottom: '10px' }}
+        />
+        <Skeleton
+          variant="rect"
+          width="70%"
+          height={30}
+          style={{ marginBottom: '10px' }}
+        />
+        <Skeleton
+          variant="rect"
+          width="60%"
+          height={30}
+          style={{ marginBottom: '10px' }}
+        />
+        <Skeleton
+          variant="rect"
+          width="60%"
+          height={30}
+          style={{ marginBottom: '10px' }}
+        />
       </>
     );
   }

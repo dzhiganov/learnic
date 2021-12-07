@@ -15,6 +15,7 @@
   transition: 200ms ease-in-out;
   height: 32px;
   font-weight: 600;
+  border: 1px solid rgb(207, 248, 207);
 }
 
 .newTag {

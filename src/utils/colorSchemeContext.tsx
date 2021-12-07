@@ -89,14 +89,10 @@ const ColorSchemeProvider: ColorSchemeProviderFunc = ({ children }) => {
   );
 };
 
-class ContextError extends Error {}
-
-const useColorScheme = (): Context | ContextError => {
+const useColorScheme = (): Context => {
   const context = React.useContext(ColorSchemeContext);
   if (!context) {
-    throw new ContextError(
-      'useCount must be used within a ColorSchemeProvider'
-    );
+    throw new Error('useCount must be used within a ColorSchemeProvider');
   }
 
   return context;

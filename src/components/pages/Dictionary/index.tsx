@@ -71,14 +71,12 @@ const Dictionary: React.FC = () => {
           uid: userId,
         },
       });
-
       const newListWordsQueryResult = produce(
         listWordsQueryResult,
         (draft: typeof listWordsQueryResult) => {
           draft?.user.words.push(result?.data?.addWord?.newWord);
         }
       );
-
       cache.writeQuery({
         query: getWordsQuery,
         data: {
@@ -87,6 +85,9 @@ const Dictionary: React.FC = () => {
             words: newListWordsQueryResult,
             __typename: 'User',
           },
+        },
+        variables: {
+          uid: userId,
         },
       });
     },

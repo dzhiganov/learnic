@@ -34,7 +34,7 @@ const Tag: React.FC<TagProps> = ({
       style={{
         cursor: typeof onClick === 'function' ? 'pointer' : 'default',
       }}
-      className={`${styles.label} ${
+      className={`${status !== Status.Suggested ? styles.label : ''} ${
         !status || status === Status.Inactive ? '' : styles[status]
       }`}
     >

@@ -26,6 +26,7 @@ const getWords = gql`
         }
         __typename
       }
+      __typename
     }
   }
 `;
