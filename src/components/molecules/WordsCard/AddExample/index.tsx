@@ -56,12 +56,15 @@ const AddExample: React.FunctionComponent<Props> = ({ wordId }: Props) => {
     },
   });
 
-  const [{ loading }, saveNewExample] = useAsyncFn(async (text: string) => {
-    await fetchAdd({
-      variables: { uid, wordId, data: { text } },
-    });
-    setExample('');
-  }, []);
+  const [{ loading }, saveNewExample] = useAsyncFn(
+    async (text: string) => {
+      await fetchAdd({
+        variables: { uid, wordId, data: { text } },
+      });
+      setExample('');
+    },
+    [wordId]
+  );
 
   const handleChangeInput: React.ChangeEventHandler<HTMLTextAreaElement> = (
     e
@@ -107,4 +110,4 @@ const AddExample: React.FunctionComponent<Props> = ({ wordId }: Props) => {
   );
 };
 
-export default memo(AddExample);
+export default AddExample;

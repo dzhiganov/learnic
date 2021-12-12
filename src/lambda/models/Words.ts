@@ -244,41 +244,7 @@ class Words {
     newWord: WordSchema;
   }> {
     const request = firestore.collection('users').doc(uid).collection('words');
-    const {
-      examples = [],
-      audio = '',
-      transcription = '',
-    } = await Words.getDefinition(word);
-
-    const exampleRequests = firestore
-      .collection('users')
-      .doc(uid)
-      .collection('examples');
-
-    const addExampleRequests = await Promise.all(
-      examples.map(async (example) => {
-        if (!example) return null;
-        return exampleRequests.add({
-          text: example,
-          word,
-        });
-      })
-    );
-
-    // const exampleRefs = [...flatted, ...addedTags].map(async (tagId) => {
-    //   const docTag = await firestore.collection('tags').doc(tagId).get();
-    //   const isDefaultTag = docTag.exists;
-
-    //   if (isDefaultTag) {
-    //     return firestore.collection('tags').doc(tagId);
-    //   }
-
-    //   return firestore
-    //     .collection('users')
-    //     .doc(uid)
-    //     .collection('tags')
-    //     .doc(tagId);
-    // });
+    const { audio = '', transcription = '' } = await Words.getDefinition(word);
 
     const ref = await request.add({
       word,
@@ -288,7 +254,6 @@ class Words {
       repeat: new Date(),
       audio,
       transcription,
-      examples: addExampleRequests.filter((it) => it),
     });
     const snapshot = await ref.get();
     const data = snapshot.data();
