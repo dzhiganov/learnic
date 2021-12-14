@@ -1,5 +1,7 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable css-modules/no-unused-class */
-import React, { memo, useCallback, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './styles.module.css';
 import AudioButton from '~c/atoms/AudioButton';
@@ -23,9 +25,7 @@ const Card: React.FunctionComponent<Props> = ({
   const { t } = useTranslation();
   const [flipped, setFlipped] = useState<boolean>(false);
 
-  const flip = useCallback(() => {
-    setFlipped(!flipped);
-  }, [flipped]);
+  const flip = () => setFlipped((value) => !value);
 
   useEffect(() => {
     if (word && translate) {
@@ -42,9 +42,7 @@ const Card: React.FunctionComponent<Props> = ({
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <div
-          className={`${styles.front} ${flipped ? styles.frontFlipped : ''}`}
-        >
+        <div>
           <div className={styles.topButtonsContainer}>
             <span className={styles.audioButtonContainer}>
               <AudioButton audioURL={audio} />
@@ -55,18 +53,20 @@ const Card: React.FunctionComponent<Props> = ({
               )}
             </span>
           </div>
-
-          <span className={styles.cardTitle}>{word}</span>
-
-          <button type="button" className={styles.flip} onClick={flip}>
-            <span>{t('CARDS.FLIP')}</span>
-          </button>
-        </div>
-        <div className={`${styles.back} ${flipped ? styles.backFlipped : ''}`}>
-          <span className={styles.cardTitle}>{translate}</span>
-          <button type="button" className={styles.flip} onClick={flip}>
-            <span>{t('CARDS.FLIP')}</span>
-          </button>
+          <div>
+            <span className={styles.cardTitle}>{word}</span>
+          </div>
+          <div className={styles.subtitle}>
+            {flipped ? (
+              <span onClick={flip} className={styles.translate}>
+                {translate}
+              </span>
+            ) : (
+              <button type="button" className={styles.flip} onClick={flip}>
+                <span>{t('CARDS.FLIP')}</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>

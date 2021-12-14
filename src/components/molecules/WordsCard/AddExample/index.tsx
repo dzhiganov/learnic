@@ -1,4 +1,4 @@
-import React, { memo, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Tooltip } from '@chakra-ui/react';
 import { useMutation } from '@apollo/client';
 import produce from 'immer';

@@ -15,23 +15,10 @@
 .card {
   width: 100%;
   height: 100%;
-}
-
-/* TODO Fix that. Very expensive request to all divs */
-.card div:not(.topButtonsContainer) {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+  background-color: rgb(233, 232, 255);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  background-color: rgb(233, 232, 255);
-  transition: transform 600ms linear;
-  border-radius: 6px;
-  backface-visibility: hidden;
-  padding: 25px;
-  color: var(--color-text);
 }
 
 .card div:hover {
@@ -48,50 +35,35 @@
 
 .cardTitle {
   display: flex;
-  align-items: center;
   font-size: 36px;
   font-weight: 500;
-  margin-bottom: 12px;
-  position: relative;
-  text-align: center;
+  justify-content: center;
 }
 
-.front {
-  transform: perspective(1800px) rotateY(0deg);
-}
-
-.back {
-  transform: perspective(1800px) rotateY(180deg);
-}
-
-.frontFlipped {
-  transform: perspective(1800px) rotateY(-180deg);
-}
-
-.backFlipped {
-  transform: perspective(1800px) rotateY(0deg);
-}
-
-.flip {
-  font-size: 16px;
-  margin-top: 50px;
+.flip,
+.translate {
+  font-size: 18px;
   outline: none;
   background: transparent;
   border: none;
-  padding: 5px 12px;
+  padding: 8px 12px;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   cursor: pointer;
-  font-weight: 500;
   color: var(--color-text-secondary);
+  line-height: 1;
 }
 
-.flip:focus,
-.flip:hover {
-  background-color: rgba(0, 126, 254, 0.1);
+.translate {
+  color: var(--color-text);
+}
+
+.flip:hover,
+.translate:hover {
+  background-color: rgb(220, 216, 245);
 }
 
 .audioButtonContainer {
@@ -114,5 +86,8 @@
   right: 60px;
   display: flex;
   align-items: center;
-  transform: translateX(45px);
+}
+
+.subtitle {
+  margin-top: 16px;
 }

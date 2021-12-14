@@ -1,5 +1,5 @@
 /* eslint-disable css-modules/no-unused-class */
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import useMedia from 'react-use/lib/useMedia';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { useTranslation } from 'react-i18next';
@@ -47,9 +47,7 @@ const WordsCard: React.FunctionComponent<Props> = ({
     return words.find(({ id: wordId }) => wordId === id);
   }, [id, words]);
 
-  const backToTheList = useCallback(() => {
-    onClose();
-  }, [onClose]);
+  const backToTheList = () => onClose();
 
   return (
     <div className={styles.container}>
@@ -93,7 +91,7 @@ const WordsCard: React.FunctionComponent<Props> = ({
             <div className={styles.tagsTitle}>
               <span>Tags</span>
             </div>
-            <ul>
+            <ul className={styles.tags}>
               {value?.tags
                 .filter((tag) => tag.name)
                 .map((tag) => (
