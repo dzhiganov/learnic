@@ -110,23 +110,22 @@ const WordsCard: React.FunctionComponent<Props> = ({
           </div>
         </div>
         <ul className={styles.examplesList}>
-          {Array.isArray(value?.examples) && value?.examples.length ? (
-            value?.examples.map(({ id: exampleId, text }) => (
-              <ExampleItem
-                key={exampleId}
-                id={exampleId}
-                wordId={id}
-                text={text}
-              />
-            ))
-          ) : (
-            <p className={styles.noExamples}>
-              There are no examples so far. Let&apos;s add the first one!
-            </p>
-          )}
+          {Array.isArray(value?.examples) && value?.examples.length
+            ? value?.examples.map(({ id: exampleId, text }) => (
+                <ExampleItem
+                  key={exampleId}
+                  id={exampleId}
+                  wordId={id}
+                  text={text}
+                />
+              ))
+            : null}
         </ul>
       </div>
-      <AddExample wordId={id} />
+      <AddExample
+        wordId={id}
+        empty={!(Array.isArray(value?.examples) && value?.examples.length)}
+      />
     </div>
   );
 };

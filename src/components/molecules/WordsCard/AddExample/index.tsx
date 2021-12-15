@@ -12,9 +12,13 @@ import { User } from '~shared/types';
 
 type Props = {
   wordId: string;
+  empty: boolean;
 };
 
-const AddExample: React.FunctionComponent<Props> = ({ wordId }: Props) => {
+const AddExample: React.FunctionComponent<Props> = ({
+  wordId,
+  empty,
+}: Props) => {
   const uid = useSelector<string>('user.uid');
   const [example, setExample] = useState('');
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -85,7 +89,7 @@ const AddExample: React.FunctionComponent<Props> = ({ wordId }: Props) => {
           onChange={handleChangeInput}
           onFocus={handleFocus}
           rows={4}
-          placeholder="Add another one..."
+          placeholder={empty ? 'Add your first example!' : 'Add another one'}
         />
       </div>
       <div className={styles.buttonsContainer}>

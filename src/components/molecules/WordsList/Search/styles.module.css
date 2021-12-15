@@ -6,9 +6,14 @@
   max-width: initial;
 }
 
+.container:focus-within {
+  background-color: #f3f3f3;
+  border-radius: 8px;
+}
+
 .input {
-  color: var(--color-text-secondary);
-  background-color: var(--color-input-background);
+  color: var(--color-text);
+  background-color: transparent;
   border: none;
   text-overflow: ellipsis;
   font-size: 16px;
@@ -23,22 +28,18 @@
   align-items: center;
   height: 45px;
   outline: none;
-  border-bottom: 1px solid var(--color-input-border);
-}
-
-.input:focus,
-.input:active {
-  border-bottom: 1px solid #2c2e43;
+  z-index: 1;
+  position: relative;
 }
 
 .icon {
   position: absolute;
   top: 50%;
-  position: absolute;
   top: 50%;
   transform: translate(6px, -12px);
   height: 24px;
   width: 24px;
+  z-index: 0;
 }
 
 .icon svg {

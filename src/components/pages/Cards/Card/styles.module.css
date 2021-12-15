@@ -82,8 +82,8 @@
 
 .topButtonsContainer {
   position: absolute;
-  top: 15px;
-  right: 60px;
+  top: 12px;
+  right: 12px;
   display: flex;
   align-items: center;
 }

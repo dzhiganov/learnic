@@ -1,5 +1,5 @@
 .cardsContainer {
-  margin-top: 1.5em;
+  margin-top: 0.5em;
 }
 
 .cardsList {
@@ -57,16 +57,18 @@
 }
 
 .header {
-  padding-bottom: 16px;
-  margin-bottom: 20px;
+  padding-bottom: 8px;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
 .headerTitle {
   padding: 0;
   margin: 0;
   font-size: 28px;
+  position: absolute;
+  left: 44px;
 }

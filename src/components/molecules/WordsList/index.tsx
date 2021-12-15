@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState, useEffect } from 'react';
+import React, { memo, useState, useEffect, useCallback } from 'react';
 import Fuse from 'fuse.js';
 import { useTranslation } from 'react-i18next';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -9,6 +9,8 @@ import NoWord from './NoWord';
 import ListItem from './ListItem';
 import HeaderDate from './HeaderDate';
 import { Words } from '~shared/types';
+
+const sceletonWidths = [70, 60, 80, 70, 60, 60];
 
 type Props = {
   filter: string;
@@ -46,12 +48,12 @@ const WordsList: React.FunctionComponent<Props> = ({
   const { t } = useTranslation();
   const [focused, setFocused] = useState('');
   const [filtered, setFiltered] = useState<Words>([]);
-  const [searchFocused, setSearchFocused] = useState<boolean>(false);
+  const [searchFocused, setSearchFocused] = useState(false);
 
   const onCancelAddNewWord = useCallback(() => {
     onCancelEdit();
     setShowNewWord(false);
-  }, [setShowNewWord, onCancelEdit]);
+  }, [onCancelEdit, setShowNewWord]);
 
   const handleKeyPress = useCallback(
     (event) => {
@@ -59,7 +61,7 @@ const WordsList: React.FunctionComponent<Props> = ({
         onCancelAddNewWord();
       }
     },
-    [onCancelAddNewWord, showNewWord, edited]
+    [edited, onCancelAddNewWord, showNewWord]
   );
 
   useEffect(() => {
@@ -91,53 +93,25 @@ const WordsList: React.FunctionComponent<Props> = ({
     [setFilter]
   );
 
-  const handleOnFocus = useCallback(() => {
+  const handleOnFocus = () => {
     if (!searchFocused) setSearchFocused(true);
-  }, [searchFocused]);
+  };
 
-  const handleOnBlur = useCallback(() => {
+  const handleOnBlur = () => {
     if (searchFocused) setSearchFocused(false);
-  }, [searchFocused]);
+  };
 
   if (isLoading) {
     return (
       <>
-        <Skeleton
-          variant="rect"
-          width="70%"
-          height={30}
-          style={{ marginBottom: '10px' }}
-        />
-        <Skeleton
-          variant="rect"
-          width="60%"
-          height={30}
-          style={{ marginBottom: '10px' }}
-        />
-        <Skeleton
-          variant="rect"
-          width="80%"
-          height={30}
-          style={{ marginBottom: '10px' }}
-        />
-        <Skeleton
-          variant="rect"
-          width="70%"
-          height={30}
-          style={{ marginBottom: '10px' }}
-        />
-        <Skeleton
-          variant="rect"
-          width="60%"
-          height={30}
-          style={{ marginBottom: '10px' }}
-        />
-        <Skeleton
-          variant="rect"
-          width="60%"
-          height={30}
-          style={{ marginBottom: '10px' }}
-        />
+        {sceletonWidths.map((width) => (
+          <Skeleton
+            variant="rect"
+            width={`${width}%`}
+            height={30}
+            style={{ marginBottom: '10px' }}
+          />
+        ))}
       </>
     );
   }
@@ -146,7 +120,15 @@ const WordsList: React.FunctionComponent<Props> = ({
     <>
       <div className={styles.buttonsContainer}>
         <header className={styles.header}>
-          <h2 className={styles.headerTitle}>{t('DICTIONARY.TITLE')}</h2>
+          <Search
+            value={filter}
+            onChange={handleChangeFilter}
+            onFocus={handleOnFocus}
+            onBlur={handleOnBlur}
+          />
+          {!searchFocused && (
+            <h2 className={styles.headerTitle}>{t('DICTIONARY.TITLE')}</h2>
+          )}
           <button
             type="button"
             disabled={showNewWord}
@@ -158,15 +140,6 @@ const WordsList: React.FunctionComponent<Props> = ({
             {t('DICTIONARY.NEW_WORD_BUTTON')}
           </button>
         </header>
-
-        <>
-          <Search
-            value={filter}
-            onChange={handleChangeFilter}
-            onFocus={handleOnFocus}
-            onBlur={handleOnBlur}
-          />
-        </>
       </div>
 
       <div className={styles.cardsContainer}>
