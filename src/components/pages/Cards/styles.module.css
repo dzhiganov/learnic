@@ -93,6 +93,7 @@
   justify-content: center;
   height: 45px;
   flex-grow: 1;
+  transition: ease-in-out 0.2s;
 }
 
 @media (min-width: 576px) {
@@ -142,15 +143,15 @@
 }
 
 .done:not([disabled]):hover {
-  background-color: #5f55ff;
+  transform: translateY(-5px);
 }
 
 .fail:not([disabled]):hover {
-  background-color: var(--color-fail-light);
+  transform: translateY(-5px);
 }
 
 .medium:not([disabled]):hover {
-  background-color: rgba(45, 16, 82, 0.1);
+  transform: translateY(-5px);
 }
 
 .button {
@@ -165,14 +166,22 @@
   outline: none;
 }
 
+.button > svg {
+  transition: 0.3s;
+}
+
 @media (min-width: 576px) {
   .button {
     display: flex;
   }
 }
 
-.button:hover {
-  background-color: rgba(158, 158, 158, 0.2);
+.button.next:hover > svg {
+  transform: translateX(5px);
+}
+
+.button.back:hover > svg {
+  transform: translateX(-5px);
 }
 
 .trainingHeader {

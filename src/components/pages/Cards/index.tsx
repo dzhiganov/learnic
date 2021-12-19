@@ -1,3 +1,4 @@
+/* eslint-disable css-modules/no-undef-class */
 import React, { useState, useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
@@ -269,7 +270,7 @@ const Cards: React.FunctionComponent = () => {
           <div className={styles.container}>
             <button
               type="button"
-              className={`${styles.button} ${
+              className={`${styles.button} ${styles.back} ${
                 currentIndex === 0 ? styles.hidden : ''
               }`}
               onClick={back}
@@ -340,7 +341,7 @@ const Cards: React.FunctionComponent = () => {
             </div>
             <button
               type="button"
-              className={`${styles.button} ${
+              className={`${styles.button} ${styles.next} ${
                 currentIndex === wordsSet.length - 1 ? styles.hidden : ''
               }`}
               onClick={next}
