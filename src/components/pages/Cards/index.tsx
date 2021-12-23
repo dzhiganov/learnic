@@ -1,5 +1,11 @@
 /* eslint-disable css-modules/no-undef-class */
-import React, { useState, useCallback, useMemo, useRef } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+  useEffect,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -11,6 +17,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Skeleton from '@material-ui/lab/Skeleton';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import { useParams } from 'react-router-dom';
 import useSelector from '~hooks/useSelector';
 // eslint-disable-next-line css-modules/no-unused-class
 import styles from './styles.module.css';
@@ -37,8 +44,15 @@ const Cards: React.FunctionComponent = () => {
   const [failed, setFailed] = useState<number[]>([]);
   const [finished, setFinished] = useState(false);
   const [showDefinition, setShowDefinition] = useState(false);
+
+  const { training, cardId } = useParams<{
+    training: TrainingTypes;
+    cardId: string;
+  }>();
   const [selectedTraining, selectTraining] = useState<TrainingTypes | null>(
-    null
+    () => {
+      return training || null;
+    }
   );
   const [fetchUpdate] = useMutation(updateWordMutation);
   const wordsAmount = useRef(0);
@@ -50,7 +64,6 @@ const Cards: React.FunctionComponent = () => {
     variables: {
       uid,
     },
-    fetchPolicy: 'no-cache',
   });
 
   const wordSets = useMemo(() => {
@@ -78,6 +91,15 @@ const Cards: React.FunctionComponent = () => {
       [TrainingTypes.Last]: groupedByDate[lastKeys],
     };
   }, [words]);
+
+  useEffect(() => {
+    if (cardId && !loading && selectedTraining) {
+      const current = wordSets[selectedTraining as TrainingTypes].findIndex(
+        ({ id }) => id === cardId
+      );
+      if (current !== -1) setCurrentIndex(current);
+    }
+  }, [cardId, loading, selectedTraining, wordSets]);
 
   const handleSelectTraining = (trainingType: TrainingTypes) => {
     selectTraining(trainingType);
