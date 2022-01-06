@@ -19,6 +19,7 @@
 }
 
 .input {
+  border: 1px solid #ccc;
   color: var(--color-text);
   background-color: var(--color-input-background);
   text-overflow: ellipsis;
@@ -37,7 +38,6 @@
   overflow: hidden;
   outline: none;
   background-color: #f3f3f3;
-  border: none;
 }
 
 .input:focus,

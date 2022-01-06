@@ -5,6 +5,7 @@ import React, {
   useMemo,
   useRef,
   useEffect,
+  useLayoutEffect,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
@@ -17,7 +18,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Skeleton from '@material-ui/lab/Skeleton';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import useSelector from '~hooks/useSelector';
 // eslint-disable-next-line css-modules/no-unused-class
 import styles from './styles.module.css';
@@ -32,6 +33,7 @@ import updateWordMutation from '~graphql/mutations/updateWord';
 import { GetWordsQueryResult, TrainingTypes } from '~shared/types';
 import Selector from './Selector';
 import getWords from '~graphql/queries/getWords';
+import { HOME_CARDS } from '~router/paths';
 
 const now = dayjs();
 dayjs.extend(isSameOrAfter);
@@ -44,6 +46,7 @@ const Cards: React.FunctionComponent = () => {
   const [failed, setFailed] = useState<number[]>([]);
   const [finished, setFinished] = useState(false);
   const [showDefinition, setShowDefinition] = useState(false);
+  const history = useHistory();
 
   const { training, cardId } = useParams<{
     training: TrainingTypes;
@@ -93,30 +96,65 @@ const Cards: React.FunctionComponent = () => {
   }, [words]);
 
   useEffect(() => {
+    if (currentIndex === 0 && !loading && selectedTraining) {
+      const { id } = wordSets[selectedTraining as TrainingTypes][currentIndex];
+      history.replace({
+        pathname: `${HOME_CARDS}${training ? `/${training}` : ''}/${id}`,
+      });
+    }
+  }, [currentIndex, history, selectedTraining, wordSets, loading, training]);
+
+  const handleSelectWord = useCallback(
+    (index: number) => {
+      const { id } = wordSets[selectedTraining as TrainingTypes][index];
+      if (index) {
+        history.replace(`${HOME_CARDS}${training ? `/${training}` : ''}/${id}`);
+      } else {
+        history.replace(`${HOME_CARDS}${training ? `/${training}` : ''}`);
+      }
+
+      setCurrentIndex(index);
+    },
+    [history, selectedTraining, wordSets, training]
+  );
+
+  useLayoutEffect(() => {
     if (cardId && !loading && selectedTraining) {
       const current = wordSets[selectedTraining as TrainingTypes].findIndex(
         ({ id }) => id === cardId
       );
-      if (current !== -1) setCurrentIndex(current);
+      if (current !== -1) handleSelectWord(current);
     }
-  }, [cardId, loading, selectedTraining, wordSets]);
+  }, [cardId, loading, selectedTraining, wordSets, handleSelectWord]);
 
-  const handleSelectTraining = (trainingType: TrainingTypes) => {
+  const handleSelectTraining = (trainingType: TrainingTypes | null) => {
+    if (!trainingType) {
+      history.replace({
+        pathname: `${HOME_CARDS}`,
+      });
+    } else {
+      history.replace({
+        pathname: `${HOME_CARDS}/${trainingType}`,
+      });
+    }
+
     selectTraining(trainingType);
-    wordsAmount.current = wordSets[trainingType].length;
+    if (trainingType) {
+      wordsAmount.current = wordSets[trainingType].length;
+    }
   };
 
   const back = useCallback(() => {
     const newIndex = currentIndex - 1;
     if (!words[newIndex]) return;
-    setCurrentIndex(newIndex);
-  }, [currentIndex, words]);
+    handleSelectWord(newIndex);
+  }, [currentIndex, words, handleSelectWord]);
 
   const next = useCallback(() => {
     const newIndex = currentIndex + 1;
     if (!words[newIndex]) return;
-    setCurrentIndex(newIndex);
-  }, [currentIndex, words]);
+    handleSelectWord(newIndex);
+  }, [currentIndex, words, handleSelectWord]);
 
   const handleDone = useCallback(() => {
     setSuccessful((prev) => [...prev, currentIndex]);
@@ -127,7 +165,7 @@ const Cards: React.FunctionComponent = () => {
       setFinished(true);
     }
 
-    setCurrentIndex(newIndex);
+    handleSelectWord(newIndex);
 
     window.requestAnimationFrame(() => {
       const { id, step: currentStep } = wordSets[
@@ -149,7 +187,14 @@ const Cards: React.FunctionComponent = () => {
         },
       });
     });
-  }, [uid, currentIndex, fetchUpdate, wordSets, selectedTraining]);
+  }, [
+    uid,
+    currentIndex,
+    fetchUpdate,
+    wordSets,
+    selectedTraining,
+    handleSelectWord,
+  ]);
 
   const handleAgain = useCallback(() => {
     setFailed((prev) => [...prev, currentIndex]);
@@ -160,7 +205,7 @@ const Cards: React.FunctionComponent = () => {
       setFinished(true);
     }
 
-    setCurrentIndex(newIndex);
+    handleSelectWord(newIndex);
 
     window.requestAnimationFrame(() => {
       const { id } = wordSets[selectedTraining as TrainingTypes][oldIndex];
@@ -178,7 +223,14 @@ const Cards: React.FunctionComponent = () => {
         },
       });
     });
-  }, [currentIndex, uid, fetchUpdate, selectedTraining, wordSets]);
+  }, [
+    currentIndex,
+    uid,
+    fetchUpdate,
+    selectedTraining,
+    wordSets,
+    handleSelectWord,
+  ]);
 
   const handleFail = useCallback(() => {
     setFailed((prev) => [...prev, currentIndex]);
@@ -189,7 +241,7 @@ const Cards: React.FunctionComponent = () => {
       setFinished(true);
     }
 
-    setCurrentIndex(newIndex);
+    handleSelectWord(newIndex);
 
     window.requestAnimationFrame(() => {
       const { id } = wordSets[selectedTraining as TrainingTypes][oldIndex];
@@ -207,7 +259,14 @@ const Cards: React.FunctionComponent = () => {
         },
       });
     });
-  }, [currentIndex, uid, fetchUpdate, selectedTraining, wordSets]);
+  }, [
+    currentIndex,
+    uid,
+    fetchUpdate,
+    selectedTraining,
+    wordSets,
+    handleSelectWord,
+  ]);
 
   const handleShowDefinition = (value: boolean) => {
     setShowDefinition(value);
@@ -218,11 +277,11 @@ const Cards: React.FunctionComponent = () => {
   };
 
   const handleOnChangeSlide = (newSlideIndex: number) =>
-    setCurrentIndex(newSlideIndex);
+    handleSelectWord(newSlideIndex);
 
   const handleBackToTheList = () => {
-    selectTraining(null);
-    setCurrentIndex(0);
+    handleSelectTraining(null);
+    handleSelectWord(0);
     setSuccessful([]);
     setFailed([]);
     setFinished(false);

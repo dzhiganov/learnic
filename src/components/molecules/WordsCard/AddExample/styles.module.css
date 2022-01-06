@@ -25,7 +25,7 @@
   align-items: center;
   resize: none;
   background-color: #f3f3f3;
-  border: none;
+  border: 1px solid #ccc;
 }
 
 .input:focus,
