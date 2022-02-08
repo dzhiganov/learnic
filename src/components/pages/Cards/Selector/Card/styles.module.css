@@ -1,12 +1,10 @@
 .card {
+  background-color: #4b7cff;
   border-radius: 8px;
-  background-color: #98b4ff;
   display: flex;
   padding: 20px;
   height: 100%;
   cursor: pointer;
-  box-shadow: rgb(0 0 0 / 18%) 0px 3px 6px, rgb(0 0 0 / 12%) 0px 0px;
-  transition: 300ms ease-in-out;
   flex-direction: column;
 }
 
@@ -17,7 +15,7 @@
 }
 
 .card:hover {
-  box-shadow: none;
+  background-color: #1552f8;
 }
 
 .title {
@@ -32,8 +30,4 @@
   font-weight: 500;
   color: #fff;
   justify-self: flex-end;
-}
-
-.special {
-  background-color: #71efa3;
 }

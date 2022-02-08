@@ -9,13 +9,13 @@ type Props = {
   isSpecial?: boolean;
 };
 
-const Card: FC<Props> = ({ title, count, onClick, isSpecial }) => {
+const Card: FC<Props> = ({ title, count, onClick }) => {
   const handleClick = () => onClick(title);
   const handleKeyDown = () => {};
 
   return (
     <div
-      className={`${styles.card} ${isSpecial ? styles.special : ''}`}
+      className={styles.card}
       tabIndex={0}
       role="button"
       onKeyDown={handleKeyDown}

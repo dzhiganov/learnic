@@ -5,4 +5,9 @@
   text-align: center;
   align-items: center;
   display: flex;
+  width: 140px;
+}
+
+.logo > img {
+  width: inherit;
 }
