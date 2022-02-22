@@ -142,18 +142,6 @@
   background-color: rgba(45, 16, 82, 0.2);
 }
 
-.done:not([disabled]):hover {
-  transform: translateY(-5px);
-}
-
-.fail:not([disabled]):hover {
-  transform: translateY(-5px);
-}
-
-.medium:not([disabled]):hover {
-  transform: translateY(-5px);
-}
-
 .button {
   display: none;
   border: none;

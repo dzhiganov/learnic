@@ -10,7 +10,7 @@
   "ASIDE_MENU": {
     "DICTIONARY": "Dictionary",
     "TRAININGS": "Training",
-    "CARDS": "Cards",
+    "CARDS": "🤓 Study now",
     "PROFILE": "Profile"
   },
   "DICTIONARY": {
@@ -76,11 +76,11 @@
     "HEADER_LIST_ITEM2": "Look at the picture that has been associated with this word",
     "HEADER_FINALLY": "If all these steps weren't successfully, flip the card and look at the translation. Then click on \"Repeat\" button, and come back later.",
     "TITLE": "All words",
-    "HOW_QUICKLY": "How quickly did you remember the word?",
+    "HOW_QUICKLY": "How quickly you remembered the translation?",
     "FLIP": "👉 Click to view translate",
-    "DONE": "🔥 Quickly",
-    "AGAIN": "🤔 Not quickly",
-    "FAIL": "😰 Didn't recall",
+    "DONE": "🔥 +2",
+    "AGAIN": "🤔 +1",
+    "FAIL": "😰 0",
     "SHOW_TRANSLATE_ON_CARD": "Show translate on card",
     "SHOW_ALL_WORDS": "Show all words",
     "ALL_WORDS_REPEATED": "🥳 You have repeated all words",
