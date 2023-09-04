@@ -1,3 +1,5 @@
+**DEMO** (Work In Progress) - https://learnic.netlify.app/
+
 [![Netlify Status](https://api.netlify.com/api/v1/badges/7590609f-4049-4acb-8447-64b072fb9b15/deploy-status)](https://app.netlify.com/sites/learnic/deploys)
 
 ## To running localy
